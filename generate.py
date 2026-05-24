@@ -169,6 +169,18 @@ def main() -> int:
         print(f"Font not found at {font_path}", file=sys.stderr)
         return 1
     font = ImageFont.truetype(str(font_path), size=FONT_SIZE)
+    # Variable fonts default to the first master (often Thin).
+    # Pin to the "Regular" named instance if available.
+    try:
+        names = font.get_variation_names()  # raises if not a variable font
+        target = next((n for n in names if n.lower() == b"regular"), None)
+        if target is not None:
+            font.set_variation_by_name(target)
+            print(f"  variable font: pinned to instance {target!r}")
+        else:
+            print(f"  variable font has no 'Regular' instance; available: {names}")
+    except OSError:
+        pass  # Static font
     print(f"Font loaded: {font_path.name}, size {FONT_SIZE}px on {IMG_SIZE}x{IMG_SIZE} canvas")
     print(f"Output base: {out_base}")
     print(f"CSV: {csv_path}")
