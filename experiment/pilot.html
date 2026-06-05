@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>iFont セルフパイロット (任意 r 合成)</title>
+<style>
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: #f4f4f6; margin: 0; padding: 24px;
+    color: #222;
+  }
+  header { margin-bottom: 16px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .small { font-size: 12px; color: #666; }
+  .layout { display: flex; gap: 32px; align-items: flex-start; }
+  .stage { flex: 0 0 auto; }
+  canvas { width: 512px; height: 512px; image-rendering: pixelated;
+           background: #fff; border: 1px solid #ddd; display: block; }
+  .controls { flex: 1; min-width: 320px; max-width: 520px; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 6px;
+           padding: 16px; margin-bottom: 16px; }
+  .panel h2 { font-size: 14px; margin: 0 0 8px; color: #555; letter-spacing: 0.05em; }
+  .row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .row label { width: 100px; font-size: 13px; }
+  .row input[type=range] { flex: 1; }
+  .r-value { font-family: monospace; font-size: 16px; width: 80px; text-align: right; }
+  button { padding: 8px 14px; font-size: 14px; border: 1px solid #999; background: #fafafa;
+           border-radius: 4px; cursor: pointer; }
+  button:hover { background: #eef; }
+  button.primary { background: #4a76d6; color: #fff; border-color: #355aa3; }
+  button.primary:hover { background: #355aa3; }
+  .modes button { margin-right: 6px; }
+  .modes button.active { background: #2a4a8a; color: #fff; border-color: #1a3a6a; }
+  .choices { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .choices button { font-size: 28px; padding: 10px 20px; min-width: 70px; }
+  .feedback { font-size: 14px; padding: 8px 12px; border-radius: 4px;
+              margin-top: 8px; display: inline-block; }
+  .feedback.correct { background: #ddf6dd; color: #176317; }
+  .feedback.wrong   { background: #ffdcdc; color: #802020; }
+  .stats { font-family: monospace; font-size: 12px; }
+  .stats table { border-collapse: collapse; }
+  .stats th, .stats td { padding: 2px 8px; text-align: right; }
+  .stats th { font-weight: 600; border-bottom: 1px solid #999; }
+  #chartCanvas { width: 100%; height: 180px; background: #fafafa; border: 1px solid #ddd; }
+</style>
+</head>
+<body>
+<header>
+  <h1>iFont セルフパイロット — 減算 F1, BIZ UDGothic</h1>
+  <div class="small">
+    クライアント側で 84 字を α 合成。r を任意の値で連続的に動かして f(t) の階段性を確認。
+    本実験の 10%刻みが妥当かを自分で観察するためのツール。
+  </div>
+</header>
+
+<div class="layout">
+  <div class="stage">
+    <canvas id="stage" width="256" height="256"></canvas>
+    <div class="small" id="stageInfo" style="margin-top:6px;"></div>
+  </div>
+
+  <div class="controls">
+    <div class="panel">
+      <h2>モード</h2>
+      <div class="modes">
+        <button id="modeInspect" class="active">Inspect (連続スライダ)</button>
+        <button id="modeTrial">Trial (ランダム + 即時判定)</button>
+      </div>
+    </div>
+
+    <!-- INSPECT MODE -->
+    <div id="inspectPanel" class="panel">
+      <h2>Inspect</h2>
+      <div class="row">
+        <label>target</label>
+        <select id="charSelect" style="flex:1; font-size:18px;"></select>
+      </div>
+      <div class="row">
+        <label>r (%)</label>
+        <input id="rSlider" type="range" min="0" max="100" step="0.1" value="50">
+        <span id="rValue" class="r-value">50.0</span>
+      </div>
+      <div class="row">
+        <label>細かさ</label>
+        <select id="stepSelect">
+          <option value="0.1">0.1%</option>
+          <option value="0.5">0.5%</option>
+          <option value="1" selected>1%</option>
+          <option value="2">2%</option>
+          <option value="5">5%</option>
+          <option value="10">10%</option>
+        </select>
+        <span class="small" style="margin-left:8px;">←/→キーで増減</span>
+      </div>
+    </div>
+
+    <!-- TRIAL MODE -->
+    <div id="trialPanel" class="panel" style="display:none;">
+      <h2>Trial</h2>
+      <div class="row">
+        <label>r 分布</label>
+        <select id="rDist">
+          <option value="uniform">[0,100] 一様</option>
+          <option value="adaptive" selected>適応 (前回正答なら−5%、誤答なら+5%)</option>
+          <option value="thresholdHunt">[20,80] 一様 (閾値帯重点)</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>r ステップ</label>
+        <select id="trialStep">
+          <option value="0.1">0.1%</option>
+          <option value="0.5">0.5%</option>
+          <option value="1" selected>1%</option>
+          <option value="2">2%</option>
+          <option value="5">5%</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="startTrial" class="primary">次の試行</button>
+        <button id="resetTrials">統計リセット</button>
+        <button id="downloadTrials">CSV ダウンロード</button>
+      </div>
+      <div id="choices" class="choices"></div>
+      <div id="feedback" class="feedback" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h2>統計 (Trial mode)</h2>
+      <canvas id="chartCanvas" width="500" height="180"></canvas>
+      <div class="stats" id="statsTable"></div>
+    </div>
+  </div>
+</div>
+
+<script src="pilot.js"></script>
+</body>
+</html>
