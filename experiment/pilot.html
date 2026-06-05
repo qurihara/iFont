@@ -2,46 +2,84 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>iFont セルフパイロット (任意 r 合成)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>iFont セルフパイロット</title>
 <style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
   body {
     font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
-    background: #f4f4f6; margin: 0; padding: 24px;
+    background: #f4f4f6; padding: 16px;
     color: #222;
   }
-  header { margin-bottom: 16px; }
-  h1 { font-size: 20px; margin: 0 0 4px; }
+  header { margin-bottom: 12px; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
   .small { font-size: 12px; color: #666; }
-  .layout { display: flex; gap: 32px; align-items: flex-start; }
+  .layout { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
   .stage { flex: 0 0 auto; }
-  canvas { width: 512px; height: 512px; image-rendering: pixelated;
-           background: #fff; border: 1px solid #ddd; display: block; }
-  .controls { flex: 1; min-width: 320px; max-width: 520px; }
+  canvas#stage {
+    width: 320px; height: 320px;
+    max-width: 90vw; max-height: 90vw;
+    image-rendering: pixelated; background: #fff;
+    border: 1px solid #ddd; display: block;
+    touch-action: manipulation;
+  }
+  .controls { flex: 1 1 320px; min-width: 280px; max-width: 600px; }
   .panel { background: #fff; border: 1px solid #ddd; border-radius: 6px;
-           padding: 16px; margin-bottom: 16px; }
-  .panel h2 { font-size: 14px; margin: 0 0 8px; color: #555; letter-spacing: 0.05em; }
-  .row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
-  .row label { width: 100px; font-size: 13px; }
-  .row input[type=range] { flex: 1; }
-  .r-value { font-family: monospace; font-size: 16px; width: 80px; text-align: right; }
+           padding: 12px; margin-bottom: 12px; }
+  .panel h2 { font-size: 13px; margin: 0 0 8px; color: #555; letter-spacing: 0.05em; }
+  .row { display: flex; align-items: center; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
+  .row label { width: 90px; font-size: 13px; flex-shrink: 0; }
+  .row input[type=range] { flex: 1; min-width: 120px; }
+  .r-value { font-family: monospace; font-size: 15px; min-width: 60px; text-align: right; }
   button { padding: 8px 14px; font-size: 14px; border: 1px solid #999; background: #fafafa;
-           border-radius: 4px; cursor: pointer; }
+           border-radius: 4px; cursor: pointer; touch-action: manipulation;
+           -webkit-tap-highlight-color: transparent; }
   button:hover { background: #eef; }
+  button:disabled { color: #bbb; background: #f3f3f3; }
   button.primary { background: #4a76d6; color: #fff; border-color: #355aa3; }
   button.primary:hover { background: #355aa3; }
-  .modes button { margin-right: 6px; }
+  .modes button { margin-right: 6px; margin-bottom: 4px; }
   .modes button.active { background: #2a4a8a; color: #fff; border-color: #1a3a6a; }
-  .choices { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-  .choices button { font-size: 28px; padding: 10px 20px; min-width: 70px; }
-  .feedback { font-size: 14px; padding: 8px 12px; border-radius: 4px;
-              margin-top: 8px; display: inline-block; }
+  .choices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .choices button { font-size: 24px; padding: 10px 14px; min-width: 60px;
+                    min-height: 44px; /* iOS tap target */ }
+  /* 84-choice 50音 grid */
+  .choices.grid84 {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 4px; max-width: 360px;
+  }
+  .choices.grid84 button { font-size: 20px; padding: 6px 0; min-width: 0;
+                           min-height: 44px; }
+  .choices.grid84 .spacer {
+    background: transparent; border: none; pointer-events: none; min-height: 44px;
+  }
+  .feedback { font-size: 13px; padding: 6px 10px; border-radius: 4px;
+              margin-top: 8px; display: inline-block; max-width: 100%; }
   .feedback.correct { background: #ddf6dd; color: #176317; }
   .feedback.wrong   { background: #ffdcdc; color: #802020; }
   .stats { font-family: monospace; font-size: 12px; }
   .stats table { border-collapse: collapse; }
   .stats th, .stats td { padding: 2px 8px; text-align: right; }
   .stats th { font-weight: 600; border-bottom: 1px solid #999; }
-  #chartCanvas { width: 100%; height: 180px; background: #fafafa; border: 1px solid #ddd; }
+  #chartCanvas { width: 100%; height: 180px; max-height: 40vh;
+                 background: #fafafa; border: 1px solid #ddd; }
+  #fitInfo { font-size: 11px !important; overflow-x: auto; }
+  #kanaInput {
+    font-size: 18px; padding: 6px 10px; width: 100%;
+    border: 1px solid #aaa; border-radius: 4px; box-sizing: border-box;
+    -webkit-appearance: none;
+  }
+  /* mobile-only: stack panels under canvas; full-width stage */
+  @media (max-width: 720px) {
+    body { padding: 10px; }
+    .layout { flex-direction: column; gap: 12px; }
+    canvas#stage { width: 100%; max-width: 360px; height: auto; aspect-ratio: 1; }
+    .controls { width: 100%; max-width: 100%; }
+    .panel { padding: 10px; }
+    .row label { width: 100%; }
+    .choices.grid84 { max-width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -65,6 +103,13 @@
       <div class="modes">
         <button id="modeInspect" class="active">Inspect (連続スライダ)</button>
         <button id="modeTrial">Trial (ランダム + 即時判定)</button>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <label>出題範囲</label>
+        <select id="qSet">
+          <option value="all" selected>全 84 字</option>
+          <option value="karuta">競技かるた 48 字 (清音46 + ゐゑ)</option>
+        </select>
       </div>
     </div>
 
@@ -100,34 +145,77 @@
       <div class="row">
         <label>r 分布</label>
         <select id="rDist">
-          <option value="uniform">[0,100] 一様</option>
-          <option value="adaptive" selected>適応 (前回正答なら−5%、誤答なら+5%)</option>
-          <option value="thresholdHunt">[20,80] 一様 (閾値帯重点)</option>
+          <option value="logK" selected>k log-uniform [0.5, 128] (推奨)</option>
+          <option value="logKWide">k log-uniform [0.25, 256]</option>
+          <option value="kGrid11">11 段階 k グリッド {0, .5, 1, 2, 4, 8, 16, 32, 64, 128, ∞}</option>
+          <option value="adaptive">適応 (k space ÷×√2)</option>
+          <option value="uniform">[0,100] 一様 (r 空間)</option>
+          <option value="lowFine">[0,10] 一様 (r 空間)</option>
+          <option value="lowVeryFine">[0,5] 一様 (r 空間)</option>
+          <option value="thresholdHunt">[20,80] 一様 (r 空間)</option>
         </select>
       </div>
       <div class="row">
         <label>r ステップ</label>
         <select id="trialStep">
           <option value="0.1">0.1%</option>
-          <option value="0.5">0.5%</option>
-          <option value="1" selected>1%</option>
+          <option value="0.5" selected>0.5%</option>
+          <option value="1">1%</option>
           <option value="2">2%</option>
           <option value="5">5%</option>
         </select>
       </div>
       <div class="row">
-        <button id="startTrial" class="primary">次の試行</button>
+        <label>選択肢</label>
+        <select id="choiceCount">
+          <option value="2">2 択</option>
+          <option value="4">4 択</option>
+          <option value="8">8 択</option>
+          <option value="16">16 択</option>
+          <option value="999" selected>全字グリッド (50音表, Kikiwakeと整合)</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Distractor</label>
+        <select id="distractorMode">
+          <option value="random" selected>ランダム</option>
+          <option value="similar">視覚的に似た字 (pixel overlap 上位)</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>「わからない」</label>
+        <select id="dontKnow">
+          <option value="off" selected>なし (forced choice)</option>
+          <option value="on">あり (5択目に追加)</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="startTrial" class="primary">開始</button>
         <button id="resetTrials">統計リセット</button>
         <button id="downloadTrials">CSV ダウンロード</button>
+        <span class="small">回答後は自動で次に進みます (1 秒の空白あり)</span>
       </div>
       <div id="choices" class="choices"></div>
+      <div class="row" style="margin-top:10px;">
+        <label>キーボード</label>
+        <input id="kanaInput" type="text" placeholder="入力 (IME でひらがな1字)" autocomplete="off" autocapitalize="off">
+      </div>
       <div id="feedback" class="feedback" style="display:none;"></div>
     </div>
 
     <div class="panel">
       <h2>統計 (Trial mode)</h2>
+      <div class="row">
+        <label>横軸</label>
+        <select id="chartAxis">
+          <option value="auto" selected>自動 (r 分布に合わせる)</option>
+          <option value="r">r %</option>
+          <option value="logK">log₂ k</option>
+        </select>
+      </div>
       <canvas id="chartCanvas" width="500" height="180"></canvas>
       <div class="stats" id="statsTable"></div>
+      <div id="fitInfo" class="small" style="margin-top:8px; font-family: monospace;"></div>
     </div>
   </div>
 </div>
