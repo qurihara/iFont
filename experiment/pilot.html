@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>iFont セルフパイロット</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>iFont セルフパイロット (開発用)</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
@@ -84,10 +86,14 @@
 </head>
 <body>
 <header>
+  <div style="background:#fff7d6; border:1px solid #d8c87a; padding:6px 10px;
+              border-radius:4px; font-size:12px; color:#5a4500; margin-bottom:8px;">
+    ⚠️ これは研究者向けの開発・検証用ツールです。本番の実験ではありません。
+  </div>
   <h1>iFont セルフパイロット — 減算 F1, BIZ UDGothic</h1>
   <div class="small">
-    クライアント側で 84 字を α 合成。r を任意の値で連続的に動かして f(t) の階段性を確認。
-    本実験の 10%刻みが妥当かを自分で観察するためのツール。
+    クライアント側で 84 字を α 合成。r/k を任意の値で連続的に動かして f(t) の挙動を確認。
+    本実験の刺激プールとは独立 (base/ 画像から動的合成)。
   </div>
 </header>
 
