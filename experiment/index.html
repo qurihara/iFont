@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>視覚版 Kikiwake 実験</title>
+<script src="https://unpkg.com/jspsych@8.0.3"></script>
+<script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.0.1"></script>
+<script src="https://unpkg.com/@jspsych/plugin-image-button-response@2.0.1"></script>
+<script src="https://unpkg.com/@jspsych/plugin-instructions@2.0.1"></script>
+<script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
+<script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.1"></script>
+<link rel="stylesheet" href="https://unpkg.com/jspsych@8.0.3/css/jspsych.css">
+<style>
+  body { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; background: #f6f6f6; }
+  .jspsych-content { max-width: 720px; }
+  .stim-img { width: 320px; height: 320px; image-rendering: pixelated; background: #fff; }
+  .choice-btn { font-size: 36px; padding: 12px 24px; margin: 8px; min-width: 80px; }
+  .completion-code { font-family: monospace; font-size: 24px; background: #ffe; padding: 12px;
+                     border: 1px solid #cc9; display: inline-block; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<script src="experiment.js"></script>
+</body>
+</html>
