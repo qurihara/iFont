@@ -15,7 +15,8 @@
  *
  * Schema appended to the "trials" sheet:
  *   ts, participant_id, worker_id, completion_code, stimulus_id,
- *   response_char, correct_char, correct, r, font, mode, rt_ms, is_catch
+ *   response_char, correct_char, correct, q_set, k_index, k, r,
+ *   n_choices, font, mode, rt_ms, is_catch
  *
  * Notes:
  *   - Client posts with mode: "no-cors", so the response body is not read
@@ -44,6 +45,8 @@ function doPost(e) {
       return out({status: "error", reason: "unknown stimulus_id"});
     }
     const correct = body.response_char === stim.answer;
+    // k is null in the answer key when k = ∞ (catch / target-only).
+    const kVal = (stim.k === null || stim.k === undefined) ? "Inf" : stim.k;
 
     const sheet = SpreadsheetApp.openById(sheetId);
     let trials = sheet.getSheetByName(SHEET_TRIALS);
@@ -52,7 +55,8 @@ function doPost(e) {
       trials.appendRow([
         "ts", "participant_id", "worker_id", "completion_code",
         "stimulus_id", "response_char", "correct_char", "correct",
-        "r", "font", "mode", "rt_ms", "is_catch",
+        "q_set", "k_index", "k", "r", "n_choices",
+        "font", "mode", "rt_ms", "is_catch",
       ]);
     }
     trials.appendRow([
@@ -64,7 +68,11 @@ function doPost(e) {
       body.response_char,
       stim.answer,
       correct,
+      stim.q_set,
+      stim.k_index,
+      kVal,
       stim.r,
+      body.n_choices,
       stim.font,
       stim.mode,
       body.rt_ms,
