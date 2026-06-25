@@ -212,13 +212,12 @@ async function run() {
   const mainStims = all.slice(N_PRACTICE);
   const setLabel = Q_SET === "karuta" ? "競技かるた 48 字" : "全 84 字";
 
-  const preload = {
-    type: jsPsychPreload,
-    audio: all.map(s => `audio_stimuli/${s.id}.mp3`),
-    message: '音声を読み込んでいます…',
-    show_progress_bar: true,
-  };
-
+  // NOTE: we deliberately do NOT use jsPsychPreload's `audio:` option.
+  // jsPsych preloads audio through the Web Audio API (decodeAudioData), which
+  // several browsers (esp. Safari/iOS) refuse before a user gesture — that
+  // makes the preload step fail with "The experiment failed to load.".
+  // Each trial uses a plain <audio preload="auto"> element instead, which the
+  // browser loads on demand; the files are tiny (~2KB) so there is no delay.
   const consent = {
     type: jsPsychInstructions,
     pages: [
@@ -282,7 +281,6 @@ async function run() {
   };
 
   jsPsych.run([
-    preload,
     consent,
     instructions,
     ...practiceBlock,
