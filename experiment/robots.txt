@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: /experiment/pilot.html
+Disallow: /experiment/pilot_audio.html
