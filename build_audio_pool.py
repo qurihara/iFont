@@ -1,35 +1,35 @@
 """
-Build the public AUDIO stimulus pool and merge the answers into the shared
-answer key. The auditory analog of build_stimulus_pool.py.
+Build the public AUDIO stimulus pool (truncation model) and merge the answers
+into the shared answer key.
 
-Source: audio_stimuli_<VOICE>_<QSET>/k<idx>/<char>.mp3
+Source: audio_stimuli_trunc_<VOICE>/f<idx>/<char>.mp3   (84 × 21 = 1764)
 Each stimulus id:
-    stimulus_id = sha1("audio|<voice>|f1|<qset>|<kidx>|<char>|SECRET_SALT")[:12]
-The "audio|" prefix + voice guarantees audio ids never collide with the
-visual ids (which start "FONT|f1|...").
+    stimulus_id = sha1("audiotrunc|<voice>|<fracidx>|<char>|SECRET_SALT")[:12]
+
+Truncation clips do NOT depend on the candidate set, so one pool serves both
+q_sets. Each manifest entry is tagged with the q_sets it is valid for
+(a karuta char -> ["all","karuta"]; a non-karuta char -> ["all"]); the client
+filters by its deployment Q_SET. The answer (char) lives only server-side.
 
 Outputs:
     experiment/audio_stimuli/<stimulus_id>.mp3       (public)
-    experiment/audio_manifest.json                   (public: id, q_set, k...)
+    experiment/audio_manifest.json                   (public: id, frac, q_sets)
     answer_key.json                                  (server-side, MERGED)
 
-answer_key.json is SHARED between the visual and audio pools so the GAS
-backend needs only one ANSWER_KEY property. This builder MERGES audio
-entries into any existing answer_key.json rather than overwriting it, so run
-the visual build_stimulus_pool.py first (or in any order) — audio ids are
-disjoint. Each entry carries modality="audio" / mode="f1_audio".
+answer_key.json is SHARED with the visual pool; audio ids carry the
+"audiotrunc|..." hash prefix so they never collide. Entries are tagged
+modality="audio" / mode="f1_audio_trunc".
 
-Requires env var SECRET_SALT (any string). Pass via --salt or env.
+Requires env var SECRET_SALT. Pass via --salt or env.
 
 Usage:
-    python build_audio_pool.py --salt $SECRET_SALT                 # voice=Kyoko, qset=all
-    python build_audio_pool.py --salt $SECRET_SALT --qset all karuta --voice Kyoko
+    python build_audio_pool.py --salt $SECRET_SALT            # voice=Kyoko
+    python build_audio_pool.py --salt $SECRET_SALT --voice Kyoko
 """
 
 import argparse
 import hashlib
 import json
-import math
 import os
 import shutil
 import sys
@@ -39,131 +39,94 @@ import ifont_common as C
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_VOICE = "Kyoko"
-MODE = "f1_audio"
+MODE = "f1_audio_trunc"
 MODALITY = "audio"
 
+KARUTA_SET = set(C.KARUTA_CHARS)
 
-def stimulus_id(voice: str, q_set: str, k_index: int,
-                char: str, salt: str) -> str:
-    payload = f"audio|{voice}|f1|{q_set}|{k_index}|{char}|{salt}"
+
+def stimulus_id(voice: str, frac_index: int, char: str, salt: str) -> str:
+    payload = f"audiotrunc|{voice}|{frac_index}|{char}|{salt}"
     return hashlib.sha1(payload.encode("utf-8")).hexdigest()[:12]
 
 
-def build_for(voice: str, q_set: str, salt: str,
-              out_stimuli: Path, manifest_entries: list,
-              answer_key: dict, seen_ids: set) -> int:
-    src_root = ROOT / f"audio_stimuli_{voice}_{q_set}"
-    if not src_root.exists():
-        print(f"ERROR: source audio not found: {src_root}\n"
-              f"  run: python make_audio_stimuli.py --voice {voice} "
-              f"--qset {q_set}", file=sys.stderr)
-        return 2
-
-    chars = C.CHARSET_FOR[q_set]
-    n = C.n_distractors(q_set)
-    added = 0
-    for k_index, k in enumerate(C.K_GRID):
-        r = C.k_to_r(k, n)
-        k_dir = src_root / C.k_label(k_index)
-        for char in chars:
-            src_mp3 = k_dir / f"{char}.mp3"
-            if not src_mp3.exists():
-                print(f"  missing source: {src_mp3}", file=sys.stderr)
-                continue
-            sid = stimulus_id(voice, q_set, k_index, char, salt)
-            if sid in seen_ids:
-                print(f"  ! hash collision: {sid}", file=sys.stderr)
-                continue
-            seen_ids.add(sid)
-
-            shutil.copy(src_mp3, out_stimuli / f"{sid}.mp3")
-
-            k_json = None if math.isinf(k) else k
-            manifest_entries.append({
-                "id": sid,
-                "modality": MODALITY,
-                "q_set": q_set,
-                "k_index": k_index,
-                "k": k_json,        # null == infinity (target-only / catch)
-                "r": round(r, 4),
-            })
-            answer_key[sid] = {
-                "answer": char,
-                "char": char,
-                "modality": MODALITY,
-                "voice": voice,
-                "q_set": q_set,
-                "k_index": k_index,
-                "k": k_json,
-                "r": round(r, 4),
-                "mode": MODE,
-            }
-            added += 1
-    print(f"  {voice}/{q_set}: {added} audio stimuli")
-    return 0
+def q_sets_for(char: str) -> list:
+    """Which response sets this char belongs to (the clip itself is shared)."""
+    return ["all", "karuta"] if char in KARUTA_SET else ["all"]
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--salt", default=os.environ.get("SECRET_SALT", ""),
-                    help="Secret salt for hashing (env: SECRET_SALT)")
-    ap.add_argument("--voice", default=DEFAULT_VOICE,
-                    help=f"Voice tag (default: {DEFAULT_VOICE})")
-    ap.add_argument("--qset", nargs="+", default=["all"],
-                    choices=list(C.Q_SETS),
-                    help="Question set(s) to include (default: all)")
+    ap.add_argument("--salt", default=os.environ.get("SECRET_SALT", ""))
+    ap.add_argument("--voice", default=DEFAULT_VOICE)
     args = ap.parse_args()
-
     if not args.salt:
-        print("ERROR: SECRET_SALT not provided (use --salt or env var).",
-              file=sys.stderr)
+        print("ERROR: SECRET_SALT not provided (use --salt or env var).", file=sys.stderr)
         return 1
 
+    src_root = ROOT / f"audio_stimuli_trunc_{args.voice}"
+    if not src_root.exists():
+        print(f"ERROR: source not found: {src_root}\n"
+              f"  run: python make_audio_stimuli.py --voice {args.voice}", file=sys.stderr)
+        return 2
+
     out_stimuli = ROOT / "experiment" / "audio_stimuli"
+    # Replace the (deprecated chorus) audio pool entirely.
+    if out_stimuli.exists():
+        shutil.rmtree(out_stimuli)
     out_stimuli.mkdir(parents=True, exist_ok=True)
 
-    # MERGE into existing answer_key.json (shared with the visual pool).
+    # MERGE into the shared answer_key.json, but first drop any stale audio
+    # entries (the deprecated chorus ids) so the key reflects only the current
+    # truncation pool + the visual pool.
     answer_key_path = ROOT / "answer_key.json"
-    answer_key: dict = {}
+    answer_key = {}
     if answer_key_path.exists():
         with answer_key_path.open(encoding="utf-8") as f:
             answer_key = json.load(f)
-        print(f"  merging into existing answer_key.json "
-              f"({len(answer_key)} entries)")
+        before = len(answer_key)
+        answer_key = {k: v for k, v in answer_key.items()
+                      if v.get("modality") != "audio"}
+        print(f"  merging into answer_key.json: {before} entries, "
+              f"dropped {before - len(answer_key)} stale audio entries")
 
-    manifest_entries: list = []
-    seen_ids: set = set(answer_key.keys())
-
-    rc = 0
-    for q in args.qset:
-        rc = build_for(args.voice, q, args.salt, out_stimuli,
-                       manifest_entries, answer_key, seen_ids) or rc
-    if not manifest_entries:
-        print("ERROR: no audio stimuli built.", file=sys.stderr)
-        return rc or 3
+    manifest_entries, seen = [], set(answer_key.keys())
+    for frac_index, frac in enumerate(C.FRAC_GRID):
+        f_dir = src_root / C.frac_label(frac_index)
+        for char in C.ALL_CHARS:
+            src = f_dir / f"{char}.mp3"
+            if not src.exists():
+                print(f"  missing: {src}", file=sys.stderr); continue
+            sid = stimulus_id(args.voice, frac_index, char, args.salt)
+            if sid in seen:
+                print(f"  ! collision {sid}", file=sys.stderr); continue
+            seen.add(sid)
+            shutil.copy(src, out_stimuli / f"{sid}.mp3")
+            qs = q_sets_for(char)
+            manifest_entries.append({
+                "id": sid, "modality": MODALITY,
+                "frac_index": frac_index, "frac": frac, "q_sets": qs,
+            })
+            answer_key[sid] = {
+                "answer": char, "char": char, "modality": MODALITY,
+                "voice": args.voice, "frac_index": frac_index, "frac": frac,
+                "q_sets": qs, "mode": MODE,
+            }
 
     manifest_entries.sort(key=lambda e: e["id"])
-
     manifest = {
-        "version": "2.0",
-        "modality": MODALITY,
-        "voice": args.voice,
-        "mode": MODE,
-        "q_sets": sorted(set(e["q_set"] for e in manifest_entries)),
-        "k_grid": [C.k_str(k) for k in C.K_GRID],
+        "version": "3.0", "modality": MODALITY, "voice": args.voice, "mode": MODE,
+        "frac_grid": C.FRAC_GRID,
+        "n_choices": {q: len(C.CHARSET_FOR[q]) for q in C.Q_SETS},
         "stimuli": manifest_entries,
     }
-
-    manifest_path = ROOT / "experiment" / "audio_manifest.json"
-    with manifest_path.open("w", encoding="utf-8") as f:
+    mpath = ROOT / "experiment" / "audio_manifest.json"
+    with mpath.open("w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
-    print(f"\n  wrote {manifest_path} ({len(manifest_entries)} stimuli)")
-
+    print(f"\n  wrote {mpath} ({len(manifest_entries)} stimuli)")
     with answer_key_path.open("w", encoding="utf-8") as f:
         json.dump(answer_key, f, ensure_ascii=False, indent=2)
-    print(f"  wrote {answer_key_path} (server-side only, .gitignore'd! "
-          f"now {len(answer_key)} total entries)")
-
+    print(f"  wrote {answer_key_path} (.gitignore'd, now {len(answer_key)} total)")
     print(f"\nDone. {len(manifest_entries)} audio stimuli at {out_stimuli}")
     return 0
 

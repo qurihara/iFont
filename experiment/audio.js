@@ -95,13 +95,15 @@ async function loadManifest() {
 }
 
 function sampleStimuli(manifest, n) {
-  const pool = manifest.stimuli.filter(s => s.q_set === Q_SET);
+  // Truncation clips are shared across sets; each carries the q_sets it is
+  // valid for (a karuta char -> ["all","karuta"]).
+  const pool = manifest.stimuli.filter(s => (s.q_sets || []).includes(Q_SET));
   if (pool.length === 0) throw new Error(`audio_manifest に q_set="${Q_SET}" がありません`);
   return jsPsych.randomization.sampleWithoutReplacement(pool, Math.min(n, pool.length));
 }
 
 function isCatchStim(stim) {
-  return stim.k === null || stim.r === 100;
+  return stim.frac === 100;          // full clean kana
 }
 
 function buttonHtml(choice) {
@@ -147,10 +149,9 @@ function makeTrial(stim, isPractice = false) {
       task: isPractice ? "practice" : "main",
       stimulus_id: stim.id,
       modality: "audio",
-      q_set: stim.q_set,
-      k_index: stim.k_index,
-      k: stim.k,
-      r: stim.r,
+      q_set: Q_SET,
+      frac_index: stim.frac_index,
+      frac: stim.frac,
       n_choices: N_CHOICES,
       is_catch: isCatch,
     },
@@ -171,9 +172,8 @@ function makeTrial(stim, isPractice = false) {
               response_char: data.response_char,
               modality: data.modality,
               q_set: data.q_set,
-              k_index: data.k_index,
-              k: data.k,
-              r: data.r,
+              frac_index: data.frac_index,
+              frac: data.frac,
               n_choices: data.n_choices,
               replays: data.replays,
               rt_ms: data.rt,

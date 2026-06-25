@@ -49,6 +49,24 @@ Q_SETS = ("all", "karuta")
 # ---------------------------------------------------------------------------
 K_GRID = [0.0, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, math.inf]
 
+# ---------------------------------------------------------------------------
+# Audio f_audio_kana: single-kana TEMPORAL GATING (truncation) grid.
+# The adopted auditory model. A clean single-kana reading is truncated at
+# frac% of its voiced duration (onset→offset); the participant identifies it.
+#   frac = 0   -> nothing audible (chance anchor)
+#   frac = 100 -> the full clean kana (catch trial)
+# Unlike the (deprecated) chorus model this does NOT depend on the candidate
+# set, so one pool of clips serves both q_sets; only the response grid (and γ)
+# differ by q_set.
+# 21 levels (5% steps). Change here to retune granularity.
+# ---------------------------------------------------------------------------
+FRAC_GRID = list(range(0, 101, 5))   # 0,5,...,100  (21 levels)
+
+
+def frac_label(frac_index: int) -> str:
+    """Stable filesystem/label token for a frac-grid index, e.g. 'f00'..'f20'."""
+    return f"f{frac_index:02d}"
+
 
 def n_distractors(q_set: str) -> int:
     """Number of non-target characters for the active set (N in the k formula)."""

@@ -15,13 +15,15 @@
  *
  * Schema appended to the "trials" sheet:
  *   ts, participant_id, worker_id, completion_code, stimulus_id,
- *   response_char, correct_char, correct, modality, q_set, k_index, k, r,
- *   n_choices, font_voice, mode, replays, rt_ms, is_catch
+ *   response_char, correct_char, correct, modality, q_set,
+ *   k_index, k, r, frac_index, frac, n_choices, font_voice, mode,
+ *   replays, rt_ms, is_catch
  *
- * One shared ANSWER_KEY serves both the visual and audio pools. Visual
- * entries carry {font, mode:"f1"}; audio entries carry
- * {modality:"audio", voice, mode:"f1_audio"}. The handler is modality-aware
- * and falls back sensibly when a field is absent.
+ * One shared ANSWER_KEY serves both pools. Visual entries carry
+ * {font, mode:"f1", k_index, k, r}; audio (truncation) entries carry
+ * {modality:"audio", voice, mode:"f1_audio_trunc", frac_index, frac}.
+ * The handler logs whichever level fields are present (k* for visual,
+ * frac* for audio) and leaves the other blank.
  *
  * Notes:
  *   - Client posts with mode: "no-cors", so the response body is not read
@@ -50,11 +52,18 @@ function doPost(e) {
       return out({status: "error", reason: "unknown stimulus_id"});
     }
     const correct = body.response_char === stim.answer;
-    // k is null in the answer key when k = ∞ (catch / target-only).
-    const kVal = (stim.k === null || stim.k === undefined) ? "Inf" : stim.k;
     const modality = stim.modality || "visual";
     // visual entries store the font under "font"; audio entries the voice.
     const fontVoice = stim.font || stim.voice || "";
+    // Level fields: visual uses k* (k=null means ∞/catch); audio uses frac*.
+    // Log whichever the entry has; leave the other column blank.
+    const hasK = (stim.k_index !== undefined);
+    const kIdx = hasK ? stim.k_index : "";
+    const kVal = !hasK ? "" : (stim.k === null ? "Inf" : stim.k);
+    const rVal = hasK ? stim.r : "";
+    const hasFrac = (stim.frac_index !== undefined);
+    const fracIdx = hasFrac ? stim.frac_index : "";
+    const fracVal = hasFrac ? stim.frac : "";
 
     const sheet = SpreadsheetApp.openById(sheetId);
     let trials = sheet.getSheetByName(SHEET_TRIALS);
@@ -63,8 +72,8 @@ function doPost(e) {
       trials.appendRow([
         "ts", "participant_id", "worker_id", "completion_code",
         "stimulus_id", "response_char", "correct_char", "correct",
-        "modality", "q_set", "k_index", "k", "r", "n_choices",
-        "font_voice", "mode", "replays", "rt_ms", "is_catch",
+        "modality", "q_set", "k_index", "k", "r", "frac_index", "frac",
+        "n_choices", "font_voice", "mode", "replays", "rt_ms", "is_catch",
       ]);
     }
     trials.appendRow([
@@ -78,9 +87,11 @@ function doPost(e) {
       correct,
       modality,
       stim.q_set,
-      stim.k_index,
+      kIdx,
       kVal,
-      stim.r,
+      rVal,
+      fracIdx,
+      fracVal,
       body.n_choices,
       fontVoice,
       stim.mode,
