@@ -68,7 +68,7 @@ const N_PIXELS = SIZE * SIZE;
 
 // State
 let inkArrays = null;          // {char: Float32Array(N_PIXELS), values 0..1 (ink=1)}
-let inkSumAll = null;           // sum of all 84 inks
+let inkSumAll = null;           // sum of all 78 inks
 let inkSumKaruta = null;        // sum of 48 karuta inks
 let simAll = null, simKaruta = null;  // similarity rankings per mode
 let canvas, ctx, imgData;
@@ -241,7 +241,7 @@ function render(target, r) {
   }
   ctx.putImageData(imgData, 0, 0);
   const kVal = rToK(r);
-  const setName = activeChars === KARUTA_CHARS ? "karuta 48" : "全 84";
+  const setName = activeChars === KARUTA_CHARS ? "karuta 48" : "全 78";
   $("stageInfo").textContent =
     `target=${target}, r=${r.toFixed(2)}%, k=${fmtK(kVal)} (${setName}字 中)`;
 }

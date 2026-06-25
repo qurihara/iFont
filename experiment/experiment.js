@@ -10,7 +10,7 @@
 const SUBMIT_URL = "";
 
 // Which question set this deployment runs. Must exist in manifest.q_sets.
-//   "all"    = 全 84 字
+//   "all"    = 全 78 字 (VISUAL)
 //   "karuta" = 競技かるた 48 字 (清音46 + ゐゑ)
 const Q_SET = "all";
 
@@ -195,7 +195,7 @@ async function run() {
   const practiceStims = all.slice(0, N_PRACTICE);
   const mainStims = all.slice(N_PRACTICE);
 
-  const setLabel = Q_SET === "karuta" ? "競技かるた 48 字" : "全 84 字";
+  const setLabel = Q_SET === "karuta" ? "競技かるた 48 字" : "全 78 字";
 
   // ---- Preload -----------------------------------------------------------
   const allImageUrls = all.map(s => `stimuli/${s.id}.png`);

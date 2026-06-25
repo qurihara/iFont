@@ -12,7 +12,7 @@
 const SUBMIT_URL = "";
 
 // Which question set this deployment runs. Must exist in audio_manifest.q_sets.
-const Q_SET = "all";        // "all" = 全 84 字 / "karuta" = 競技かるた 48 字
+const Q_SET = "all";        // "all" = 全 72 字 (AUDIO) / "karuta" = 競技かるた 46 字
 
 const N_TRIALS = 200;
 const N_PRACTICE = 5;
@@ -209,7 +209,7 @@ async function run() {
   }
   const practiceStims = all.slice(0, N_PRACTICE);
   const mainStims = all.slice(N_PRACTICE);
-  const setLabel = Q_SET === "karuta" ? "競技かるた 48 字" : "全 84 字";
+  const setLabel = Q_SET === "karuta" ? "競技かるた 46 字" : "全 72 字";
 
   // NOTE: we deliberately do NOT use jsPsychPreload's `audio:` option.
   // jsPsych preloads audio through the Web Audio API (decodeAudioData), which
