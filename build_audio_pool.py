@@ -42,7 +42,9 @@ DEFAULT_VOICE = "Kyoko"
 MODE = "f1_audio_trunc"
 MODALITY = "audio"
 
-KARUTA_SET = set(C.KARUTA_CHARS)
+# Audio targets = the 72-char distinct set; audio-karuta = 清音46 (ゐゑ→いえ).
+AUDIO_CHARS = C.AUDIO_ALL
+KARUTA_SET = set(C.AUDIO_KARUTA)
 
 
 def stimulus_id(voice: str, frac_index: int, char: str, salt: str) -> str:
@@ -93,7 +95,7 @@ def main() -> int:
     manifest_entries, seen = [], set(answer_key.keys())
     for frac_index, frac in enumerate(C.FRAC_GRID):
         f_dir = src_root / C.frac_label(frac_index)
-        for char in C.ALL_CHARS:
+        for char in AUDIO_CHARS:
             src = f_dir / f"{char}.mp3"
             if not src.exists():
                 print(f"  missing: {src}", file=sys.stderr); continue

@@ -22,16 +22,20 @@ const N_PRACTICE = 5;
 // Character sets + fixed 50音 grids (mirror experiment/pilot.js)
 // =========================================================================
 
+// VISUAL response set = 78 字: drop ぁぃぅぇぉゎ (foreign-word only) but KEEP
+// the small ゃゅょ / っ and 古語 ゐゑ as distinct glyphs (small-glyph
+// readability is exactly what the visual task measures). Mirrors
+// ifont_common.VISUAL_ALL / VISUAL_KARUTA.
 const SEION = [..."あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"];
 const DAKUTEN = [..."がぎぐげござじずぜぞだぢづでどばびぶべぼ"];
 const HANDAKU = [..."ぱぴぷぺぽ"];
-const SMALL = [..."ぁぃぅぇぉっゃゅょゎ"];
+const YOON = [..."ゃゅょ"];
+const SOKUON = [..."っ"];
 const KOGO = [..."ゐゑ"];
 const OTHER = [..."ゔ"];
 
-// 50音 layout. "" cells are spacers so あ/か/さ… rows line up and any kana
-// is fast to find. Rendered as hidden, disabled buttons.
-const GRID_84 = [
+// 50音 layout. "" cells are spacers so あ/か/さ… rows line up.
+const GRID_VISUAL = [
   ["あ","い","う","え","お"],
   ["か","き","く","け","こ"],
   ["さ","し","す","せ","そ"],
@@ -48,19 +52,18 @@ const GRID_84 = [
   ["だ","ぢ","づ","で","ど"],
   ["ば","び","ぶ","べ","ぼ"],
   ["ぱ","ぴ","ぷ","ぺ","ぽ"],
-  ["ぁ","ぃ","ぅ","ぇ","ぉ"],
   ["ゃ","",  "ゅ","",  "ょ"],
-  ["っ","",  "",  "",  "ゎ"],
+  ["っ","",  "",  "",  ""  ],
   ["ゐ","",  "",  "",  "ゑ"],
   ["ゔ","",  "",  "",  ""  ],
 ];
 
-// Karuta grid: 清音 11 rows + ゐゑ row.
-const GRID_KARUTA = [...GRID_84.slice(0, 11), GRID_84[GRID_84.length - 2]];
+// Karuta grid: 清音 11 rows + ゐゑ row (48).
+const GRID_KARUTA = [...GRID_VISUAL.slice(0, 11), ["ゐ","","","","ゑ"]];
 
-const CHARSET_FOR = { all: [...SEION, ...DAKUTEN, ...HANDAKU, ...SMALL, ...KOGO, ...OTHER],
+const CHARSET_FOR = { all: [...SEION, ...DAKUTEN, ...HANDAKU, ...YOON, ...SOKUON, ...KOGO, ...OTHER],
                       karuta: [...SEION, ...KOGO] };
-const GRID_FOR = { all: GRID_84, karuta: GRID_KARUTA };
+const GRID_FOR = { all: GRID_VISUAL, karuta: GRID_KARUTA };
 
 const activeChars = CHARSET_FOR[Q_SET];
 const activeGrid = GRID_FOR[Q_SET];

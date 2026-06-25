@@ -131,7 +131,11 @@ def wav_to_mp3(wav_path: Path, mp3_path: Path) -> None:
 
 
 def generate(voice: str, limit: int | None = None) -> int:
-    chars = C.ALL_CHARS if not limit else C.ALL_CHARS[:limit]
+    # Audio uses only the acoustically-distinct set (清音46+濁20+半5+ゔ = 72).
+    # ゐゑ/ゃゅょ/っ/小書き母音 collapse onto a base sound or are silent in
+    # isolation (the C1=∅ slice), so they are excluded here; they are recovered
+    # later by the C1≠∅ 2-char task (MFA) or assumed equal to their base char.
+    chars = C.AUDIO_ALL if not limit else C.AUDIO_ALL[:limit]
     cache_dir = ROOT / f"audio_base_{voice}"
     out_root = ROOT / f"audio_stimuli_trunc_{voice}"
 

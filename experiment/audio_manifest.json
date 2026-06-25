@@ -27,7 +27,7 @@
     100
   ],
   "n_choices": {
-    "all": 84,
+    "all": 78,
     "karuta": 48
   },
   "stimuli": [
@@ -300,15 +300,6 @@
       ]
     },
     {
-      "id": "02b5295b0ca7",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "031d1d60875e",
       "modality": "audio",
       "frac_index": 16,
@@ -403,25 +394,7 @@
       ]
     },
     {
-      "id": "049f4182c99e",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "04cdd13f0207",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "04f5b0f8673e",
       "modality": "audio",
       "frac_index": 2,
       "frac": 10,
@@ -434,16 +407,6 @@
       "modality": "audio",
       "frac_index": 19,
       "frac": 95,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "067b274caa15",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
       "q_sets": [
         "all",
         "karuta"
@@ -467,15 +430,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "06fb7f83ca35",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -546,15 +500,6 @@
       ]
     },
     {
-      "id": "08538abcb0a7",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "0878279821fb",
       "modality": "audio",
       "frac_index": 7,
@@ -585,15 +530,6 @@
       ]
     },
     {
-      "id": "08f3e2095f58",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "093b741721e8",
       "modality": "audio",
       "frac_index": 14,
@@ -617,15 +553,6 @@
       "modality": "audio",
       "frac_index": 19,
       "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "0a02cc375ede",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
       "q_sets": [
         "all"
       ]
@@ -678,15 +605,6 @@
       ]
     },
     {
-      "id": "0acfe41d1109",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "0ad11ca4f6bb",
       "modality": "audio",
       "frac_index": 20,
@@ -727,15 +645,6 @@
       ]
     },
     {
-      "id": "0b785a8785d2",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "0bfc5527ad31",
       "modality": "audio",
       "frac_index": 8,
@@ -753,24 +662,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "0c2a5c594bc0",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "0c2c5f4fcf35",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -821,15 +712,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "0d0ed16ec0ef",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -993,24 +875,6 @@
       ]
     },
     {
-      "id": "0f64bf65582d",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "0f6a87088068",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "0f7cf6afeb7a",
       "modality": "audio",
       "frac_index": 18,
@@ -1049,24 +913,6 @@
       ]
     },
     {
-      "id": "10304b1ae3bb",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "109622ccfca7",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "109e10a360c1",
       "modality": "audio",
       "frac_index": 4,
@@ -1080,15 +926,6 @@
       "modality": "audio",
       "frac_index": 6,
       "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "10c5daf371de",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
       "q_sets": [
         "all"
       ]
@@ -1229,29 +1066,10 @@
       ]
     },
     {
-      "id": "13b8aff9bf7d",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "14149def0821",
       "modality": "audio",
       "frac_index": 11,
       "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "14394ee5ddb7",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
       "q_sets": [
         "all"
       ]
@@ -1403,24 +1221,6 @@
       "modality": "audio",
       "frac_index": 8,
       "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "1646e89bc20c",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "16514e96071c",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
       "q_sets": [
         "all"
       ]
@@ -1646,15 +1446,6 @@
       ]
     },
     {
-      "id": "1930463d39f1",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "19473a0cbdaf",
       "modality": "audio",
       "frac_index": 18,
@@ -1724,26 +1515,7 @@
       ]
     },
     {
-      "id": "1a1e898e9e4f",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "1a5507161380",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "1a92d3c7fe4c",
       "modality": "audio",
       "frac_index": 11,
       "frac": 55,
@@ -2039,15 +1811,6 @@
       ]
     },
     {
-      "id": "1e1b4d3c90c7",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "1e56dd8050b1",
       "modality": "audio",
       "frac_index": 16,
@@ -2106,25 +1869,6 @@
       ]
     },
     {
-      "id": "1f5d82e94ab8",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "1f5ff6973a77",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "1f65a82cd7d6",
       "modality": "audio",
       "frac_index": 7,
@@ -2169,15 +1913,6 @@
       "modality": "audio",
       "frac_index": 1,
       "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "208e2e771086",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
       "q_sets": [
         "all"
       ]
@@ -2321,15 +2056,6 @@
       ]
     },
     {
-      "id": "2228383b1be0",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "22395309dc95",
       "modality": "audio",
       "frac_index": 15,
@@ -2456,15 +2182,6 @@
       ]
     },
     {
-      "id": "238e3f90e61f",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "239a3069414a",
       "modality": "audio",
       "frac_index": 15,
@@ -2494,48 +2211,10 @@
       ]
     },
     {
-      "id": "23ab5753ee08",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "23faec108e3a",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "23fe364b39bc",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "23ff01c5ca6b",
       "modality": "audio",
       "frac_index": 17,
       "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "2408b0048e14",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
       "q_sets": [
         "all"
       ]
@@ -2564,15 +2243,6 @@
       "modality": "audio",
       "frac_index": 3,
       "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "245a89579d3f",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
       "q_sets": [
         "all"
       ]
@@ -2615,29 +2285,10 @@
       ]
     },
     {
-      "id": "24a9a7a24a2f",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "2522d9de8f43",
       "modality": "audio",
       "frac_index": 16,
       "frac": 80,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "2527d62db890",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
       "q_sets": [
         "all",
         "karuta"
@@ -2664,15 +2315,6 @@
       ]
     },
     {
-      "id": "257d1516fb74",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "257d709c3f73",
       "modality": "audio",
       "frac_index": 0,
@@ -2689,16 +2331,6 @@
       "frac": 35,
       "q_sets": [
         "all"
-      ]
-    },
-    {
-      "id": "25db8a0dc917",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all",
-        "karuta"
       ]
     },
     {
@@ -2780,15 +2412,6 @@
       ]
     },
     {
-      "id": "26adeacc8738",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "27346efbfd59",
       "modality": "audio",
       "frac_index": 16,
@@ -2846,24 +2469,6 @@
       ]
     },
     {
-      "id": "281362f6ad8e",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "283096e2a648",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "2854ce3d9285",
       "modality": "audio",
       "frac_index": 18,
@@ -2887,26 +2492,6 @@
       "modality": "audio",
       "frac_index": 12,
       "frac": 60,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "288d3b1960fe",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "2893c111d4f3",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
       "q_sets": [
         "all",
         "karuta"
@@ -2971,16 +2556,6 @@
       ]
     },
     {
-      "id": "295057a2b1f6",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "29680097fe4e",
       "modality": "audio",
       "frac_index": 4,
@@ -3016,15 +2591,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "29ebbada20a1",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -3144,15 +2710,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "2c2d458faa8d",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -3347,24 +2904,6 @@
       ]
     },
     {
-      "id": "2eb8ea26a399",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "2f255b174d6f",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "2f6ffc7bd8de",
       "modality": "audio",
       "frac_index": 14,
@@ -3432,15 +2971,6 @@
       ]
     },
     {
-      "id": "3107be2f2c75",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "3189990167f0",
       "modality": "audio",
       "frac_index": 2,
@@ -3448,15 +2978,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "31a111849e17",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -3574,16 +3095,6 @@
       ]
     },
     {
-      "id": "338948a6545a",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "33bc57466f35",
       "modality": "audio",
       "frac_index": 12,
@@ -3653,15 +3164,6 @@
       ]
     },
     {
-      "id": "34ac0ebff4bf",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "34aecc33cfe1",
       "modality": "audio",
       "frac_index": 9,
@@ -3707,15 +3209,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "35fc7191eec0",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -3786,16 +3279,6 @@
       ]
     },
     {
-      "id": "37860af99a65",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "378dd7f18cb8",
       "modality": "audio",
       "frac_index": 16,
@@ -3840,15 +3323,6 @@
       "modality": "audio",
       "frac_index": 12,
       "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "382e1c25e0be",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
       "q_sets": [
         "all"
       ]
@@ -3941,15 +3415,6 @@
       ]
     },
     {
-      "id": "393f2f89d2e7",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "39aeaa0d528f",
       "modality": "audio",
       "frac_index": 7,
@@ -3976,15 +3441,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "39cc7fff9a81",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -4483,15 +3939,6 @@
       ]
     },
     {
-      "id": "41fe9cf23981",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "42286e0b93dc",
       "modality": "audio",
       "frac_index": 8,
@@ -4519,15 +3966,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "42ce1dde1f2f",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -4626,16 +4064,6 @@
       ]
     },
     {
-      "id": "444ace1e5635",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "4450bcf12f4a",
       "modality": "audio",
       "frac_index": 0,
@@ -4660,15 +4088,6 @@
       "modality": "audio",
       "frac_index": 19,
       "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "449049eed34d",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
       "q_sets": [
         "all"
       ]
@@ -4701,15 +4120,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "44e0a75034c1",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -4771,24 +4181,6 @@
       ]
     },
     {
-      "id": "45bc6882873c",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "45e44e493f9d",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "4602412e44c8",
       "modality": "audio",
       "frac_index": 2,
@@ -4803,15 +4195,6 @@
       "modality": "audio",
       "frac_index": 9,
       "frac": 45,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "462da0f2ec38",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
       "q_sets": [
         "all"
       ]
@@ -4942,15 +4325,6 @@
       ]
     },
     {
-      "id": "494886ae5c67",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "49b15d6909fd",
       "modality": "audio",
       "frac_index": 18,
@@ -5017,28 +4391,10 @@
       ]
     },
     {
-      "id": "4b48656025b7",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "4b55d7c20915",
       "modality": "audio",
       "frac_index": 3,
       "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "4b5d5ae6b2aa",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
       "q_sets": [
         "all"
       ]
@@ -5061,15 +4417,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "4b9726697610",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -5152,16 +4499,6 @@
       ]
     },
     {
-      "id": "4ccea32e2d7b",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "4d7bec54b291",
       "modality": "audio",
       "frac_index": 14,
@@ -5204,34 +4541,6 @@
       "modality": "audio",
       "frac_index": 18,
       "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "4ddf500ca0e4",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "4de7140b6ee7",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "4df977521280",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
       "q_sets": [
         "all"
       ]
@@ -5304,15 +4613,6 @@
       ]
     },
     {
-      "id": "4e8ffe673d2e",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "4ea64d0a026c",
       "modality": "audio",
       "frac_index": 4,
@@ -5343,15 +4643,6 @@
       ]
     },
     {
-      "id": "4f37fc562c85",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "4f3cf277a087",
       "modality": "audio",
       "frac_index": 12,
@@ -5359,15 +4650,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "4f54c73827b0",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -5405,16 +4687,6 @@
       "frac": 100,
       "q_sets": [
         "all"
-      ]
-    },
-    {
-      "id": "501d7a273d7e",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all",
-        "karuta"
       ]
     },
     {
@@ -5503,24 +4775,6 @@
       ]
     },
     {
-      "id": "515707c91d57",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "516f9938e37d",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "5179ad4d7da7",
       "modality": "audio",
       "frac_index": 16,
@@ -5560,24 +4814,6 @@
     },
     {
       "id": "51e56c6c9b11",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "52001de5aaeb",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "52098ce3d21a",
       "modality": "audio",
       "frac_index": 17,
       "frac": 85,
@@ -5807,34 +5043,6 @@
       ]
     },
     {
-      "id": "565ab722700b",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "569a41ad7c42",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "56a53c0c06d6",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "56eb9a1c5ad3",
       "modality": "audio",
       "frac_index": 2,
@@ -5863,28 +5071,10 @@
       ]
     },
     {
-      "id": "57276b8c49a0",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "5728429398a0",
       "modality": "audio",
       "frac_index": 11,
       "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "572858405fa7",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
       "q_sets": [
         "all"
       ]
@@ -6099,15 +5289,6 @@
       ]
     },
     {
-      "id": "5a03890ff692",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "5a3bd9edbed0",
       "modality": "audio",
       "frac_index": 5,
@@ -6155,16 +5336,6 @@
       ]
     },
     {
-      "id": "5af1d6a3c436",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "5b92ea641dd8",
       "modality": "audio",
       "frac_index": 9,
@@ -6175,15 +5346,6 @@
       ]
     },
     {
-      "id": "5ba8abd9ff57",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "5c0dc9f18e99",
       "modality": "audio",
       "frac_index": 6,
@@ -6191,15 +5353,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "5c169b404356",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -6269,15 +5422,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "5d9a1fe280e5",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -6567,15 +5711,6 @@
       ]
     },
     {
-      "id": "61c45111c28a",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "61c78b8f7908",
       "modality": "audio",
       "frac_index": 7,
@@ -6612,33 +5747,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "6263034bcc04",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "627b973ac348",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "6294d26636bd",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -6680,15 +5788,6 @@
       ]
     },
     {
-      "id": "62e624cee2c0",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "630e865f9900",
       "modality": "audio",
       "frac_index": 15,
@@ -6717,15 +5816,6 @@
       ]
     },
     {
-      "id": "6405ede23882",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "643c06d5f05f",
       "modality": "audio",
       "frac_index": 14,
@@ -6746,28 +5836,10 @@
       ]
     },
     {
-      "id": "6500237275ac",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "6550b72bce13",
       "modality": "audio",
       "frac_index": 13,
       "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "65831b89809f",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
       "q_sets": [
         "all"
       ]
@@ -6802,15 +5874,6 @@
       ]
     },
     {
-      "id": "6609d7f091d1",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "663353917505",
       "modality": "audio",
       "frac_index": 16,
@@ -6828,15 +5891,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "6663921024e4",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -6915,15 +5969,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "670a1a7b2c9b",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -7092,25 +6137,6 @@
       ]
     },
     {
-      "id": "6ad3d06ff035",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "6ae212ffc26d",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "6af0f6dc820d",
       "modality": "audio",
       "frac_index": 12,
@@ -7143,16 +6169,6 @@
       "modality": "audio",
       "frac_index": 10,
       "frac": 50,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "6c0b8cde12af",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
       "q_sets": [
         "all",
         "karuta"
@@ -7373,25 +6389,6 @@
       ]
     },
     {
-      "id": "6e96ac1feb4a",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "6ea31e3c2700",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "6ed6125f6782",
       "modality": "audio",
       "frac_index": 15,
@@ -7470,15 +6467,6 @@
       ]
     },
     {
-      "id": "6f8bc09444c9",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "6fa4ec6aad50",
       "modality": "audio",
       "frac_index": 20,
@@ -7499,29 +6487,10 @@
       ]
     },
     {
-      "id": "70041ae723aa",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "704c9f6ec1dc",
       "modality": "audio",
       "frac_index": 13,
       "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "708d3c4cbafb",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
       "q_sets": [
         "all"
       ]
@@ -7536,15 +6505,6 @@
       ]
     },
     {
-      "id": "70a607c561c3",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "70ad9ceb41aa",
       "modality": "audio",
       "frac_index": 10,
@@ -7552,15 +6512,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "70e67002e804",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -7580,25 +6531,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "71e7b645c5c7",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "71eb09e9c256",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -7764,15 +6696,6 @@
       ]
     },
     {
-      "id": "74ae91c767b3",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "74d9545bf66a",
       "modality": "audio",
       "frac_index": 0,
@@ -7907,16 +6830,6 @@
       ]
     },
     {
-      "id": "76ab5be919b4",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "76cea7e7a184",
       "modality": "audio",
       "frac_index": 8,
@@ -7924,15 +6837,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "76d0065de3b9",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -7984,15 +6888,6 @@
       ]
     },
     {
-      "id": "77626e758224",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "77629b353404",
       "modality": "audio",
       "frac_index": 4,
@@ -8027,15 +6922,6 @@
       "modality": "audio",
       "frac_index": 5,
       "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "779d3263606c",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
       "q_sets": [
         "all"
       ]
@@ -8226,15 +7112,6 @@
       ]
     },
     {
-      "id": "7b1dbb4fb691",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "7b7274cbd1ca",
       "modality": "audio",
       "frac_index": 3,
@@ -8368,15 +7245,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "7dc334064f60",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -8532,15 +7400,6 @@
       ]
     },
     {
-      "id": "812bfa7ec0b5",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "812dc8371fa2",
       "modality": "audio",
       "frac_index": 16,
@@ -8578,29 +7437,10 @@
       ]
     },
     {
-      "id": "81e563fbfecf",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "81f0bf67465f",
       "modality": "audio",
       "frac_index": 13,
       "frac": 65,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "81f118423f32",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
       "q_sets": [
         "all",
         "karuta"
@@ -8742,24 +7582,6 @@
       ]
     },
     {
-      "id": "845f22fef7c0",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "846d3739ec85",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "848a8fd5289d",
       "modality": "audio",
       "frac_index": 20,
@@ -8777,25 +7599,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "84a51d810673",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "84d4393f1b86",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -8854,24 +7657,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "86573334efdc",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "8657ec63d40a",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -8952,15 +7737,6 @@
       ]
     },
     {
-      "id": "87db5e80fd92",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "8817294803e1",
       "modality": "audio",
       "frac_index": 5,
@@ -9026,15 +7802,6 @@
       ]
     },
     {
-      "id": "896abf03689a",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "897ed4f23346",
       "modality": "audio",
       "frac_index": 10,
@@ -9045,28 +7812,10 @@
       ]
     },
     {
-      "id": "89897dec7034",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "89c9a8cdfc9b",
       "modality": "audio",
       "frac_index": 17,
       "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "89df7d4482c1",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
       "q_sets": [
         "all"
       ]
@@ -9151,15 +7900,6 @@
       ]
     },
     {
-      "id": "8ba9aaca011d",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "8bbed3d85461",
       "modality": "audio",
       "frac_index": 13,
@@ -9206,15 +7946,6 @@
       ]
     },
     {
-      "id": "8c4ece0e79b2",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "8cc3279e8ee7",
       "modality": "audio",
       "frac_index": 14,
@@ -9250,15 +7981,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "8d479201d801",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -9360,15 +8082,6 @@
       ]
     },
     {
-      "id": "8e7e28545c7a",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "8ef05f9bb943",
       "modality": "audio",
       "frac_index": 20,
@@ -9383,15 +8096,6 @@
       "modality": "audio",
       "frac_index": 14,
       "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "8f4a76c791bb",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
       "q_sets": [
         "all"
       ]
@@ -9474,28 +8178,10 @@
       ]
     },
     {
-      "id": "90209901d661",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "90440c16f3b5",
       "modality": "audio",
       "frac_index": 1,
       "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "904495008055",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
       "q_sets": [
         "all"
       ]
@@ -9623,15 +8309,6 @@
       ]
     },
     {
-      "id": "91c141d4042d",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "91e76dbc386c",
       "modality": "audio",
       "frac_index": 5,
@@ -9699,15 +8376,6 @@
       ]
     },
     {
-      "id": "92dc1a4cefa5",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "92e1adc91cd2",
       "modality": "audio",
       "frac_index": 19,
@@ -9756,15 +8424,6 @@
       ]
     },
     {
-      "id": "937a5f33dee8",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "938d8678f72c",
       "modality": "audio",
       "frac_index": 18,
@@ -9804,29 +8463,10 @@
       ]
     },
     {
-      "id": "94ceac990299",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "94d1ce3fa7e0",
       "modality": "audio",
       "frac_index": 14,
       "frac": 70,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "94de81d10a75",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
       "q_sets": [
         "all",
         "karuta"
@@ -9850,15 +8490,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "9514cca69689",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -9919,24 +8550,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "95b539861bee",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "95c1f5fde512",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10310,16 +8923,6 @@
       ]
     },
     {
-      "id": "9b343c6a2978",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "9b5e3e58a453",
       "modality": "audio",
       "frac_index": 14,
@@ -10355,15 +8958,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "9bd686522732",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10415,15 +9009,6 @@
       ]
     },
     {
-      "id": "9cdd8d32e167",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "9d0070a3e9a9",
       "modality": "audio",
       "frac_index": 12,
@@ -10453,15 +9038,6 @@
       ]
     },
     {
-      "id": "9d769ed4244f",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "9d9a4af96e5a",
       "modality": "audio",
       "frac_index": 7,
@@ -10479,15 +9055,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "9db75657649f",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10559,15 +9126,6 @@
       ]
     },
     {
-      "id": "9f341aca5799",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "9f3586661dc4",
       "modality": "audio",
       "frac_index": 10,
@@ -10575,15 +9133,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "9f786b69fea5",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10621,15 +9170,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "a00c076b44d4",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10692,15 +9232,6 @@
       ]
     },
     {
-      "id": "a2287e10ba08",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "a248bd314ec1",
       "modality": "audio",
       "frac_index": 0,
@@ -10736,15 +9267,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "a31df12559e3",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -10847,16 +9369,6 @@
       ]
     },
     {
-      "id": "a50cc3d393b0",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "a50db5fd44c6",
       "modality": "audio",
       "frac_index": 3,
@@ -10930,15 +9442,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "a5b52304e2cd",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -11130,24 +9633,6 @@
       ]
     },
     {
-      "id": "a7e4dd0fbbf4",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "a82c8ae63df5",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "a8315ab08b37",
       "modality": "audio",
       "frac_index": 12,
@@ -11245,15 +9730,6 @@
       ]
     },
     {
-      "id": "a9b2875fbfea",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "a9b4a39fac69",
       "modality": "audio",
       "frac_index": 16,
@@ -11281,15 +9757,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "aa5bfdb1ae82",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -11409,29 +9876,10 @@
       ]
     },
     {
-      "id": "ac8ddc806af1",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ad05ad376a37",
       "modality": "audio",
       "frac_index": 16,
       "frac": 80,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "ad34b6aec44a",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
       "q_sets": [
         "all",
         "karuta"
@@ -11517,15 +9965,6 @@
       ]
     },
     {
-      "id": "ae7fad257c18",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "aea0ceb36d3d",
       "modality": "audio",
       "frac_index": 11,
@@ -11562,24 +10001,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "af753d56a27b",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "af8f2f76beb7",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -11642,15 +10063,6 @@
       ]
     },
     {
-      "id": "b0502ebe9958",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "b09dc7324e75",
       "modality": "audio",
       "frac_index": 18,
@@ -11671,15 +10083,6 @@
       ]
     },
     {
-      "id": "b100335556ec",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "b175a0c2c280",
       "modality": "audio",
       "frac_index": 14,
@@ -11687,15 +10090,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "b17aded41b96",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -11723,15 +10117,6 @@
       "modality": "audio",
       "frac_index": 5,
       "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "b22976f25281",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
       "q_sets": [
         "all"
       ]
@@ -11882,15 +10267,6 @@
       ]
     },
     {
-      "id": "b4adc8c2148d",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "b4b37fb9f2db",
       "modality": "audio",
       "frac_index": 5,
@@ -11911,15 +10287,6 @@
       ]
     },
     {
-      "id": "b53f85bfea0e",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "b5440bb78dfe",
       "modality": "audio",
       "frac_index": 8,
@@ -11927,15 +10294,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "b56c4096424a",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -12026,15 +10384,6 @@
       ]
     },
     {
-      "id": "b6c88341ca39",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "b6cad2abbbe9",
       "modality": "audio",
       "frac_index": 18,
@@ -12071,15 +10420,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "b73a172fc4eb",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -12304,24 +10644,6 @@
       ]
     },
     {
-      "id": "ba8b7039cdd2",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "baa270406713",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "baa3573c585f",
       "modality": "audio",
       "frac_index": 11,
@@ -12329,15 +10651,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "baa891e030b6",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -12379,15 +10692,6 @@
       ]
     },
     {
-      "id": "bbeacc287d0d",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "bbf2ec71af06",
       "modality": "audio",
       "frac_index": 18,
@@ -12415,15 +10719,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "bc41962b51d7",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -12512,15 +10807,6 @@
       ]
     },
     {
-      "id": "bd930ac1e9a1",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "bd9a2c59c769",
       "modality": "audio",
       "frac_index": 9,
@@ -12568,28 +10854,10 @@
       ]
     },
     {
-      "id": "bf25eccadd95",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "bf36200ba1a4",
       "modality": "audio",
       "frac_index": 13,
       "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "bf5ce3c0ac5d",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
       "q_sets": [
         "all"
       ]
@@ -12654,15 +10922,6 @@
       ]
     },
     {
-      "id": "c092a8687783",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "c0a5f17f4366",
       "modality": "audio",
       "frac_index": 1,
@@ -12670,24 +10929,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "c0a843825a6e",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "c0d7367563e7",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -12806,15 +11047,6 @@
       ]
     },
     {
-      "id": "c2633426a02b",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "c2814f397754",
       "modality": "audio",
       "frac_index": 1,
@@ -12871,15 +11103,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "c3cc138ca2e5",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13024,15 +11247,6 @@
       ]
     },
     {
-      "id": "c61f491ef36f",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "c636f126871c",
       "modality": "audio",
       "frac_index": 2,
@@ -13100,15 +11314,6 @@
       ]
     },
     {
-      "id": "c71c38895eab",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "c7384e9dcd8a",
       "modality": "audio",
       "frac_index": 10,
@@ -13122,15 +11327,6 @@
       "modality": "audio",
       "frac_index": 6,
       "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "c7c814de6401",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
       "q_sets": [
         "all"
       ]
@@ -13244,15 +11440,6 @@
       ]
     },
     {
-      "id": "c9db3cab93e6",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ca89b7315706",
       "modality": "audio",
       "frac_index": 9,
@@ -13267,16 +11454,6 @@
       "modality": "audio",
       "frac_index": 9,
       "frac": 45,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "cae89ca0716c",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
       "q_sets": [
         "all",
         "karuta"
@@ -13338,15 +11515,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "cba8df3bb431",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13426,15 +11594,6 @@
       ]
     },
     {
-      "id": "ccac8b566159",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ccdaadae7a69",
       "modality": "audio",
       "frac_index": 1,
@@ -13463,15 +11622,6 @@
       ]
     },
     {
-      "id": "cd568c8afabb",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "cd8a931e2363",
       "modality": "audio",
       "frac_index": 10,
@@ -13489,15 +11639,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "cd90c6e1edfe",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13527,15 +11668,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "ce06cb0b3074",
-      "modality": "audio",
-      "frac_index": 4,
-      "frac": 20,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13582,16 +11714,6 @@
       "modality": "audio",
       "frac_index": 3,
       "frac": 15,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "cf53749851fa",
-      "modality": "audio",
-      "frac_index": 16,
-      "frac": 80,
       "q_sets": [
         "all",
         "karuta"
@@ -13664,15 +11786,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "d06d1087aa14",
-      "modality": "audio",
-      "frac_index": 17,
-      "frac": 85,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13821,15 +11934,6 @@
       ]
     },
     {
-      "id": "d2a92027d393",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "d2cdfd312908",
       "modality": "audio",
       "frac_index": 10,
@@ -13837,15 +11941,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "d2d434f437fd",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13866,15 +11961,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "d3343c7043d1",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -13926,15 +12012,6 @@
       ]
     },
     {
-      "id": "d4355d2ea2c7",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "d475c86c2f44",
       "modality": "audio",
       "frac_index": 11,
@@ -13961,16 +12038,6 @@
       "frac": 60,
       "q_sets": [
         "all"
-      ]
-    },
-    {
-      "id": "d51eb57e8fdc",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
-      "q_sets": [
-        "all",
-        "karuta"
       ]
     },
     {
@@ -14111,15 +12178,6 @@
       ]
     },
     {
-      "id": "d6f0b14a73b4",
-      "modality": "audio",
-      "frac_index": 18,
-      "frac": 90,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "d702beef7ccb",
       "modality": "audio",
       "frac_index": 3,
@@ -14197,15 +12255,6 @@
       ]
     },
     {
-      "id": "d8c15b6c8eac",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "d8d134e366b0",
       "modality": "audio",
       "frac_index": 20,
@@ -14222,15 +12271,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "d8f7079e7621",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -14360,15 +12400,6 @@
       ]
     },
     {
-      "id": "db09d281d95c",
-      "modality": "audio",
-      "frac_index": 19,
-      "frac": 95,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "db0fa250fadc",
       "modality": "audio",
       "frac_index": 16,
@@ -14404,15 +12435,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "dbbe96a50f89",
-      "modality": "audio",
-      "frac_index": 7,
-      "frac": 35,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -14488,34 +12510,6 @@
       "modality": "audio",
       "frac_index": 2,
       "frac": 10,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "dda5155bafc5",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "ddea64966a98",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "de0aa9e3a5a4",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
       "q_sets": [
         "all",
         "karuta"
@@ -14608,15 +12602,6 @@
       ]
     },
     {
-      "id": "def0ae195366",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "def52d3b5067",
       "modality": "audio",
       "frac_index": 18,
@@ -14633,15 +12618,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "df7083dd7469",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -14668,16 +12644,6 @@
       "modality": "audio",
       "frac_index": 2,
       "frac": 10,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "e01e25845964",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
       "q_sets": [
         "all",
         "karuta"
@@ -14804,15 +12770,6 @@
       "modality": "audio",
       "frac_index": 20,
       "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "e24d347c38a5",
-      "modality": "audio",
-      "frac_index": 0,
-      "frac": 0,
       "q_sets": [
         "all"
       ]
@@ -14989,15 +12946,6 @@
       ]
     },
     {
-      "id": "e4fdb2e0c865",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "e4ff0ade286d",
       "modality": "audio",
       "frac_index": 4,
@@ -15044,24 +12992,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "e58489c73cf3",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "e58f30023e0d",
-      "modality": "audio",
-      "frac_index": 5,
-      "frac": 25,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -15124,40 +13054,10 @@
       ]
     },
     {
-      "id": "e64a747342c9",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
       "id": "e660a0ad2d81",
       "modality": "audio",
       "frac_index": 6,
       "frac": 30,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "e695e0db9a97",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "e6a2944d21df",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
       "q_sets": [
         "all",
         "karuta"
@@ -15178,25 +13078,6 @@
       "modality": "audio",
       "frac_index": 11,
       "frac": 55,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "e6fe544ed9d5",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "e709ffa39cdb",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
       "q_sets": [
         "all",
         "karuta"
@@ -15285,25 +13166,6 @@
       "modality": "audio",
       "frac_index": 14,
       "frac": 70,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "e895b3bf6d45",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "e8c1fc43d5b5",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
       "q_sets": [
         "all",
         "karuta"
@@ -15515,15 +13377,6 @@
       ]
     },
     {
-      "id": "ec23fa6ef6ea",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ec262e899b96",
       "modality": "audio",
       "frac_index": 1,
@@ -15603,15 +13456,6 @@
       ]
     },
     {
-      "id": "ed6949597b82",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ed8bcf79a647",
       "modality": "audio",
       "frac_index": 15,
@@ -15676,15 +13520,6 @@
       "modality": "audio",
       "frac_index": 10,
       "frac": 50,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "ee61dbf361fe",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
       "q_sets": [
         "all"
       ]
@@ -15884,15 +13719,6 @@
       ]
     },
     {
-      "id": "f054f2b3be3d",
-      "modality": "audio",
-      "frac_index": 8,
-      "frac": 40,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "f06e55089351",
       "modality": "audio",
       "frac_index": 17,
@@ -15919,15 +13745,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "f0cb8a05d5da",
-      "modality": "audio",
-      "frac_index": 10,
-      "frac": 50,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -16104,15 +13921,6 @@
       ]
     },
     {
-      "id": "f2ee7f52e6ae",
-      "modality": "audio",
-      "frac_index": 14,
-      "frac": 70,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "f31887d330b1",
       "modality": "audio",
       "frac_index": 18,
@@ -16126,24 +13934,6 @@
       "modality": "audio",
       "frac_index": 1,
       "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "f35bda9f8606",
-      "modality": "audio",
-      "frac_index": 13,
-      "frac": 65,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "f3817e6a5769",
-      "modality": "audio",
-      "frac_index": 2,
-      "frac": 10,
       "q_sets": [
         "all"
       ]
@@ -16209,33 +13999,6 @@
       ]
     },
     {
-      "id": "f5650c7b5464",
-      "modality": "audio",
-      "frac_index": 11,
-      "frac": 55,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "f58f0e9c11a0",
-      "modality": "audio",
-      "frac_index": 20,
-      "frac": 100,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "f598e6cb7b62",
-      "modality": "audio",
-      "frac_index": 15,
-      "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "f5a2ee48ea80",
       "modality": "audio",
       "frac_index": 3,
@@ -16263,15 +14026,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "f5f419bf6d0d",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -16311,15 +14065,6 @@
       "q_sets": [
         "all",
         "karuta"
-      ]
-    },
-    {
-      "id": "f711b8688c52",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
-      "q_sets": [
-        "all"
       ]
     },
     {
@@ -16366,15 +14111,6 @@
       "modality": "audio",
       "frac_index": 2,
       "frac": 10,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "f7b8064fdec5",
-      "modality": "audio",
-      "frac_index": 9,
-      "frac": 45,
       "q_sets": [
         "all"
       ]
@@ -16525,15 +14261,6 @@
       ]
     },
     {
-      "id": "fa7cfc0dafae",
-      "modality": "audio",
-      "frac_index": 1,
-      "frac": 5,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "faa1c70b2ecf",
       "modality": "audio",
       "frac_index": 12,
@@ -16577,15 +14304,6 @@
       "modality": "audio",
       "frac_index": 15,
       "frac": 75,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "fb2cf955bd45",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
       "q_sets": [
         "all"
       ]
@@ -16698,16 +14416,6 @@
       "modality": "audio",
       "frac_index": 15,
       "frac": 75,
-      "q_sets": [
-        "all",
-        "karuta"
-      ]
-    },
-    {
-      "id": "fc9a655ef441",
-      "modality": "audio",
-      "frac_index": 3,
-      "frac": 15,
       "q_sets": [
         "all",
         "karuta"
@@ -16860,15 +14568,6 @@
       ]
     },
     {
-      "id": "feff1494fbb0",
-      "modality": "audio",
-      "frac_index": 12,
-      "frac": 60,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
       "id": "ff16bedcf61e",
       "modality": "audio",
       "frac_index": 2,
@@ -16902,15 +14601,6 @@
       "modality": "audio",
       "frac_index": 3,
       "frac": 15,
-      "q_sets": [
-        "all"
-      ]
-    },
-    {
-      "id": "ffbaaa3a3b27",
-      "modality": "audio",
-      "frac_index": 6,
-      "frac": 30,
       "q_sets": [
         "all"
       ]

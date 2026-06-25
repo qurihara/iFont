@@ -26,19 +26,46 @@ import math
 SEION = list("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん")  # 46
 DAKUTEN = list("がぎぐげござじずぜぞだぢづでどばびぶべぼ")  # 20
 HANDAKU = list("ぱぴぷぺぽ")  # 5
-SMALL = list("ぁぃぅぇぉっゃゅょゎ")  # 10
-KOGO = list("ゐゑ")  # 2
-OTHER = list("ゔ")  # 1
+YOON = list("ゃゅょ")          # 3  拗音の小書き
+SOKUON = list("っ")            # 1  促音
+SMALL_VOWEL = list("ぁぃぅぇぉ")  # 5  小書き母音（外来語専用・通常文では不使用）
+WA_SMALL = list("ゎ")          # 1  小書き わ（同上）
+KOGO = list("ゐゑ")            # 2  古語
+OTHER = list("ゔ")             # 1
 
-ALL_CHARS = SEION + DAKUTEN + HANDAKU + SMALL + KOGO + OTHER  # 84
+# The universe (stroke-mask sources exist for all 84). Order kept as the
+# legacy SMALL block ぁぃぅぇぉっゃゅょゎ so nothing downstream shifts.
+ALL_CHARS = (SEION + DAKUTEN + HANDAKU
+             + SMALL_VOWEL + SOKUON + YOON + WA_SMALL + KOGO + OTHER)  # 84
 
-# 競技かるた: 清音 46 + 古語 ゐ ゑ = 48 (濁点/半濁点/小書き/ゔ を除外)
-KARUTA_CHARS = SEION + KOGO  # 48
+# ---------------------------------------------------------------------------
+# Modality-specific target/response sets (2026-06 design review).
+#
+# Unifying model: a trial is "preceding context C1 → target C2, gate C2".
+# The single-char task is just C1 = ∅ (no context / utterance-initial). In
+# THAT C1=∅ slice some kana are degenerate per modality and are excluded:
+#
+# VISUAL (glyphs are self-contained): keep small ゃゅょ / っ and 古語 ゐゑ as
+#   distinct glyphs (measuring small-glyph readability IS the point). Drop
+#   only ぁぃぅぇぉゎ (foreign-word only; if they ever appear, substitute the
+#   full-size kana at render time). → 84 − 6 = 78.
+# AUDIO (single, isolated): drop everything that collapses onto a base sound
+#   or is silent in isolation — ゐ→い ゑ→え, ゃ→や ゅ→ゆ ょ→よ, っ=無音,
+#   ぁぃぅぇぉ→あいうえお ゎ→わ. Only the acoustically-distinct set remains.
+#   These degenerate kana are recovered later via the C1≠∅ 2-char task (needs
+#   MFA) or assumed equal to their base char. → 清音46+濁20+半5+ゔ = 72.
+# ---------------------------------------------------------------------------
+VISUAL_ALL = SEION + DAKUTEN + HANDAKU + YOON + SOKUON + KOGO + OTHER   # 78
+VISUAL_KARUTA = SEION + KOGO                                            # 48
+AUDIO_ALL = SEION + DAKUTEN + HANDAKU + OTHER                           # 72
+AUDIO_KARUTA = SEION                                                    # 46 (ゐゑ→いえ)
 
-CHARSET_FOR = {
-    "all": ALL_CHARS,
-    "karuta": KARUTA_CHARS,
-}
+VISUAL_CHARSET_FOR = {"all": VISUAL_ALL, "karuta": VISUAL_KARUTA}
+AUDIO_CHARSET_FOR = {"all": AUDIO_ALL, "karuta": AUDIO_KARUTA}
+
+# Back-compat default (visual pipeline imports CHARSET_FOR).
+KARUTA_CHARS = VISUAL_KARUTA
+CHARSET_FOR = VISUAL_CHARSET_FOR
 
 # All q_sets the pipeline knows about.
 Q_SETS = ("all", "karuta")

@@ -21,14 +21,16 @@ const N_PRACTICE = 5;
 // Character sets + fixed 50音 grids (mirror experiment.js / pilot.js)
 // =========================================================================
 
+// AUDIO response set = 72 字: only the acoustically-distinct kana
+// (清音46 + 濁20 + 半5 + ゔ). ゐゑ→いえ, ゃゅょ→やゆよ, っ=無音, 小書き母音→母音
+// are degenerate in isolation and are excluded (recovered via the C1≠∅
+// 2-char task / assumed = base). Mirrors ifont_common.AUDIO_ALL / AUDIO_KARUTA.
 const SEION = [..."あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"];
 const DAKUTEN = [..."がぎぐげござじずぜぞだぢづでどばびぶべぼ"];
 const HANDAKU = [..."ぱぴぷぺぽ"];
-const SMALL = [..."ぁぃぅぇぉっゃゅょゎ"];
-const KOGO = [..."ゐゑ"];
 const OTHER = [..."ゔ"];
 
-const GRID_84 = [
+const GRID_AUDIO = [
   ["あ","い","う","え","お"],
   ["か","き","く","け","こ"],
   ["さ","し","す","せ","そ"],
@@ -45,17 +47,14 @@ const GRID_84 = [
   ["だ","ぢ","づ","で","ど"],
   ["ば","び","ぶ","べ","ぼ"],
   ["ぱ","ぴ","ぷ","ぺ","ぽ"],
-  ["ぁ","ぃ","ぅ","ぇ","ぉ"],
-  ["ゃ","",  "ゅ","",  "ょ"],
-  ["っ","",  "",  "",  "ゎ"],
-  ["ゐ","",  "",  "",  "ゑ"],
   ["ゔ","",  "",  "",  ""  ],
 ];
-const GRID_KARUTA = [...GRID_84.slice(0, 11), GRID_84[GRID_84.length - 2]];
+// Karuta audio grid: 清音 11 rows only (46; ゐゑ folded onto いえ).
+const GRID_AUDIO_KARUTA = GRID_AUDIO.slice(0, 11);
 
-const CHARSET_FOR = { all: [...SEION, ...DAKUTEN, ...HANDAKU, ...SMALL, ...KOGO, ...OTHER],
-                      karuta: [...SEION, ...KOGO] };
-const GRID_FOR = { all: GRID_84, karuta: GRID_KARUTA };
+const CHARSET_FOR = { all: [...SEION, ...DAKUTEN, ...HANDAKU, ...OTHER],
+                      karuta: [...SEION] };
+const GRID_FOR = { all: GRID_AUDIO, karuta: GRID_AUDIO_KARUTA };
 
 const activeChars = CHARSET_FOR[Q_SET];
 const activeGrid = GRID_FOR[Q_SET];
