@@ -15,8 +15,13 @@
  *
  * Schema appended to the "trials" sheet:
  *   ts, participant_id, worker_id, completion_code, stimulus_id,
- *   response_char, correct_char, correct, q_set, k_index, k, r,
- *   n_choices, font, mode, rt_ms, is_catch
+ *   response_char, correct_char, correct, modality, q_set, k_index, k, r,
+ *   n_choices, font_voice, mode, replays, rt_ms, is_catch
+ *
+ * One shared ANSWER_KEY serves both the visual and audio pools. Visual
+ * entries carry {font, mode:"f1"}; audio entries carry
+ * {modality:"audio", voice, mode:"f1_audio"}. The handler is modality-aware
+ * and falls back sensibly when a field is absent.
  *
  * Notes:
  *   - Client posts with mode: "no-cors", so the response body is not read
@@ -47,6 +52,9 @@ function doPost(e) {
     const correct = body.response_char === stim.answer;
     // k is null in the answer key when k = ∞ (catch / target-only).
     const kVal = (stim.k === null || stim.k === undefined) ? "Inf" : stim.k;
+    const modality = stim.modality || "visual";
+    // visual entries store the font under "font"; audio entries the voice.
+    const fontVoice = stim.font || stim.voice || "";
 
     const sheet = SpreadsheetApp.openById(sheetId);
     let trials = sheet.getSheetByName(SHEET_TRIALS);
@@ -55,8 +63,8 @@ function doPost(e) {
       trials.appendRow([
         "ts", "participant_id", "worker_id", "completion_code",
         "stimulus_id", "response_char", "correct_char", "correct",
-        "q_set", "k_index", "k", "r", "n_choices",
-        "font", "mode", "rt_ms", "is_catch",
+        "modality", "q_set", "k_index", "k", "r", "n_choices",
+        "font_voice", "mode", "replays", "rt_ms", "is_catch",
       ]);
     }
     trials.appendRow([
@@ -68,13 +76,15 @@ function doPost(e) {
       body.response_char,
       stim.answer,
       correct,
+      modality,
       stim.q_set,
       stim.k_index,
       kVal,
       stim.r,
       body.n_choices,
-      stim.font,
+      fontVoice,
       stim.mode,
+      (body.replays === undefined ? "" : body.replays),
       body.rt_ms,
       !!body.is_catch,
     ]);
