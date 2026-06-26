@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 answer_key.json
 .env
+
+# VOICEVOX engine (large, re-downloadable)
+voicevox_setup/
