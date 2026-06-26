@@ -7,3 +7,8 @@ answer_key.json
 
 # VOICEVOX engine (large, re-downloadable)
 voicevox_setup/
+
+# 2文字課題の非公開answer_key と 機械依存のpreview設定
+answer_key_2char.json
+experiment/answer_key_2char.json
+.claude/launch.json

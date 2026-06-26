@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 倫理審査の承認・本番デプロイ前は検索インデックスを禁止 (pilot と同様)。
+     承認後にこの行を外して公開してよい。 -->
+<meta name="robots" content="noindex,nofollow">
+<title>聴覚版 2文字課題 (競技かるた)</title>
+<script src="https://unpkg.com/jspsych@8.0.3"></script>
+<script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.0.1"></script>
+<script src="https://unpkg.com/@jspsych/plugin-instructions@2.0.1"></script>
+<link rel="stylesheet" href="https://unpkg.com/jspsych@8.0.3/css/jspsych.css">
+<style>
+  body { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; background: #f6f6f6;
+         touch-action: manipulation; }
+  .jspsych-content { max-width: 560px; }
+  .audio-controls { margin: 24px 0 8px; }
+  .replay-btn { font-size: 18px; padding: 12px 24px; min-height: 48px;
+                border: 1px solid #355aa3; background: #4a76d6; color: #fff;
+                border-radius: 6px; cursor: pointer; }
+  .replay-btn:hover { background: #355aa3; }
+  .trial-prompt { font-size: 16px; margin: 12px 0; }
+  /* jsPsych 8 lays buttons in #...-btngroup as a CSS grid (grid_columns).
+     Keep cells uniform so the 50音 table stays aligned. */
+  .jspsych-html-button-response-btngroup { gap: 4px; justify-content: center; }
+  .grid-kana { font-size: 22px; min-width: 44px; min-height: 44px; width: 100%;
+               padding: 6px 0; }
+  .grid-spacer { visibility: hidden; min-width: 44px; min-height: 44px; pointer-events: none; }
+  @media (max-width: 480px) {
+    .grid-kana, .grid-spacer { font-size: 18px; min-width: 40px; min-height: 40px; }
+  }
+  .completion-code { font-family: monospace; font-size: 24px; background: #ffe; padding: 12px;
+                     border: 1px solid #cc9; display: inline-block; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<script src="audio2char.js"></script>
+</body>
+</html>
