@@ -1,11 +1,14 @@
 // =========================================================================
-// 聴覚版 2文字課題 (競技かるた限定・C1→C2, C2 を時間ゲート)
+// 聴覚版 2文字課題 (C1→C2, C2 を時間ゲート)  ※2026-07-02 設計改訂版
 //   - 統一モデル: 先行する1文字目(C1)を全提示し、ターゲットの2文字目(C2)を
 //     frac%(0〜100) まで再生して何の文字かを問う。
+//   - 語彙は競技かるたに限定しない。C1・C2 とも全72字(音声で区別可能なかな)から
+//     ランダム。プールは 72×72 の総当たり。
+//   - 音高は競技かるたの読みの規定で固定: C1=B3(246.94Hz), C2=E4(329.63Hz)。
+//     提示速度も規定で固定: 1文字 0.2 秒。
 //   - 刺激は VOICEVOX 合成の全長音声(C1+C2)。2文字目の時間ゲートは
 //     Web Audio で再生時に行う(pilot_audio と同じライブ切り出し)。
-//   - 各刺激は flat / rise(1→2文字目の音程上昇あり)のどちらか。
-//   - 回答は固定50音グリッド(競技かるた 46 字)。catch = frac=100(C2 全提示)。
+//   - 回答は固定50音グリッド(全 72 字)。catch = frac=100(C2 全提示)。
 //   - manifest = experiment/audio2char_manifest.json (回答は含まない)。
 // =========================================================================
 
@@ -21,9 +24,9 @@ const FRAC_GRID = Array.from({length: 21}, (_, i) => i * 5);
 const FADE_MS = 8;   // ゲート切断点の短いフェード(クリック防止)
 
 // =========================================================================
-// 競技かるた 46 字の固定50音グリッド (audio.js / pilot_audio.js と一致)
+// 全 72 字の固定50音グリッド (audio.js の GRID_AUDIO と一致)
 // =========================================================================
-const GRID_KARUTA = [
+const GRID_AUDIO = [
   ["あ","い","う","え","お"],
   ["か","き","く","け","こ"],
   ["さ","し","す","せ","そ"],
@@ -35,11 +38,17 @@ const GRID_KARUTA = [
   ["ら","り","る","れ","ろ"],
   ["わ","",  "",  "",  "を"],
   ["ん","",  "",  "",  ""  ],
+  ["が","ぎ","ぐ","げ","ご"],
+  ["ざ","じ","ず","ぜ","ぞ"],
+  ["だ","ぢ","づ","で","ど"],
+  ["ば","び","ぶ","べ","ぼ"],
+  ["ぱ","ぴ","ぷ","ぺ","ぽ"],
+  ["ゔ","",  "",  "",  ""  ],
 ];
-const GRID_FLAT = GRID_KARUTA.flat();
+const GRID_FLAT = GRID_AUDIO.flat();
 const GRID_COLS = 5;
-const GRID_ROWS = GRID_KARUTA.length;
-const N_CHOICES = GRID_FLAT.filter(c => c !== "").length;   // 46, γ = 1/46
+const GRID_ROWS = GRID_AUDIO.length;
+const N_CHOICES = GRID_FLAT.filter(c => c !== "").length;   // 72, γ = 1/72
 
 // =========================================================================
 // Setup
@@ -118,8 +127,8 @@ function assignFrac(isCatch) {
 }
 
 function sampleTrials(manifest, n) {
-  const pool = (manifest.stimuli || []).filter(s => (s.q_set || "karuta") === "karuta");
-  if (pool.length === 0) throw new Error("audio2char_manifest に karuta の刺激がありません");
+  const pool = manifest.stimuli || [];
+  if (pool.length === 0) throw new Error("audio2char_manifest に刺激がありません");
   const picked = jsPsych.randomization.sampleWithoutReplacement(pool, Math.min(n, pool.length));
   return picked.map((s, i) => {
     const isCatch = Math.random() < 0.05;
@@ -167,9 +176,8 @@ function makeTrial(stim, isPractice = false) {
       task: isPractice ? "practice" : "main",
       stimulus_id: stim.id,
       modality: "audio2char",
-      q_set: "karuta",
-      pitch_cond: stim.pitch_cond,
-      rise_semitones: stim.rise_semitones,
+      q_set: "all",
+      pitch_scheme: "B3-E4",
       frac: stim.frac,
       n_choices: N_CHOICES,
       is_catch: stim.is_catch,
@@ -191,8 +199,7 @@ function makeTrial(stim, isPractice = false) {
               response_char: data.response_char,
               modality: data.modality,
               q_set: data.q_set,
-              pitch_cond: data.pitch_cond,
-              rise_semitones: data.rise_semitones,
+              pitch_scheme: data.pitch_scheme,
               frac: data.frac,
               n_choices: data.n_choices,
               replays: data.replays,
@@ -254,8 +261,10 @@ async function run() {
        1文字目は最後まで聞こえますが、<b>2文字目は途中までしか流れない</b>ことがあります
        (ごく短いこともあれば、最後まで聞こえることもあります)。</p>
        <p>「▶ 音をきく / もう一度」ボタンで <b>何度でも</b> 聞き直せます。
-       下の <b>50音表</b>(競技かるた 46 字)から、<b>2文字目</b>だと思う 1 文字を選んでください。
+       下の <b>50音表</b>(濁音・半濁音を含む 72 字)から、<b>2文字目</b>だと思う 1 文字を選んでください。
        表は毎回同じ並びです。</p>
+       <p>2文字のつながりに意味はありません。ことばとして自然かどうかは気にせず、
+       聞こえた音だけで答えてください。</p>
        <p>確信が持てなくても、感覚で答えて構いません。考え込まずに次々と答えてください。</p>`,
       `<h2>練習</h2>
        <p>まず ${N_PRACTICE} 問の練習を行います。練習問題の答えは記録されません。
