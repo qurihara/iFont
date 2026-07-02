@@ -124,6 +124,13 @@ def wav_to_mp3(wav_bytes):
     return p.stdout
 
 
+def mp3_to_wav(path):
+    p = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error",
+                        "-i", path, "-f", "wav", "pipe:1"],
+                       stdout=subprocess.PIPE, check=True)
+    return p.stdout
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--speaker", type=int, default=SPEAKER)
@@ -131,6 +138,8 @@ def main():
     ap.add_argument("--manifest", default=os.path.join(REPO, "experiment", "audio2char_manifest.json"))
     ap.add_argument("--answerkey", default=os.path.join(REPO, "experiment", "answer_key_2char.json"))
     ap.add_argument("--limit", type=int, default=None, help="先頭N対だけ(動作確認用)")
+    ap.add_argument("--resume", action="store_true",
+                    help="既存の mp3 は再合成せず、実測だけやり直して manifest に載せる")
     args = ap.parse_args()
 
     try:
@@ -158,27 +167,35 @@ def main():
             base_q = q
 
     manifest, answer_key = [], {}
-    n = n_corrected = 0
+    n = n_corrected = n_resumed = 0
     for (c1, c2) in pairs:
+        sid = hashlib.sha1(f"{salt}|{c1}{c2}|b3e4|{args.speaker}".encode()).hexdigest()[:20]
+        mp3_path = os.path.join(args.out, sid + ".mp3")
         q, m1, m2 = build_query(moras[c1], moras[c2], base_q, p1_base, p2_base)
-        wav = post("/synthesis", {"speaker": args.speaker}, q)
-        f1, f2 = measure(wav, q, m1, m2)
-        e1, e2 = cents(f1, B3), cents(f2, E4)
-        corrected = False
-        if (not math.isnan(e1) and abs(e1) > CORRECT_CENTS) or \
-           (not math.isnan(e2) and abs(e2) > CORRECT_CENTS):
-            adj1 = p1_base + (math.log(B3) - math.log(f1)) if f1 > 0 else p1_base
-            adj2 = p2_base + (math.log(E4) - math.log(f2)) if f2 > 0 else p2_base
-            q, m1, m2 = build_query(moras[c1], moras[c2], base_q, adj1, adj2)
+        if args.resume and os.path.exists(mp3_path):
+            # 再開: 既存 mp3 から実測だけやり直す(補正の有無は記録できないので None)
+            wav = mp3_to_wav(mp3_path)
+            f1, f2 = measure(wav, q, m1, m2)
+            corrected = None
+            n_resumed += 1
+        else:
             wav = post("/synthesis", {"speaker": args.speaker}, q)
             f1, f2 = measure(wav, q, m1, m2)
-            corrected = True
-            n_corrected += 1
+            e1, e2 = cents(f1, B3), cents(f2, E4)
+            corrected = False
+            if (not math.isnan(e1) and abs(e1) > CORRECT_CENTS) or \
+               (not math.isnan(e2) and abs(e2) > CORRECT_CENTS):
+                adj1 = p1_base + (math.log(B3) - math.log(f1)) if f1 > 0 else p1_base
+                adj2 = p2_base + (math.log(E4) - math.log(f2)) if f2 > 0 else p2_base
+                q, m1, m2 = build_query(moras[c1], moras[c2], base_q, adj1, adj2)
+                wav = post("/synthesis", {"speaker": args.speaker}, q)
+                f1, f2 = measure(wav, q, m1, m2)
+                corrected = True
+                n_corrected += 1
+            with open(mp3_path, "wb") as f:
+                f.write(wav_to_mp3(wav))
         c2_onset = q["prePhonemeLength"] + (m1.get("consonant_length") or 0) + m1["vowel_length"]
         c2_dur = (m2.get("consonant_length") or 0) + m2["vowel_length"]
-        sid = hashlib.sha1(f"{salt}|{c1}{c2}|b3e4|{args.speaker}".encode()).hexdigest()[:20]
-        with open(os.path.join(args.out, sid + ".mp3"), "wb") as f:
-            f.write(wav_to_mp3(wav))
         manifest.append(dict(
             id=sid, file=sid + ".mp3",
             c2_onset_s=round(c2_onset, 4), c2_dur_s=round(c2_dur, 4),
@@ -194,14 +211,15 @@ def main():
         )
         n += 1
         if n % 250 == 0:
-            print(f"  ...{n}/{len(pairs)} (補正 {n_corrected})", file=sys.stderr)
+            print(f"  ...{n}/{len(pairs)} (補正 {n_corrected} / 再開流用 {n_resumed})",
+                  file=sys.stderr, flush=True)
 
     pub = dict(modality="audio2char", q_set="all", speaker=args.speaker,
                pitch_scheme="B3-E4", mora_dur_s=MORA_DUR,
                count=len(manifest), stimuli=manifest)
     json.dump(pub, open(args.manifest, "w"), ensure_ascii=False, indent=1)
     json.dump(answer_key, open(args.answerkey, "w"), ensure_ascii=False, indent=1)
-    print(f"完了: {n} 音声 (補正 {n_corrected}) -> {args.out}", file=sys.stderr)
+    print(f"完了: {n} 音声 (補正 {n_corrected} / 再開流用 {n_resumed}) -> {args.out}", file=sys.stderr)
     print(f"  manifest(公開) {len(manifest)} 件 -> {args.manifest}", file=sys.stderr)
     print(f"  answer_key(非公開) {len(answer_key)} 件 -> {args.answerkey}", file=sys.stderr)
 
