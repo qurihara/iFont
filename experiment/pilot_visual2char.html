@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>iFont 視覚2文字セルフパイロット (開発用)</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
+  body { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+         background: #f4f4f6; padding: 16px; color: #222; }
+  header { margin-bottom: 12px; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .small { font-size: 12px; color: #666; }
+  .layout { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  .stage { flex: 0 0 auto; min-width: 280px; }
+  .controls { flex: 1 1 320px; min-width: 280px; max-width: 600px; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 6px;
+           padding: 12px; margin-bottom: 12px; }
+  .panel h2 { font-size: 13px; margin: 0 0 8px; color: #555; letter-spacing: 0.05em; }
+  .row { display: flex; align-items: center; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
+  .row label { width: 90px; font-size: 13px; flex-shrink: 0; }
+  .row input[type=range] { flex: 1; min-width: 120px; }
+  .r-value { font-family: monospace; font-size: 15px; min-width: 110px; text-align: right; }
+  button { padding: 8px 14px; font-size: 14px; border: 1px solid #999; background: #fafafa;
+           border-radius: 4px; cursor: pointer; touch-action: manipulation;
+           -webkit-tap-highlight-color: transparent; }
+  button:hover { background: #eef; }
+  button:disabled { color: #bbb; background: #f3f3f3; }
+  button.primary { background: #4a76d6; color: #fff; border-color: #355aa3; }
+  button.primary:hover { background: #355aa3; }
+  .play-btn { font-size: 18px; padding: 14px 28px; min-height: 52px; }
+  .modes button { margin-right: 6px; margin-bottom: 4px; }
+  .modes button.active { background: #2a4a8a; color: #fff; border-color: #1a3a6a; }
+  #stimCanvas { width: 256px; height: 256px; background: #fff; border: 1px solid #ccc;
+                image-rendering: auto; display: block; }
+  .choices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .choices.grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-width: 360px; }
+  .choices.grid button { font-size: 20px; padding: 6px 0; min-width: 0; min-height: 44px; }
+  .choices.grid .spacer { background: transparent; border: none; pointer-events: none; min-height: 44px; }
+  .feedback { font-size: 13px; padding: 6px 10px; border-radius: 4px; margin-top: 8px;
+              display: inline-block; max-width: 100%; }
+  .feedback.correct { background: #ddf6dd; color: #176317; }
+  .feedback.wrong   { background: #ffdcdc; color: #802020; }
+  .stats { font-family: monospace; font-size: 12px; }
+  .stats table { border-collapse: collapse; }
+  .stats th, .stats td { padding: 2px 8px; text-align: right; }
+  .stats th { font-weight: 600; border-bottom: 1px solid #999; }
+  #chartCanvas { width: 100%; height: 180px; max-height: 40vh; background: #fafafa; border: 1px solid #ddd; }
+  #fitInfo { font-size: 11px; overflow-x: auto; white-space: pre; }
+  #loading { color: #4a76d6; font-size: 14px; }
+  @media (max-width: 720px) {
+    body { padding: 10px; }
+    .layout { flex-direction: column; gap: 12px; }
+    .controls, .stage { width: 100%; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div style="background:#fff7d6; border:1px solid #d8c87a; padding:6px 10px;
+              border-radius:4px; font-size:12px; color:#5a4500; margin-bottom:8px;">
+    ⚠️ これは研究者向けの開発・検証用ツールです。本番の実験ではありません。
+  </div>
+  <h1>iFont 視覚2文字セルフパイロット — 時間変化提示 (0.2秒/文字)</h1>
+  <div class="small">
+    固定領域に1文字目→2文字目を各0.2秒で提示する。前の文字は一瞬で消去。
+    0.2秒の中で認識度が上がる提示アルゴリズムを切り替えて比較する。
+    2文字目は frac% 時点で消去(聴覚 truncation の視覚版)。
+  </div>
+  <div id="loading">文字画像を読み込み中…</div>
+</header>
+
+<div class="layout">
+  <div class="stage">
+    <div class="panel">
+      <h2>提示領域 (固定・256px)</h2>
+      <canvas id="stimCanvas" width="256" height="256"></canvas>
+      <div class="small" id="seqInfo" style="margin-top:6px;"></div>
+    </div>
+    <div class="panel">
+      <h2>モード</h2>
+      <div class="modes">
+        <button id="modeInspect" class="active">Inspect (frac スライダ)</button>
+        <button id="modeTrial">Trial (ランダム + 即時判定)</button>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <label>アルゴリズム</label>
+        <select id="algoSelect">
+          <option value="fade" selected>fade — 透明度が上がる</option>
+          <option value="stroke">stroke — ストローク画素が累積する</option>
+          <option value="zoom">zoom — 中心から拡大する</option>
+          <option value="blur">blur — ぼかしが解けていく</option>
+          <option value="moya">moya — 全字の重なりから絞り込む</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- INSPECT -->
+    <div id="inspectPanel" class="panel">
+      <h2>Inspect</h2>
+      <div class="row">
+        <label>1文字目 C1</label>
+        <select id="c1Select" style="flex:1; font-size:18px;"></select>
+      </div>
+      <div class="row">
+        <label>2文字目 C2</label>
+        <select id="c2Select" style="flex:1; font-size:18px;"></select>
+      </div>
+      <div class="row">
+        <label>frac</label>
+        <input id="fSlider" type="range" min="0" max="100" step="1" value="50">
+        <span id="fValue" class="r-value">50%</span>
+      </div>
+      <div class="small">2文字目の0.2秒のうち何%の時点で消すか。0%=出ない 100%=最後まで</div>
+      <div class="row" style="margin-top:10px;">
+        <button id="playInspect" class="primary play-btn">▶ 再生</button>
+      </div>
+      <div id="inspectInfo" class="small" style="margin-top:6px;"></div>
+    </div>
+
+    <!-- TRIAL -->
+    <div id="trialPanel" class="panel" style="display:none;">
+      <h2>Trial — 2文字目を当てる</h2>
+      <div class="row">
+        <label>frac 分布</label>
+        <select id="rDist">
+          <option value="uniform" selected>[0,100]% 一様</option>
+          <option value="low">[0,60]% 一様 (閾値帯重点)</option>
+          <option value="grid21">21段階 frac グリッド (5%刻み)</option>
+          <option value="adaptive">適応 (正答 −5%, 誤答 +5%)</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="startTrial" class="primary">開始</button>
+        <button id="resetTrials">統計リセット</button>
+        <button id="downloadTrials">CSV</button>
+      </div>
+      <div class="row">
+        <button id="replayTrial" class="play-btn">▶ もう一度みる</button>
+        <span class="small">回答後は自動で次へ (1秒空白)</span>
+      </div>
+      <div id="feedback" class="feedback" style="display:none;"></div>
+      <div id="choices" class="choices grid"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="panel">
+      <h2>統計 (Trial mode)</h2>
+      <div class="small" style="margin-bottom:6px;">横軸 = frac %（2文字目を何%時点まで見たか）</div>
+      <canvas id="chartCanvas" width="500" height="180"></canvas>
+      <div class="stats" id="statsTable"></div>
+      <div id="fitInfo"></div>
+    </div>
+  </div>
+</div>
+
+<script src="pilot_visual2char.js"></script>
+</body>
+</html>
