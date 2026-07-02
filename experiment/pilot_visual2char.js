@@ -160,6 +160,16 @@ const ALGOS = {
     sctx.drawImage(imgs[ch], 0, 0, SIZE, SIZE);
     sctx.globalAlpha = 1;
   },
+  // スライドイン: 領域(キャンバス)が窓になり、字が外から定位置へ滑り込む。
+  // u=0 で完全に領域外、u=1 で定位置。領域外の部分は自然にクリップされる。
+  slideB(ch, u) {          // 下から
+    clearStage();
+    sctx.drawImage(imgs[ch], 0, (1 - u) * SIZE, SIZE, SIZE);
+  },
+  slideR(ch, u) {          // 右から
+    clearStage();
+    sctx.drawImage(imgs[ch], (1 - u) * SIZE, 0, SIZE, SIZE);
+  },
 };
 
 // ---- 2文字シーケンスの再生 --------------------------------------------------
