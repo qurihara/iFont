@@ -28,24 +28,29 @@ REPO = b2.REPO
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--speaker", type=int, default=b2.SPEAKER)
+    ap.add_argument("--hz", type=float, default=B3,
+                    help="1文字の音高(Hz)。既定は発話先頭の B3。分析用に E4=329.63 も作れる")
+    ap.add_argument("--label", default="B3", help="ハッシュと pitch_scheme に使う音高ラベル")
     ap.add_argument("--out", default=os.path.join(REPO, "experiment", "audio1char_stimuli"))
     ap.add_argument("--manifest", default=os.path.join(REPO, "experiment", "audio1char_manifest.json"))
     ap.add_argument("--answerkey", default=os.path.join(REPO, "experiment", "answer_key_1char.json"))
     args = ap.parse_args()
 
+    TARGET = args.hz
+    label = args.label
     ver = b2.get("/version")
     chars = list(ic.AUDIO_ALL)
     print(f"VOICEVOX {ver} / speaker={args.speaker} / {len(chars)}字 / "
-          f"B3={B3}Hz / 1モーラ{MORA_DUR}s", file=sys.stderr)
+          f"{label}={TARGET}Hz / 1モーラ{MORA_DUR}s", file=sys.stderr)
 
     os.makedirs(args.out, exist_ok=True)
     salt = b2.load_salt()
-    p_base = math.log(B3)
+    p_base = math.log(TARGET)
 
     # 各かなの素のモーラと base_q を取得
     moras, base_q = {}, None
     for k in chars:
-        q = json.loads(b2.post("/audio_query", {"text": k, "speaker": args.speaker}))
+        q = json.loads(b2.post("/audio_query", {"text": b2.to_kata(k), "speaker": args.speaker}))
         moras[k] = q["accent_phrases"][0]["moras"][0]
         if base_q is None:
             base_q = q
@@ -65,10 +70,10 @@ def main():
         # 1モーラ版の実測: 母音の定常部で測る
         onset = q["prePhonemeLength"] + (m.get("consonant_length") or 0)
         f0 = b2.med_f0(wav, onset + 0.03, onset + m["vowel_length"] - 0.02)
-        e = b2.cents(f0, B3) if f0 and not math.isnan(f0) else float("nan")
+        e = b2.cents(f0, TARGET) if f0 and not math.isnan(f0) else float("nan")
         corrected = False
         if not math.isnan(e) and abs(e) > b2.CORRECT_CENTS:
-            adj = p_base + (math.log(B3) - math.log(f0))
+            adj = p_base + (math.log(TARGET) - math.log(f0))
             m = b2.set_mora(moras[ch], adj, MORA_DUR)
             q["accent_phrases"][0]["moras"] = [m]
             wav = b2.post("/synthesis", {"speaker": args.speaker}, q)
@@ -78,7 +83,7 @@ def main():
             n_corrected += 1
         char_onset = q["prePhonemeLength"]                       # 前余白の直後 = 文字の開始
         char_dur = (m.get("consonant_length") or 0) + m["vowel_length"]
-        sid = hashlib.sha1(f"{salt}|{ch}|b3-1char|{args.speaker}".encode()).hexdigest()[:20]
+        sid = hashlib.sha1(f"{salt}|{ch}|{label}-1char|{args.speaker}".encode()).hexdigest()[:20]
         with open(os.path.join(args.out, sid + ".mp3"), "wb") as f:
             f.write(b2.wav_to_mp3(wav))
         manifest.append(dict(
@@ -94,7 +99,7 @@ def main():
         )
 
     pub = dict(modality="audio1char", q_set="all", speaker=args.speaker,
-               pitch_scheme="B3", mora_dur_s=MORA_DUR,
+               pitch_scheme=label, mora_dur_s=MORA_DUR,
                count=len(manifest), stimuli=manifest)
     json.dump(pub, open(args.manifest, "w"), ensure_ascii=False, indent=1)
     json.dump(answer_key, open(args.answerkey, "w"), ensure_ascii=False, indent=1)

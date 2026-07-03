@@ -1,0 +1,999 @@
+{
+ "n": {
+  "two": 5184,
+  "e4": 72,
+  "b3": 72
+ },
+ "mean_between": 5.596447878614368,
+ "global_shift": 8.474331647512662,
+ "mean_within": 3.02989415025265,
+ "mean_resid": 2.8943339840862685,
+ "homophones": [
+  "えへ",
+  "おを",
+  "じぢ",
+  "ずづ",
+  "はわ"
+ ],
+ "overall_selfacc_2c": 0.8380376344086022,
+ "overall_e4_acc_raw": 0.0609567901234568,
+ "overall_e4_acc_adj": 0.43906810035842286,
+ "per_char": {
+  "あ": {
+   "category": "母音",
+   "within_spread": 3.52,
+   "nn_between": 2.75,
+   "nn_char": "が",
+   "selfacc_2c": 0.764,
+   "e4_acc_raw": 0.014,
+   "e4_acc_adj": 0.167,
+   "resid": 3.82,
+   "b3_vs_e4": 2.95
+  },
+  "い": {
+   "category": "母音",
+   "within_spread": 3.09,
+   "nn_between": 1.64,
+   "nn_char": "り",
+   "selfacc_2c": 0.708,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.014,
+   "resid": 3.79,
+   "b3_vs_e4": 3.69
+  },
+  "う": {
+   "category": "母音",
+   "within_spread": 3.68,
+   "nn_between": 2.11,
+   "nn_char": "ぐ",
+   "selfacc_2c": 0.722,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 3.92,
+   "b3_vs_e4": 4.32
+  },
+  "え": {
+   "category": "母音",
+   "within_spread": 3.34,
+   "nn_between": 0.0,
+   "nn_char": "へ",
+   "selfacc_2c": 0.708,
+   "e4_acc_raw": 0.139,
+   "e4_acc_adj": 0.208,
+   "resid": 2.71,
+   "b3_vs_e4": 3.75
+  },
+  "お": {
+   "category": "母音",
+   "within_spread": 3.29,
+   "nn_between": 0.0,
+   "nn_char": "を",
+   "selfacc_2c": 0.639,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.486,
+   "resid": 2.69,
+   "b3_vs_e4": 4.92
+  },
+  "か": {
+   "category": "無声破裂 k",
+   "within_spread": 2.7,
+   "nn_between": 1.13,
+   "nn_char": "ぱ",
+   "selfacc_2c": 0.639,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 5.86,
+   "b3_vs_e4": 7.27
+  },
+  "き": {
+   "category": "無声破裂 k",
+   "within_spread": 2.65,
+   "nn_between": 2.29,
+   "nn_char": "ぴ",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.847,
+   "resid": 2.69,
+   "b3_vs_e4": 1.92
+  },
+  "く": {
+   "category": "無声破裂 k",
+   "within_spread": 2.79,
+   "nn_between": 2.2,
+   "nn_char": "ぷ",
+   "selfacc_2c": 0.931,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.819,
+   "resid": 2.56,
+   "b3_vs_e4": 2.39
+  },
+  "け": {
+   "category": "無声破裂 k",
+   "within_spread": 2.67,
+   "nn_between": 1.42,
+   "nn_char": "て",
+   "selfacc_2c": 0.833,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.681,
+   "resid": 2.8,
+   "b3_vs_e4": 3.39
+  },
+  "こ": {
+   "category": "無声破裂 k",
+   "within_spread": 2.72,
+   "nn_between": 1.8,
+   "nn_char": "ぽ",
+   "selfacc_2c": 0.889,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.889,
+   "resid": 2.53,
+   "b3_vs_e4": 2.73
+  },
+  "さ": {
+   "category": "無声摩擦 s",
+   "within_spread": 2.81,
+   "nn_between": 1.94,
+   "nn_char": "ざ",
+   "selfacc_2c": 0.847,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.778,
+   "resid": 2.2,
+   "b3_vs_e4": 3.15
+  },
+  "し": {
+   "category": "破擦・拗摩擦",
+   "within_spread": 2.9,
+   "nn_between": 3.07,
+   "nn_char": "ち",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.056,
+   "resid": 3.79,
+   "b3_vs_e4": 4.52
+  },
+  "す": {
+   "category": "無声摩擦 s",
+   "within_spread": 2.76,
+   "nn_between": 2.68,
+   "nn_char": "つ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.167,
+   "resid": 3.57,
+   "b3_vs_e4": 1.81
+  },
+  "せ": {
+   "category": "無声摩擦 s",
+   "within_spread": 2.73,
+   "nn_between": 1.98,
+   "nn_char": "ぜ",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.208,
+   "resid": 2.93,
+   "b3_vs_e4": 2.99
+  },
+  "そ": {
+   "category": "無声摩擦 s",
+   "within_spread": 2.67,
+   "nn_between": 2.32,
+   "nn_char": "ぞ",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.875,
+   "resid": 2.32,
+   "b3_vs_e4": 3.22
+  },
+  "た": {
+   "category": "無声破裂 t",
+   "within_spread": 2.69,
+   "nn_between": 1.8,
+   "nn_char": "か",
+   "selfacc_2c": 0.917,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 5.85,
+   "b3_vs_e4": 6.88
+  },
+  "ち": {
+   "category": "破擦・拗摩擦",
+   "within_spread": 2.63,
+   "nn_between": 3.07,
+   "nn_char": "し",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.972,
+   "resid": 2.08,
+   "b3_vs_e4": 2.99
+  },
+  "つ": {
+   "category": "破擦・拗摩擦",
+   "within_spread": 3.3,
+   "nn_between": 2.68,
+   "nn_char": "す",
+   "selfacc_2c": 0.847,
+   "e4_acc_raw": 0.056,
+   "e4_acc_adj": 0.583,
+   "resid": 3.27,
+   "b3_vs_e4": 2.8
+  },
+  "て": {
+   "category": "無声破裂 t",
+   "within_spread": 2.62,
+   "nn_between": 1.42,
+   "nn_char": "け",
+   "selfacc_2c": 0.833,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 3.1,
+   "b3_vs_e4": 3.07
+  },
+  "と": {
+   "category": "無声破裂 t",
+   "within_spread": 2.61,
+   "nn_between": 2.56,
+   "nn_char": "こ",
+   "selfacc_2c": 0.958,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.792,
+   "resid": 2.27,
+   "b3_vs_e4": 3.49
+  },
+  "な": {
+   "category": "鼻音 n",
+   "within_spread": 2.94,
+   "nn_between": 2.04,
+   "nn_char": "ま",
+   "selfacc_2c": 0.972,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.014,
+   "resid": 3.49,
+   "b3_vs_e4": 4.2
+  },
+  "に": {
+   "category": "鼻音 n",
+   "within_spread": 3.1,
+   "nn_between": 1.88,
+   "nn_char": "み",
+   "selfacc_2c": 0.819,
+   "e4_acc_raw": 0.139,
+   "e4_acc_adj": 0.972,
+   "resid": 2.59,
+   "b3_vs_e4": 2.49
+  },
+  "ぬ": {
+   "category": "鼻音 n",
+   "within_spread": 3.1,
+   "nn_between": 1.97,
+   "nn_char": "む",
+   "selfacc_2c": 0.972,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.931,
+   "resid": 2.35,
+   "b3_vs_e4": 2.98
+  },
+  "ね": {
+   "category": "鼻音 n",
+   "within_spread": 3.08,
+   "nn_between": 1.28,
+   "nn_char": "め",
+   "selfacc_2c": 0.667,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.153,
+   "resid": 3.11,
+   "b3_vs_e4": 3.85
+  },
+  "の": {
+   "category": "鼻音 n",
+   "within_spread": 2.97,
+   "nn_between": 2.6,
+   "nn_char": "ど",
+   "selfacc_2c": 0.972,
+   "e4_acc_raw": 0.125,
+   "e4_acc_adj": 0.472,
+   "resid": 3.1,
+   "b3_vs_e4": 3.51
+  },
+  "は": {
+   "category": "無声摩擦 h",
+   "within_spread": 3.2,
+   "nn_between": 0.0,
+   "nn_char": "わ",
+   "selfacc_2c": 0.708,
+   "e4_acc_raw": 0.028,
+   "e4_acc_adj": 0.639,
+   "resid": 2.45,
+   "b3_vs_e4": 3.03
+  },
+  "ひ": {
+   "category": "無声摩擦 h",
+   "within_spread": 2.84,
+   "nn_between": 3.12,
+   "nn_char": "き",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.306,
+   "resid": 3.0,
+   "b3_vs_e4": 2.34
+  },
+  "ふ": {
+   "category": "無声摩擦 h",
+   "within_spread": 2.56,
+   "nn_between": 3.15,
+   "nn_char": "ず",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.042,
+   "resid": 3.48,
+   "b3_vs_e4": 3.31
+  },
+  "へ": {
+   "category": "無声摩擦 h",
+   "within_spread": 3.34,
+   "nn_between": 0.0,
+   "nn_char": "え",
+   "selfacc_2c": 0.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 2.71,
+   "b3_vs_e4": 3.75
+  },
+  "ほ": {
+   "category": "無声摩擦 h",
+   "within_spread": 2.65,
+   "nn_between": 2.87,
+   "nn_char": "お",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.153,
+   "resid": 2.88,
+   "b3_vs_e4": 4.5
+  },
+  "ま": {
+   "category": "鼻音 m",
+   "within_spread": 3.31,
+   "nn_between": 2.04,
+   "nn_char": "な",
+   "selfacc_2c": 0.889,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.431,
+   "resid": 2.82,
+   "b3_vs_e4": 6.57
+  },
+  "み": {
+   "category": "鼻音 m",
+   "within_spread": 3.36,
+   "nn_between": 1.88,
+   "nn_char": "に",
+   "selfacc_2c": 0.833,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.319,
+   "resid": 3.28,
+   "b3_vs_e4": 2.22
+  },
+  "む": {
+   "category": "鼻音 m",
+   "within_spread": 3.21,
+   "nn_between": 1.97,
+   "nn_char": "ぬ",
+   "selfacc_2c": 0.792,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.042,
+   "resid": 3.21,
+   "b3_vs_e4": 3.98
+  },
+  "め": {
+   "category": "鼻音 m",
+   "within_spread": 3.03,
+   "nn_between": 1.28,
+   "nn_char": "ね",
+   "selfacc_2c": 0.722,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.014,
+   "resid": 3.79,
+   "b3_vs_e4": 5.25
+  },
+  "も": {
+   "category": "鼻音 m",
+   "within_spread": 3.13,
+   "nn_between": 2.69,
+   "nn_char": "ぼ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.139,
+   "e4_acc_adj": 0.431,
+   "resid": 3.19,
+   "b3_vs_e4": 3.86
+  },
+  "や": {
+   "category": "半母音 y",
+   "within_spread": 3.05,
+   "nn_between": 1.98,
+   "nn_char": "だ",
+   "selfacc_2c": 0.972,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.167,
+   "resid": 3.58,
+   "b3_vs_e4": 3.62
+  },
+  "ゆ": {
+   "category": "半母音 y",
+   "within_spread": 3.14,
+   "nn_between": 3.53,
+   "nn_char": "ぶ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.444,
+   "resid": 3.9,
+   "b3_vs_e4": 2.53
+  },
+  "よ": {
+   "category": "半母音 y",
+   "within_spread": 3.03,
+   "nn_between": 1.64,
+   "nn_char": "ど",
+   "selfacc_2c": 0.806,
+   "e4_acc_raw": 0.264,
+   "e4_acc_adj": 0.292,
+   "resid": 2.6,
+   "b3_vs_e4": 4.86
+  },
+  "ら": {
+   "category": "流音 r",
+   "within_spread": 3.11,
+   "nn_between": 1.52,
+   "nn_char": "だ",
+   "selfacc_2c": 0.931,
+   "e4_acc_raw": 0.25,
+   "e4_acc_adj": 0.681,
+   "resid": 2.44,
+   "b3_vs_e4": 3.28
+  },
+  "り": {
+   "category": "流音 r",
+   "within_spread": 3.24,
+   "nn_between": 1.64,
+   "nn_char": "い",
+   "selfacc_2c": 0.708,
+   "e4_acc_raw": 0.986,
+   "e4_acc_adj": 0.597,
+   "resid": 3.09,
+   "b3_vs_e4": 3.54
+  },
+  "る": {
+   "category": "流音 r",
+   "within_spread": 3.26,
+   "nn_between": 2.78,
+   "nn_char": "ぶ",
+   "selfacc_2c": 0.917,
+   "e4_acc_raw": 0.958,
+   "e4_acc_adj": 0.625,
+   "resid": 3.24,
+   "b3_vs_e4": 2.58
+  },
+  "れ": {
+   "category": "流音 r",
+   "within_spread": 3.35,
+   "nn_between": 1.52,
+   "nn_char": "え",
+   "selfacc_2c": 0.625,
+   "e4_acc_raw": 0.222,
+   "e4_acc_adj": 0.097,
+   "resid": 2.63,
+   "b3_vs_e4": 3.36
+  },
+  "ろ": {
+   "category": "流音 r",
+   "within_spread": 3.0,
+   "nn_between": 1.45,
+   "nn_char": "ど",
+   "selfacc_2c": 0.889,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.236,
+   "resid": 2.68,
+   "b3_vs_e4": 4.75
+  },
+  "わ": {
+   "category": "半母音 w",
+   "within_spread": 3.2,
+   "nn_between": 0.0,
+   "nn_char": "は",
+   "selfacc_2c": 0.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 2.45,
+   "b3_vs_e4": 3.03
+  },
+  "を": {
+   "category": "他",
+   "within_spread": 3.29,
+   "nn_between": 0.0,
+   "nn_char": "お",
+   "selfacc_2c": 0.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 2.69,
+   "b3_vs_e4": 4.92
+  },
+  "ん": {
+   "category": "撥音 N",
+   "within_spread": 3.61,
+   "nn_between": 4.22,
+   "nn_char": "も",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 1.0,
+   "e4_acc_adj": 0.639,
+   "resid": 4.89,
+   "b3_vs_e4": 3.01
+  },
+  "が": {
+   "category": "有声破裂 g",
+   "within_spread": 3.29,
+   "nn_between": 1.34,
+   "nn_char": "ば",
+   "selfacc_2c": 0.472,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.292,
+   "resid": 2.54,
+   "b3_vs_e4": 2.84
+  },
+  "ぎ": {
+   "category": "有声破裂 g",
+   "within_spread": 3.09,
+   "nn_between": 1.57,
+   "nn_char": "び",
+   "selfacc_2c": 0.694,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.458,
+   "resid": 2.54,
+   "b3_vs_e4": 2.45
+  },
+  "ぐ": {
+   "category": "有声破裂 g",
+   "within_spread": 3.29,
+   "nn_between": 1.31,
+   "nn_char": "ぶ",
+   "selfacc_2c": 0.472,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.222,
+   "resid": 2.76,
+   "b3_vs_e4": 2.57
+  },
+  "げ": {
+   "category": "有声破裂 g",
+   "within_spread": 3.22,
+   "nn_between": 1.54,
+   "nn_char": "べ",
+   "selfacc_2c": 0.875,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.583,
+   "resid": 2.2,
+   "b3_vs_e4": 3.46
+  },
+  "ご": {
+   "category": "有声破裂 g",
+   "within_spread": 3.18,
+   "nn_between": 1.1,
+   "nn_char": "ぼ",
+   "selfacc_2c": 0.764,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.444,
+   "resid": 1.65,
+   "b3_vs_e4": 3.45
+  },
+  "ざ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.98,
+   "nn_between": 1.94,
+   "nn_char": "さ",
+   "selfacc_2c": 0.819,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.583,
+   "resid": 2.4,
+   "b3_vs_e4": 2.79
+  },
+  "じ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.93,
+   "nn_between": 0.0,
+   "nn_char": "ぢ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.736,
+   "resid": 3.32,
+   "b3_vs_e4": 2.79
+  },
+  "ず": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.94,
+   "nn_between": 0.0,
+   "nn_char": "づ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.986,
+   "resid": 2.18,
+   "b3_vs_e4": 2.2
+  },
+  "ぜ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.96,
+   "nn_between": 1.98,
+   "nn_char": "せ",
+   "selfacc_2c": 0.944,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.986,
+   "resid": 2.03,
+   "b3_vs_e4": 3.04
+  },
+  "ぞ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.74,
+   "nn_between": 2.32,
+   "nn_char": "そ",
+   "selfacc_2c": 0.986,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.389,
+   "resid": 2.33,
+   "b3_vs_e4": 3.35
+  },
+  "だ": {
+   "category": "有声破裂 d",
+   "within_spread": 3.14,
+   "nn_between": 1.42,
+   "nn_char": "が",
+   "selfacc_2c": 0.569,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.431,
+   "resid": 2.64,
+   "b3_vs_e4": 3.29
+  },
+  "ぢ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.93,
+   "nn_between": 0.0,
+   "nn_char": "じ",
+   "selfacc_2c": 0.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 3.32,
+   "b3_vs_e4": 2.79
+  },
+  "づ": {
+   "category": "有声摩擦・破擦 z",
+   "within_spread": 2.94,
+   "nn_between": 0.0,
+   "nn_char": "ず",
+   "selfacc_2c": 0.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.0,
+   "resid": 2.18,
+   "b3_vs_e4": 2.2
+  },
+  "で": {
+   "category": "有声破裂 d",
+   "within_spread": 3.17,
+   "nn_between": 1.12,
+   "nn_char": "べ",
+   "selfacc_2c": 0.569,
+   "e4_acc_raw": 0.042,
+   "e4_acc_adj": 0.194,
+   "resid": 2.66,
+   "b3_vs_e4": 2.56
+  },
+  "ど": {
+   "category": "有声破裂 d",
+   "within_spread": 2.95,
+   "nn_between": 1.45,
+   "nn_char": "ろ",
+   "selfacc_2c": 0.819,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.736,
+   "resid": 1.74,
+   "b3_vs_e4": 3.71
+  },
+  "ば": {
+   "category": "有声破裂 b",
+   "within_spread": 3.26,
+   "nn_between": 1.34,
+   "nn_char": "が",
+   "selfacc_2c": 0.694,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.292,
+   "resid": 2.68,
+   "b3_vs_e4": 2.51
+  },
+  "び": {
+   "category": "有声破裂 b",
+   "within_spread": 3.21,
+   "nn_between": 1.57,
+   "nn_char": "ぎ",
+   "selfacc_2c": 0.75,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.667,
+   "resid": 2.47,
+   "b3_vs_e4": 2.35
+  },
+  "ぶ": {
+   "category": "有声破裂 b",
+   "within_spread": 3.28,
+   "nn_between": 1.31,
+   "nn_char": "ぐ",
+   "selfacc_2c": 0.542,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.778,
+   "resid": 2.05,
+   "b3_vs_e4": 3.34
+  },
+  "べ": {
+   "category": "有声破裂 b",
+   "within_spread": 3.23,
+   "nn_between": 1.12,
+   "nn_char": "で",
+   "selfacc_2c": 0.681,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.819,
+   "resid": 1.9,
+   "b3_vs_e4": 3.43
+  },
+  "ぼ": {
+   "category": "有声破裂 b",
+   "within_spread": 3.13,
+   "nn_between": 1.1,
+   "nn_char": "ご",
+   "selfacc_2c": 0.833,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.125,
+   "resid": 2.04,
+   "b3_vs_e4": 3.92
+  },
+  "ぱ": {
+   "category": "無声破裂 p",
+   "within_spread": 2.78,
+   "nn_between": 1.13,
+   "nn_char": "か",
+   "selfacc_2c": 0.833,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.958,
+   "resid": 2.74,
+   "b3_vs_e4": 3.09
+  },
+  "ぴ": {
+   "category": "無声破裂 p",
+   "within_spread": 2.69,
+   "nn_between": 2.29,
+   "nn_char": "き",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 1.0,
+   "resid": 2.16,
+   "b3_vs_e4": 2.19
+  },
+  "ぷ": {
+   "category": "無声破裂 p",
+   "within_spread": 2.76,
+   "nn_between": 2.2,
+   "nn_char": "く",
+   "selfacc_2c": 1.0,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.944,
+   "resid": 2.22,
+   "b3_vs_e4": 2.44
+  },
+  "ぺ": {
+   "category": "無声破裂 p",
+   "within_spread": 2.75,
+   "nn_between": 1.44,
+   "nn_char": "て",
+   "selfacc_2c": 0.819,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.236,
+   "resid": 3.27,
+   "b3_vs_e4": 2.9
+  },
+  "ぽ": {
+   "category": "無声破裂 p",
+   "within_spread": 2.84,
+   "nn_between": 1.8,
+   "nn_char": "こ",
+   "selfacc_2c": 0.792,
+   "e4_acc_raw": 0.028,
+   "e4_acc_adj": 0.069,
+   "resid": 3.41,
+   "b3_vs_e4": 3.15
+  },
+  "ゔ": {
+   "category": "有声摩擦 v",
+   "within_spread": 3.21,
+   "nn_between": 1.32,
+   "nn_char": "ぐ",
+   "selfacc_2c": 0.708,
+   "e4_acc_raw": 0.0,
+   "e4_acc_adj": 0.111,
+   "resid": 2.56,
+   "b3_vs_e4": 3.0
+  }
+ },
+ "by_category": {
+  "selfacc_2c": {
+   "母音": 0.7083333333333334,
+   "無声破裂 k": 0.8583333333333334,
+   "無声摩擦 s": 0.9583333333333334,
+   "破擦・拗摩擦": 0.9444444444444445,
+   "無声破裂 t": 0.9027777777777778,
+   "鼻音 n": 0.8805555555555555,
+   "無声摩擦 h": 0.7416666666666667,
+   "鼻音 m": 0.8444444444444444,
+   "半母音 y": 0.9212962962962964,
+   "流音 r": 0.8138888888888889,
+   "半母音 w": 0.0,
+   "撥音 N": 1.0,
+   "有声破裂 g": 0.6555555555555556,
+   "有声摩擦・破擦 z": 0.6746031746031748,
+   "有声破裂 d": 0.6527777777777778,
+   "有声破裂 b": 0.7000000000000001,
+   "無声破裂 p": 0.888888888888889,
+   "有声摩擦 v": 0.7083333333333334
+  },
+  "e4_acc_adj": {
+   "母音": 0.175,
+   "無声破裂 k": 0.6472222222222223,
+   "無声摩擦 s": 0.5069444444444444,
+   "破擦・拗摩擦": 0.5370370370370371,
+   "無声破裂 t": 0.2638888888888889,
+   "鼻音 n": 0.5083333333333333,
+   "無声摩擦 h": 0.22777777777777777,
+   "鼻音 m": 0.24722222222222223,
+   "半母音 y": 0.3009259259259259,
+   "流音 r": 0.44722222222222224,
+   "半母音 w": 0.0,
+   "撥音 N": 0.6388888888888888,
+   "有声破裂 g": 0.4,
+   "有声摩擦・破擦 z": 0.5257936507936508,
+   "有声破裂 d": 0.4537037037037037,
+   "有声破裂 b": 0.5361111111111111,
+   "無声破裂 p": 0.6416666666666667,
+   "有声摩擦 v": 0.1111111111111111
+  },
+  "within": {
+   "母音": 3.382938147749505,
+   "無声破裂 k": 2.705641304400942,
+   "無声摩擦 s": 2.7436917154849656,
+   "破擦・拗摩擦": 2.9443801758164576,
+   "無声破裂 t": 2.6384883076924677,
+   "鼻音 n": 3.0365343142631973,
+   "無声摩擦 h": 2.918603616288121,
+   "鼻音 m": 3.208897298564937,
+   "半母音 y": 3.073254559129509,
+   "流音 r": 3.193428473276223,
+   "半母音 w": 3.1983666626783847,
+   "撥音 N": 3.612040229589291,
+   "有声破裂 g": 3.2132614553297314,
+   "有声摩擦・破擦 z": 2.916868245451746,
+   "有声破裂 d": 3.085752362221061,
+   "有声破裂 b": 3.2220123472282234,
+   "無声破裂 p": 2.7633422753509977,
+   "有声摩擦 v": 3.2133692433940255
+  },
+  "resid": {
+   "母音": 3.386039314788738,
+   "無声破裂 k": 3.287382895544442,
+   "無声摩擦 s": 2.7577888613679336,
+   "破擦・拗摩擦": 3.0470334149641247,
+   "無声破裂 t": 3.738586842717399,
+   "鼻音 n": 2.9268008422598184,
+   "無声摩擦 h": 2.905639653257361,
+   "鼻音 m": 3.2587963513690803,
+   "半母音 y": 3.356129528208161,
+   "流音 r": 2.817302191960376,
+   "半母音 w": 2.4506934474254454,
+   "撥音 N": 4.892441834328154,
+   "有声破裂 g": 2.3401525198802573,
+   "有声摩擦・破擦 z": 2.537233703383939,
+   "有声破裂 d": 2.344663472669241,
+   "有声破裂 b": 2.227926807094028,
+   "無声破裂 p": 2.761213191547026,
+   "有声摩擦 v": 2.5557398298328815
+  },
+  "b3_vs_e4": {
+   "母音": 3.9248045127504425,
+   "無声破裂 k": 3.538353863012639,
+   "無声摩擦 s": 2.7924809274621607,
+   "破擦・拗摩擦": 3.435424142176086,
+   "無声破裂 t": 4.4813696321632825,
+   "鼻音 n": 3.4056029177166565,
+   "無声摩擦 h": 3.3867539711319465,
+   "鼻音 m": 4.377812438924166,
+   "半母音 y": 3.6713886550946064,
+   "流音 r": 3.5018918357721764,
+   "半母音 w": 3.034805367874468,
+   "撥音 N": 3.0110337242810945,
+   "有声破裂 g": 2.9551562922392303,
+   "有声摩擦・破擦 z": 2.7356901302414767,
+   "有声破裂 d": 3.182709215004126,
+   "有声破裂 b": 3.109483051992737,
+   "無声破裂 p": 2.7556229876037377,
+   "有声摩擦 v": 2.9984493582707397
+  }
+ },
+ "top_confusions": [
+  [
+   "ぢ→じ",
+   71
+  ],
+  [
+   "づ→ず",
+   71
+  ],
+  [
+   "へ→え",
+   51
+  ],
+  [
+   "わ→は",
+   51
+  ],
+  [
+   "を→お",
+   46
+  ],
+  [
+   "は→ば",
+   19
+  ],
+  [
+   "わ→ば",
+   19
+  ],
+  [
+   "ぶ→ゔ",
+   18
+  ],
+  [
+   "い→り",
+   17
+  ],
+  [
+   "が→だ",
+   16
+  ],
+  [
+   "だ→が",
+   16
+  ],
+  [
+   "か→ぱ",
+   15
+  ],
+  [
+   "が→は",
+   15
+  ],
+  [
+   "ぐ→ゔ",
+   14
+  ],
+  [
+   "ご→ぼ",
+   14
+  ],
+  [
+   "び→り",
+   14
+  ],
+  [
+   "ぽ→こ",
+   14
+  ],
+  [
+   "に→み",
+   13
+  ],
+  [
+   "め→ね",
+   13
+  ],
+  [
+   "よ→ろ",
+   13
+  ]
+ ]
+}

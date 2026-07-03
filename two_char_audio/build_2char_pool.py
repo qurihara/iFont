@@ -62,6 +62,13 @@ def load_salt():
     return os.environ.get("SECRET_SALT", "dev_2char_salt")
 
 
+def to_kata(s):
+    """ひらがなをカタカナに変換する。VOICEVOX は単独の「は」「へ」を助詞として
+    /wa/ /e/ と読むので、カタカナ(ハ・ヘ)で問い合わせて正しい /ha/ /he/ を得る。
+    「を」はカタカナ(ヲ)でも /o/ のままで正しい。"""
+    return "".join(chr(ord(c) + 0x60) if 0x3041 <= ord(c) <= 0x3096 else c for c in s)
+
+
 def load_bigram_freq():
     """Tatoeba 由来のかな連接頻度 (bigram_coverage/freq.pkl の corp_char)。無ければ空。"""
     try:
@@ -161,7 +168,7 @@ def main():
     # 各かなの素のモーラを1回だけ取得
     moras, base_q = {}, None
     for k in chars:
-        q = json.loads(post("/audio_query", {"text": k, "speaker": args.speaker}))
+        q = json.loads(post("/audio_query", {"text": to_kata(k), "speaker": args.speaker}))
         moras[k] = q["accent_phrases"][0]["moras"][0]
         if base_q is None:
             base_q = q
