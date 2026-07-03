@@ -14,8 +14,11 @@
 // EDIT BEFORE DEPLOY: deployed Google Apps Script /exec URL.
 const SUBMIT_URL = "";
 
-// 本実験に載せる提示アルゴリズム。パイロットで絞り込んだらここを書き換える。
-const ALGO_LIST = ["fade", "stroke", "zoom", "blur", "moya", "slideB", "slideR"];
+// 本実験に載せる提示アルゴリズム。刺激の強さの測定 (docs/visual_stimulus_intensity.md)
+// にもとづき、fade・blur・moya の3種に絞った。stroke は 1/f からの逸脱が高く (ざらつき)、
+// slideB・slideR・zoom は動きが速いため、目の疲労の観点で刺激が強いとして除外した。
+// ALGOS には7種すべての実装を残してある (論文執筆の検討材料のため)。
+const ALGO_LIST = ["fade", "blur", "moya"];
 
 const N_TRIALS = 200;
 const N_PRACTICE = 5;
