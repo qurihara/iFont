@@ -13,6 +13,10 @@ const N_PRACTICE = 5;
 const CATCH_RATE = 0.05;
 const FRAC_GRID = Array.from({length: 21}, (_, i) => i * 5);
 const FADE_MS = 8;
+// 各問の音声の直前に鳴らす合図音(ビープ)。開始が分かるようにするため。
+const BEEP_HZ = 880;      // 合図音の高さ
+const BEEP_MS = 80;       // 合図音の長さ
+const BEEP_LEAD_MS = 300; // 合図音の開始から、文字の音声が始まるまでの間隔
 
 // 全72字の固定50音グリッド (audio.js の GRID_AUDIO と一致)
 const GRID_AUDIO = [
@@ -71,14 +75,29 @@ function gatedBuffer(buf, onset, dur, frac) {
   for (let i = 0; i < fade; i++) out[len - fade + i] *= (1 - i / fade);
   return ab;
 }
+// 合図音(短いビープ)を when 秒に鳴らす。
+function playBeep(when) {
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.value = BEEP_HZ;
+  osc.connect(g); g.connect(ctx.destination);
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(0.12, when + 0.005);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + BEEP_MS / 1000);
+  osc.start(when);
+  osc.stop(when + BEEP_MS / 1000 + 0.02);
+}
 function playGated(buf, stim) {
   ensureCtx();
-  if (_curSrc) { try { _curSrc.stop(); } catch (e) {} }
-  if (stim.frac <= 0) { _curSrc = null; return; }   // 無音アンカー
+  if (_curSrc) { try { _curSrc.stop(); } catch (e) {} _curSrc = null; }
+  const t0 = ctx.currentTime + 0.02;
+  playBeep(t0);                                     // まず合図音を鳴らす
+  if (stim.frac <= 0) return;                       // 無音の問でも合図音だけは鳴る
   const s = ctx.createBufferSource();
   s.buffer = gatedBuffer(buf, stim.char_onset_s, stim.char_dur_s, stim.frac);
   s.connect(ctx.destination);
-  s.start();
+  s.start(t0 + BEEP_LEAD_MS / 1000);                // 合図音のあと、間隔をおいて文字の音声
   _curSrc = s;
 }
 
@@ -194,8 +213,9 @@ async function run() {
     type: jsPsychInstructions,
     pages: [
       `<h2>課題</h2>
-       <p>各問で、ひらがな1文字の読み上げ音声が流れます。
-       発話のごく途中までしか流れず短くて分かりにくい場合もあれば、最後まではっきり聞こえる場合もあります。</p>
+       <p>各問で、まず短い「ピッ」という合図音が鳴り、そのあとに、ひらがな1文字の読み上げ音声が流れます。
+       合図音は、音声が始まる目印です。読み上げは、発話のごく途中までしか流れず短くて分かりにくい場合もあれば、
+       最後まではっきり聞こえる場合もあります。</p>
        <p>「▶ 音をきく / もう一度」ボタンで <b>何度でも</b> 聞き直せます。
        下の <b>50音表</b>(濁音・半濁音を含む 72 字)から、聞こえたと思う 1 文字を選んでください。
        表は毎回同じ並びです。</p>

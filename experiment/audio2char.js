@@ -22,6 +22,10 @@ const N_PRACTICE = 5;
 const FRAC_GRID = Array.from({length: 21}, (_, i) => i * 5);
 
 const FADE_MS = 8;   // ゲート切断点の短いフェード(クリック防止)
+// 各問の音声の直前に鳴らす合図音(ビープ)。開始が分かるようにするため。
+const BEEP_HZ = 880;      // 合図音の高さ
+const BEEP_MS = 80;       // 合図音の長さ
+const BEEP_LEAD_MS = 300; // 合図音の開始から、文字の音声が始まるまでの間隔
 
 // =========================================================================
 // 全 72 字の固定50音グリッド (audio.js の GRID_AUDIO と一致)
@@ -100,13 +104,28 @@ function gatedBuffer(buf, c2_onset, c2_dur, frac) {
   return ab;
 }
 
+// 合図音(短いビープ)を when 秒に鳴らす。
+function playBeep(when) {
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.value = BEEP_HZ;
+  osc.connect(g); g.connect(ctx.destination);
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(0.12, when + 0.005);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + BEEP_MS / 1000);
+  osc.start(when);
+  osc.stop(when + BEEP_MS / 1000 + 0.02);
+}
 function playGated(buf, stim) {
   ensureCtx();
-  if (_curSrc) { try { _curSrc.stop(); } catch (e) {} }
+  if (_curSrc) { try { _curSrc.stop(); } catch (e) {} _curSrc = null; }
+  const t0 = ctx.currentTime + 0.02;
+  playBeep(t0);                                     // まず合図音を鳴らす
   const s = ctx.createBufferSource();
   s.buffer = gatedBuffer(buf, stim.c2_onset_s, stim.c2_dur_s, stim.frac);
   s.connect(ctx.destination);
-  s.start();
+  s.start(t0 + BEEP_LEAD_MS / 1000);                // 合図音のあと、間隔をおいて文字の音声
   _curSrc = s;
 }
 
@@ -257,7 +276,8 @@ async function run() {
     type: jsPsychInstructions,
     pages: [
       `<h2>課題</h2>
-       <p>各問で、ひらがなを <b>2文字つづけて</b> 読み上げます。
+       <p>各問で、まず短い「ピッ」という合図音が鳴り、そのあとに、ひらがなを <b>2文字つづけて</b> 読み上げます。
+       合図音は、音声が始まる目印です。
        1文字目は最後まで聞こえますが、<b>2文字目は途中までしか流れない</b>ことがあります
        (ごく短いこともあれば、最後まで聞こえることもあります)。</p>
        <p>「▶ 音をきく / もう一度」ボタンで <b>何度でも</b> 聞き直せます。
