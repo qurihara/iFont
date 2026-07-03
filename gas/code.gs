@@ -25,15 +25,19 @@
  * The handler logs whichever level fields are present (k* for visual,
  * frac* for audio) and leaves the other blank.
  *
- * 2文字課題 (2026-07-02 設計改訂):
+ * 2文字課題 / 1文字課題 (2026-07-02 設計改訂):
  *   - audio2char: answer_key_2char.json のエントリは "audio2char|<id>" を鍵に
  *     {c1, c2, target, f0_c1_hz, f0_c2_hz, corrected, bigram_freq} を持つ。
- *     client は素の id を送るので、modality を接頭辞にした鍵でも引く。
  *     正解は entry.target。client は pitch_scheme ("B3-E4") と frac を送る。
- *   - visual2char: 刺激はブラウザ側で合成するため answer_key が存在しない。
- *     client が target_char (正解) と c1 を申告し、サーバはそれで採点・記録する。
+ *   - audio1char: answer_key_1char.json のエントリは "audio1char|<id>" を鍵に
+ *     {char, target, f0_hz, corrected} を持つ。正解は entry.target。
+ *     client は pitch_scheme ("B3") と frac を送る。C1=∅ (発話先頭) の特殊ケース。
+ *   - visual2char / visual1char: 刺激はブラウザ側で合成するため answer_key が無い。
+ *     client が target_char (正解) を申告し、サーバはそれで採点・記録する。
  *     申告ベースであることは全課題共通のチート耐性方針 (catch 試行 + RT フィルタ)
  *     の範囲内。algo (提示アルゴリズム) と font も記録する。
+ *   複数の answer_key ファイル (answer_key.json / _2char / _1char) は、本番デプロイ時に
+ *   マージして GAS の ANSWER_KEY プロパティに貼る (鍵の接頭辞で衝突しない)。
  *
  * Notes:
  *   - Client posts with mode: "no-cors", so the response body is not read
@@ -66,10 +70,10 @@ function doPost(e) {
     if (stim) {
       // 事前レンダリング系: 正解は answer_key 側。旧形式は answer、2文字課題は target。
       correctChar = (stim.answer !== undefined) ? stim.answer : stim.target;
-    } else if (body.modality === "visual2char") {
+    } else if (body.modality === "visual2char" || body.modality === "visual1char") {
       // ブラウザ側合成のため answer_key が無い。client 申告の正解で採点する。
       if (!body.target_char) {
-        return out({status: "error", reason: "visual2char requires target_char"});
+        return out({status: "error", reason: body.modality + " requires target_char"});
       }
       stim = {};
       correctChar = body.target_char;

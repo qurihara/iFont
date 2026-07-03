@@ -12,3 +12,5 @@ voicevox_setup/
 answer_key_2char.json
 experiment/answer_key_2char.json
 .claude/launch.json
+answer_key_1char.json
+experiment/answer_key_1char.json
