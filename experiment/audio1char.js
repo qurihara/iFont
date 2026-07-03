@@ -13,10 +13,12 @@ const N_PRACTICE = 5;
 const CATCH_RATE = 0.05;
 const FRAC_GRID = Array.from({length: 21}, (_, i) => i * 5);
 const FADE_MS = 8;
-// 各問の音声の直前に鳴らす合図音(ビープ)。開始が分かるようにするため。
-const BEEP_HZ = 880;      // 合図音の高さ
-const BEEP_MS = 80;       // 合図音の長さ
-const BEEP_LEAD_MS = 300; // 合図音の開始から、文字の音声が始まるまでの間隔
+// 各問の音声の前後に鳴らす合図音(ビープ)。開始と終了が分かるようにするため。
+const BEEP_HZ = 880;         // 合図音の高さ
+const BEEP_MS = 80;          // 合図音1回の長さ
+const BEEP_LEAD_MS = 300;    // 開始の合図音から、文字の音声が始まるまでの間隔
+const END_GAP_MS = 500;      // 文字の音声が終わってから、終了の合図音までの間隔
+const END_BEEP_GAP_MS = 140; // 終了の合図音を2回鳴らすときの、1回目と2回目の間隔
 
 // 全72字の固定50音グリッド (audio.js の GRID_AUDIO と一致)
 const GRID_AUDIO = [
@@ -47,7 +49,7 @@ const jsPsych = initJsPsych({
 let ctx = null;
 const _bufCache = {};
 let _replays = 0;
-let _curSrc = null;
+let _nodes = [];   // 予約済みの音声ノード(合図音・刺激)。再生し直すときにまとめて止める。
 
 function ensureCtx() {
   if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -75,6 +77,11 @@ function gatedBuffer(buf, onset, dur, frac) {
   for (let i = 0; i < fade; i++) out[len - fade + i] *= (1 - i / fade);
   return ab;
 }
+// 予約済みの音声ノードをまとめて止める(再生し直し・次の問への移行時)。
+function stopAll() {
+  for (const n of _nodes) { try { n.stop(); } catch (e) {} }
+  _nodes = [];
+}
 // 合図音(短いビープ)を when 秒に鳴らす。
 function playBeep(when) {
   const osc = ctx.createOscillator();
@@ -87,18 +94,26 @@ function playBeep(when) {
   g.gain.exponentialRampToValueAtTime(0.0001, when + BEEP_MS / 1000);
   osc.start(when);
   osc.stop(when + BEEP_MS / 1000 + 0.02);
+  _nodes.push(osc);
 }
+// 1問の再生: 開始の合図音 → 文字の音声 → (終わって0.5秒後に)終了の合図音を2回。
 function playGated(buf, stim) {
   ensureCtx();
-  if (_curSrc) { try { _curSrc.stop(); } catch (e) {} _curSrc = null; }
+  stopAll();
   const t0 = ctx.currentTime + 0.02;
-  playBeep(t0);                                     // まず合図音を鳴らす
-  if (stim.frac <= 0) return;                       // 無音の問でも合図音だけは鳴る
-  const s = ctx.createBufferSource();
-  s.buffer = gatedBuffer(buf, stim.char_onset_s, stim.char_dur_s, stim.frac);
-  s.connect(ctx.destination);
-  s.start(t0 + BEEP_LEAD_MS / 1000);                // 合図音のあと、間隔をおいて文字の音声
-  _curSrc = s;
+  playBeep(t0);                                     // 開始の合図音(1回)
+  const stimStart = t0 + BEEP_LEAD_MS / 1000;
+  const stimDur = stim.char_dur_s * stim.frac / 100; // 実際に鳴る音声の長さ(frac=0なら0)
+  if (stim.frac > 0) {                              // 無音の問でも合図音は前後に鳴る
+    const s = ctx.createBufferSource();
+    s.buffer = gatedBuffer(buf, stim.char_onset_s, stim.char_dur_s, stim.frac);
+    s.connect(ctx.destination);
+    s.start(stimStart);
+    _nodes.push(s);
+  }
+  const endAt = stimStart + stimDur + END_GAP_MS / 1000;
+  playBeep(endAt);                                  // 終了の合図音(開始と区別するため2回)
+  playBeep(endAt + END_BEEP_GAP_MS / 1000);
 }
 
 async function loadManifest() {
@@ -213,9 +228,11 @@ async function run() {
     type: jsPsychInstructions,
     pages: [
       `<h2>課題</h2>
-       <p>各問で、まず短い「ピッ」という合図音が鳴り、そのあとに、ひらがな1文字の読み上げ音声が流れます。
-       合図音は、音声が始まる目印です。読み上げは、発話のごく途中までしか流れず短くて分かりにくい場合もあれば、
-       最後まではっきり聞こえる場合もあります。</p>
+       <p>各問で、まず短い「ピッ」という合図音が1回鳴り、そのあとに、ひらがな1文字の読み上げ音声が流れます。
+       読み上げが終わってしばらくすると、今度は合図音が「ピッピッ」と2回鳴り、その問が終わったことをお知らせします。
+       始まりの合図音は1回、終わりの合図音は2回で区別できます。</p>
+       <p>読み上げは、発話のごく途中までしか流れず短くて分かりにくい場合もあれば、
+       最後まではっきり聞こえる場合もあります。ほとんど何も聞こえない問もありますが、その場合も合図音は前後に鳴ります。</p>
        <p>「▶ 音をきく / もう一度」ボタンで <b>何度でも</b> 聞き直せます。
        下の <b>50音表</b>(濁音・半濁音を含む 72 字)から、聞こえたと思う 1 文字を選んでください。
        表は毎回同じ並びです。</p>
