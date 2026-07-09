@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iFont 文献互換ベースライン（静止・コントラスト/ぼかし）</title>
+<!--
+  文献互換ベースライン: 静止した1文字を、コントラスト または ぼかし で段階的に劣化させ、
+  恒常法(固定した水準をランダム順)で提示して、劣化の水準に対する認識率の曲線を測る。
+  Strasburger[1](コントラスト) と Kwon & Legge[3](低域通過ぼかし)の劣化次元に対応する。
+  水準は 100=くっきり, 0=最も劣化。認識率は水準とともに上がり、閾値 α は「読めるようになる水準」。
+  劣化のかけ方は iFont の fade(不透明度=コントラスト) と blur(ガウスぼかし) と同じ実装。
+-->
+<style>
+  body{font-family:sans-serif;margin:18px;color:#22283c}
+  h1{font-size:17px} h2{font-size:14px;margin:14px 0 6px}
+  .tab{display:inline-block;padding:6px 14px;border:1px solid #c9ccd8;border-radius:6px;cursor:pointer;margin-right:6px}
+  .tab.active{background:#1e2a5e;color:#fff;border-color:#1e2a5e}
+  canvas#stim{border:1px solid #d8dae4;background:#fff}
+  .row{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+  .note{color:#6b7280;font-size:12.5px;max-width:600px;line-height:1.6}
+  button.ans{width:44px;height:44px;font-size:20px;margin:2px;touch-action:manipulation}
+  button.ans:disabled{visibility:hidden}
+  #grid{line-height:0}
+  #feedback{font-size:18px;font-weight:bold;height:24px}
+  table{border-collapse:collapse;font-size:13px} td,th{border:1px solid #ddd;padding:2px 8px}
+  code{background:#f3f4f9;padding:1px 4px;border-radius:3px}
+  label{font-size:13px}
+</style>
+<h1>iFont 文献互換ベースライン（静止・コントラスト / ぼかし）</h1>
+<p class="note">
+文献［1］［3］と同じ劣化次元で、静止した1文字の「劣化の水準 → 認識率」の曲線を測る。恒常法（固定した水準をランダム順に提示）で、2パラメータ・ロジスティック回帰を当てる。iFont の時間変化提示とちがい、静止画を固定水準で見せる点が文献に忠実で、時間変化版の比較基準になる。
+</p>
+<div style="margin:8px 0">
+  <span class="tab active" id="tabInspect">確認</span>
+  <span class="tab" id="tabTrial">試行</span>
+  <span style="margin-left:20px">劣化のかけ方:
+    <label><input type="radio" name="deg" value="contrast" checked> コントラスト（fade と同じ）</label>
+    <label><input type="radio" name="deg" value="blur"> ぼかし（blur と同じ）</label>
+  </span>
+  <label style="margin-left:16px">露出:
+    <select id="exposure"><option value="0">無制限（文献に忠実）</option><option value="200">0.2秒（iFontの提示時間）</option></select>
+  </label>
+</div>
+<div id="loading">base 画像を読み込み中…（experiment/ を配信して開いてください）</div>
+
+<div class="row">
+  <canvas id="stim" width="256" height="256"></canvas>
+  <div>
+    <div id="inspectPanel">
+      <h2>確認モード</h2>
+      <div><label>文字: <select id="ic"></select></label></div>
+      <div style="margin-top:6px"><label>水準（100=くっきり）: <input id="ilv" type="range" min="0" max="100" value="60" style="width:240px"> <span id="ilvv">60</span></label></div>
+      <div class="note" id="cinfo"></div>
+    </div>
+    <div id="trialPanel" style="display:none">
+      <h2>試行モード</h2>
+      <div id="feedback"></div>
+      <div id="grid"></div>
+      <div style="margin-top:8px">
+        <button id="reset">リセット</button>
+        <button id="csv">CSV ダウンロード</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>結果（水準 → 認識率）</h2>
+<canvas id="chart" width="560" height="240" style="border:1px solid #eee"></canvas>
+<pre id="fitInfo" style="font-size:12px;color:#333"></pre>
+<div id="statsTable"></div>
+
+<script>
+const CHARS=[..."あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん",..."がぎぐげござじずぜぞだぢづでどばびぶべぼ",..."ぱぴぷぺぽ",..."っゃゅょ",..."ゐゑ",..."ゔ"];
+const GRID_78=[["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],["わ","","","","を"],["ん","","","",""],["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゃ","","ゅ","","ょ"],["っ","","","",""],["ゐ","","","","ゑ"],["ゔ","","","",""]];
+const SIZE=256, BLUR_MAX_PX=12, N_CH=CHARS.length;
+const LEVELS=[0,10,20,30,40,50,60,70,80,90,100];   // 恒常法の水準(11段階)
+const $=id=>document.getElementById(id);
+const stim=$("stim"), sctx=stim.getContext("2d");
+let imgs={}, mode="inspect", trialLog=[], cur=null, pend=null;
+
+function loadImage(ch){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error("base/"+ch+".png"));im.src="base/"+encodeURIComponent(ch)+".png";});}
+async function loadAll(){for(const ch of CHARS)imgs[ch]=await loadImage(ch);$("loading").style.display="none";}
+
+function degType(){return document.querySelector('input[name=deg]:checked').value;}
+function michelson(a){return a<=0?0:a/(2-a);}   // 白地に不透明度 a で黒字を合成したときのコントラスト
+// 静止した劣化文字を描く。level:100=くっきり, 0=最も劣化
+function drawStatic(ch, level){
+  sctx.filter="none"; sctx.globalAlpha=1; sctx.fillStyle="#fff"; sctx.fillRect(0,0,SIZE,SIZE);
+  const u=level/100;
+  if(degType()==="contrast"){ sctx.globalAlpha=u; sctx.drawImage(imgs[ch],0,0,SIZE,SIZE); sctx.globalAlpha=1; }
+  else { sctx.filter="blur("+((1-u)*BLUR_MAX_PX).toFixed(2)+"px)"; sctx.drawImage(imgs[ch],0,0,SIZE,SIZE); sctx.filter="none"; }
+}
+function blankStage(){sctx.filter="none";sctx.globalAlpha=1;sctx.fillStyle="#fff";sctx.fillRect(0,0,SIZE,SIZE);}
+
+// ---- 確認モード ----
+function setupInspect(){
+  const sel=$("ic"); CHARS.forEach(c=>sel.add(new Option(c,c))); sel.value="あ";
+  const upd=()=>{const ch=sel.value, lv=+$("ilv").value; $("ilvv").textContent=lv; drawStatic(ch,lv);
+    $("cinfo").textContent=degType()==="contrast"
+      ?"不透明度 "+(lv/100).toFixed(2)+" → Michelson コントラスト "+michelson(lv/100).toFixed(3)
+      :"ガウスぼかし半径 "+((1-lv/100)*BLUR_MAX_PX).toFixed(1)+" px";};
+  sel.onchange=upd; $("ilv").oninput=upd;
+  document.querySelectorAll('input[name=deg]').forEach(r=>r.addEventListener("change",()=>{upd(); if(mode==="trial"){}}));
+  upd();
+}
+// ---- 試行モード ----
+function buildGrid(){
+  const g=$("grid"); g.innerHTML="";
+  for(const row of GRID_78){const div=document.createElement("div");
+    for(const ch of row){const b=document.createElement("button");b.className="ans";b.textContent=ch;
+      if(ch){b.onclick=()=>answer(ch);}else{b.disabled=true;} div.appendChild(b);} g.appendChild(div);}
+}
+function startTrial(){
+  const ch=CHARS[Math.floor(Math.random()*N_CH)];
+  const level=LEVELS[Math.floor(Math.random()*LEVELS.length)];
+  cur={ch,level,type:degType(),t0:performance.now()};
+  const exp=+$("exposure").value;
+  drawStatic(ch,level);
+  if(exp>0){ pend=setTimeout(()=>{blankStage(); pend=null;}, exp); }
+  $("feedback").textContent="この文字は？";
+}
+function answer(resp){
+  if(!cur)return; const rt=performance.now()-cur.t0; const ok=resp===cur.ch;
+  trialLog.push({char:cur.ch,deg:cur.type,frac:cur.level,correct:ok,rt_ms:Math.round(rt),n_choices:N_CH});
+  $("feedback").textContent=ok?"○ 正解":"× 正解は「"+cur.ch+"」"; $("feedback").style.color=ok?"#2e7d8f":"#c25b4e";
+  cur=null; blankStage(); drawStats();
+  if(pend){clearTimeout(pend);pend=null;}
+  setTimeout(()=>{ if(mode==="trial") startTrial(); }, 1000);
+}
+function setupTrial(){ buildGrid(); $("reset").onclick=()=>{trialLog=[];drawStats();}; $("csv").onclick=downloadCSV; }
+function downloadCSV(){
+  const head="char,deg,level,correct,rt_ms,n_choices\n";
+  const body=trialLog.map(t=>[t.char,t.deg,t.frac,t.correct?1:0,t.rt_ms,t.n_choices].join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([head+body],{type:"text/csv"}));
+  a.download="baseline_"+Date.now()+".csv";a.click();
+}
+
+// ---- ロジスティック回帰 (pilot_visual2char.js と同じ) ----
+function logL(data,a,b){let ll=0;for(const [x,y,g] of data){const z=b*(x-a);const s=z>=0?1/(1+Math.exp(-z)):Math.exp(z)/(1+Math.exp(z));let p=g+(1-g)*s;if(p<1e-9)p=1e-9;else if(p>1-1e-9)p=1-1e-9;ll+=y*Math.log(p)+(1-y)*Math.log(1-p);}return ll;}
+function fitLogistic(trials){
+  const data=trials.map(t=>[t.frac,t.correct?1:0,1/Math.max(2,t.n_choices||4)]);
+  if(data.length<8)return null; const nc=data.filter(d=>d[1]===1).length; if(nc===0||nc===data.length)return null;
+  let aLo=0,aHi=100,bLo=0.005,bHi=1.5,bestA=50,bestB=0.2,bestLL=-Infinity;const N=30;
+  for(let pass=0;pass<4;pass++){let ca=bestA,cb=bestB,cll=bestLL;
+    for(let i=0;i<=N;i++){const a=aLo+(aHi-aLo)*i/N;for(let j=0;j<=N;j++){const b=bLo+(bHi-bLo)*j/N;const ll=logL(data,a,b);if(ll>cll){cll=ll;ca=a;cb=b;}}}
+    bestA=ca;bestB=cb;bestLL=cll;const aS=(aHi-aLo)/N*2,bS=(bHi-bLo)/N*2;aLo=bestA-aS;aHi=bestA+aS;bLo=Math.max(1e-4,bestB-bS);bHi=bestB+bS;}
+  const mean=data.reduce((s,d)=>s+d[1],0)/data.length;let ln=0;for(const[,y]of data){const p=Math.max(1e-9,Math.min(1-1e-9,mean));ln+=y*Math.log(p)+(1-y)*Math.log(1-p);}
+  const r2=ln<0?1-bestLL/ln:0; const counts={};for(const[,,g]of data)counts[g]=(counts[g]||0)+1;const gamma=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0]*1;
+  return {alpha:bestA,beta:bestB,gamma,n:data.length,pseudoR2:r2};
+}
+function logisticP(x,fit){const z=fit.beta*(x-fit.alpha);const s=z>=0?1/(1+Math.exp(-z)):Math.exp(z)/(1+Math.exp(z));return fit.gamma+(1-fit.gamma)*s;}
+function median(xs){if(!xs.length)return 0;const s=xs.slice().sort((a,b)=>a-b);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+function drawStats(){
+  const can=$("chart"),c=can.getContext("2d");const w=can.width,h=can.height;c.clearRect(0,0,w,h);
+  const binW=5,nB=21,bins=Array.from({length:nB},()=>({n:0,c:0}));
+  for(const t of trialLog){const bi=Math.min(nB-1,Math.floor(t.frac/binW));bins[bi].n++;if(t.correct)bins[bi].c++;}
+  c.strokeStyle="#ccc";c.beginPath();c.moveTo(40,10);c.lineTo(40,h-24);c.lineTo(w-10,h-24);c.stroke();
+  c.fillStyle="#666";c.font="10px monospace";
+  for(let y=0;y<=4;y++){const py=10+(h-34)*y/4;c.fillText((100-y*25)+"%",4,py+4);c.strokeStyle="#eee";c.beginPath();c.moveTo(40,py);c.lineTo(w-10,py);c.stroke();}
+  const barW=(w-50)/nB;
+  for(let i=0;i<nB;i++){const b=bins[i],x=42+i*barW;if(b.n>0){const acc=b.c/b.n,bh=acc*(h-34);c.fillStyle="#4a76d6";c.fillRect(x,h-24-bh,Math.max(1,barW-2),bh);c.fillStyle="#222";c.fillText(b.n,x+1,h-12);}if(i%4===0){c.fillStyle="#666";c.fillText((i*binW)+"",x+1,h-2);}}
+  c.fillStyle="#999";c.fillText("水準 %",w-56,h-2);
+  const fit=fitLogistic(trialLog);
+  if(fit){c.strokeStyle="#b5402a";c.lineWidth=2;c.beginPath();
+    for(let i=0;i<=200;i++){const x=i*100/200;const p=logisticP(x,fit);const px=42+(x/binW+0.5)*barW,py=(h-24)-p*(h-34);if(i===0)c.moveTo(px,py);else c.lineTo(px,py);}c.stroke();
+    const pA=fit.gamma+(1-fit.gamma)*0.5;
+    if(fit.alpha>=0&&fit.alpha<=100){const px=42+(fit.alpha/binW+0.5)*barW,py=(h-24)-pA*(h-34);c.fillStyle="#b5402a";c.beginPath();c.arc(px,py,5,0,2*Math.PI);c.fill();c.strokeStyle="#b5402a";c.setLineDash([2,3]);c.beginPath();c.moveTo(px,h-24);c.lineTo(px,py);c.stroke();c.setLineDash([]);}
+    const extra=degType()==="contrast"?(" / 閾値のコントラスト="+michelson(fit.alpha/100).toFixed(3)):(" / 閾値のぼかし半径="+((1-fit.alpha/100)*BLUR_MAX_PX).toFixed(1)+"px");
+    $("fitInfo").textContent="2P logistic: α(閾値の水準)="+fit.alpha.toFixed(1)+"% β="+fit.beta.toFixed(3)+" γ="+fit.gamma.toFixed(3)+" pseudoR²="+fit.pseudoR2.toFixed(2)+" (n="+fit.n+")"+extra;
+  } else $("fitInfo").textContent=trialLog.length>=8?"(全問同正誤などで未フィット)":"(フィットには 8 試行以上必要・現在 "+trialLog.length+")";
+  const tot=trialLog.length,cor=trialLog.filter(t=>t.correct).length,rtMed=tot?median(trialLog.map(t=>t.rt_ms)):0;
+  $("statsTable").innerHTML="<table><tr><th>n</th><th>正答</th><th>正答率</th><th>中央RT</th></tr><tr><td>"+tot+"</td><td>"+cor+"</td><td>"+(tot?(100*cor/tot).toFixed(1):"—")+"%</td><td>"+rtMed.toFixed(0)+"ms</td></tr></table>";
+}
+
+function setMode(m){mode=m;if(pend){clearTimeout(pend);pend=null;}
+  $("tabInspect").classList.toggle("active",m==="inspect");$("tabTrial").classList.toggle("active",m==="trial");
+  $("inspectPanel").style.display=m==="inspect"?"":"none";$("trialPanel").style.display=m==="trial"?"":"none";
+  if(m==="trial"){cur=null;startTrial();}else{blankStage();}
+}
+async function boot(){
+  $("tabInspect").onclick=()=>setMode("inspect");$("tabTrial").onclick=()=>setMode("trial");
+  try{await loadAll();}catch(e){$("loading").textContent="起動エラー: "+e.message;$("loading").style.color="#900";return;}
+  setupInspect();setupTrial();drawStats();setMode("inspect");
+}
+boot();
+</script>

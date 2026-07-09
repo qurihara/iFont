@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iFont 文字モーフィング デモ</title>
+<style>
+  body { font-family: sans-serif; margin: 20px; color: #22283c; }
+  h1 { font-size: 18px; }
+  .row { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  canvas { border: 1px solid #d8dae4; background: #fff; }
+  label { font-size: 14px; }
+  select, input { font-size: 14px; }
+  .ctl { margin: 6px 0; }
+  .note { color: #6b7280; font-size: 13px; max-width: 560px; line-height: 1.6; }
+  code { background:#f3f4f9; padding:1px 4px; border-radius:3px; }
+</style>
+<h1>iFont 文字モーフィング デモ（符号付き距離場の補間）</h1>
+<p class="note">
+1文字目 C1 から 2文字目 C2 へ、符号付き距離場（内側が負、外側が正の距離）を線形に補間して、対応点をとらずに滑らかに変形する。中間の形はその2文字の対に固有で、2文字課題の「その対に特有の時間的変化」を作る。<code>t</code> スライダで進み具合を、<code>frac</code> で提示を途中で打ち切る位置を変えられる。競技かるたの規定にあわせ、再生は1文字0.2秒とする。
+</p>
+<div class="row">
+  <canvas id="cv" width="256" height="256"></canvas>
+  <div>
+    <div class="ctl"><label>1文字目 C1: <select id="c1"></select></label></div>
+    <div class="ctl"><label>2文字目 C2: <select id="c2"></select></label></div>
+    <div class="ctl"><label>t（変形の進み）: <input id="t" type="range" min="0" max="100" value="0" style="width:220px"> <span id="tv">0%</span></label></div>
+    <div class="ctl"><label>frac（打ち切り位置）: <input id="frac" type="range" min="0" max="100" value="100" style="width:220px"> <span id="fv">100%</span></label></div>
+    <div class="ctl"><button id="play">▶ 0.2秒で C1→C2 を再生</button> <button id="playg">▶ frac まで再生して消す</button></div>
+    <div class="note" id="status">読み込み中…</div>
+  </div>
+</div>
+
+<script>
+const SIZE = 200, CW = 256;
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+
+// 視覚78字（ぁぃぅぇぉゎ を除く）
+const CHARS = [...'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょっゐゑゔ'];
+
+const INF = 1e20;
+// Felzenszwalb & Huttenlocher の1次元2乗距離変換
+function edt1d(f, n) {
+  const d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+  let k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
+  for (let q = 1; q < n; q++) {
+    let s = ((f[q] + q*q) - (f[v[k]] + v[k]*v[k])) / (2*q - 2*v[k]);
+    while (s <= z[k]) { k--; s = ((f[q] + q*q) - (f[v[k]] + v[k]*v[k])) / (2*q - 2*v[k]); }
+    k++; v[k] = q; z[k] = s; z[k+1] = INF;
+  }
+  k = 0;
+  for (let q = 0; q < n; q++) {
+    while (z[k+1] < q) k++;
+    d[q] = (q - v[k]) * (q - v[k]) + f[v[k]];
+  }
+  return d;
+}
+// 2次元2乗距離変換（seed=0 の点からの2乗距離）
+function edt2d(grid, w, h) {
+  const col = new Float64Array(h);
+  for (let x = 0; x < w; x++) {
+    for (let y = 0; y < h; y++) col[y] = grid[y*w + x];
+    const d = edt1d(col, h);
+    for (let y = 0; y < h; y++) grid[y*w + x] = d[y];
+  }
+  const rowf = new Float64Array(w);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) rowf[x] = grid[y*w + x];
+    const d = edt1d(rowf, w);
+    for (let x = 0; x < w; x++) grid[y*w + x] = d[x];
+  }
+  return grid;
+}
+// マスク(ink=true) から符号付き距離場を作る（内側が負）
+function makeSDF(mask, w, h) {
+  const gOut = new Float64Array(w*h), gIn = new Float64Array(w*h);
+  for (let i = 0; i < w*h; i++) { gOut[i] = mask[i] ? 0 : INF; gIn[i] = mask[i] ? INF : 0; }
+  edt2d(gOut, w, h); edt2d(gIn, w, h);
+  const sdf = new Float32Array(w*h);
+  for (let i = 0; i < w*h; i++) sdf[i] = Math.sqrt(gOut[i]) - Math.sqrt(gIn[i]);
+  return sdf;
+}
+
+const sdfCache = {};
+const off = document.createElement('canvas'); off.width = off.height = SIZE;
+const octx = off.getContext('2d');
+function loadSDF(ch) {
+  return new Promise((resolve) => {
+    if (sdfCache[ch]) return resolve(sdfCache[ch]);
+    const img = new Image();
+    img.onload = () => {
+      octx.clearRect(0, 0, SIZE, SIZE); octx.drawImage(img, 0, 0, SIZE, SIZE);
+      const d = octx.getImageData(0, 0, SIZE, SIZE).data;
+      const mask = new Uint8Array(SIZE*SIZE);
+      for (let i = 0; i < SIZE*SIZE; i++) {
+        // base は白地に黒字。輝度が低い(暗い)ところをインクとみなす
+        const lum = (d[i*4] + d[i*4+1] + d[i*4+2]) / 3;
+        mask[i] = lum < 128 ? 1 : 0;
+      }
+      const sdf = makeSDF(mask, SIZE, SIZE);
+      sdfCache[ch] = sdf; resolve(sdf);
+    };
+    img.onerror = () => resolve(null);
+    img.src = 'base/' + ch + '.png';
+  });
+}
+
+function drawMorph(sdf1, sdf2, t) {
+  const soft = 1.4;
+  const out = ctx.createImageData(CW, CW);
+  const sc = SIZE / CW;
+  for (let y = 0; y < CW; y++) {
+    for (let x = 0; x < CW; x++) {
+      const sx = Math.min(SIZE-1, (x*sc)|0), sy = Math.min(SIZE-1, (y*sc)|0);
+      const s = (1-t)*sdf1[sy*SIZE+sx] + t*sdf2[sy*SIZE+sx];
+      let cov = 0.5 - s/soft; cov = cov < 0 ? 0 : cov > 1 ? 1 : cov;   // 被覆率
+      const v = 255 * (1 - cov);
+      const o = (y*CW + x) * 4;
+      out.data[o] = out.data[o+1] = out.data[o+2] = v; out.data[o+3] = 255;
+    }
+  }
+  ctx.putImageData(out, 0, 0);
+}
+
+let S1 = null, S2 = null;
+async function refresh() {
+  const c1 = document.getElementById('c1').value, c2 = document.getElementById('c2').value;
+  document.getElementById('status').textContent = '計算中…';
+  S1 = await loadSDF(c1); S2 = await loadSDF(c2);
+  if (!S1 || !S2) { document.getElementById('status').textContent = '画像が読めませんでした（base/ を配信して開いてください）'; return; }
+  document.getElementById('status').textContent = 'C1='+c1+' → C2='+c2+'（距離場を計算済み）';
+  render();
+}
+function render() {
+  if (!S1 || !S2) return;
+  const t = +document.getElementById('t').value / 100;
+  drawMorph(S1, S2, t);
+}
+function play(gated) {
+  if (!S1 || !S2) return;
+  const dur = 200; // 0.2秒
+  const frac = +document.getElementById('frac').value / 100;
+  const t0 = performance.now();
+  function step(now) {
+    let p = Math.min(1, (now - t0) / dur);
+    if (gated) {
+      // frac まで進めて、そこで打ち切って消す
+      if (p >= frac) { ctx.clearRect(0,0,CW,CW); ctx.fillStyle='#fff'; ctx.fillRect(0,0,CW,CW); return; }
+      drawMorph(S1, S2, p);
+    } else {
+      drawMorph(S1, S2, p);
+    }
+    document.getElementById('t').value = Math.round(p*100);
+    document.getElementById('tv').textContent = Math.round(p*100)+'%';
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// UI 初期化
+const s1 = document.getElementById('c1'), s2 = document.getElementById('c2');
+CHARS.forEach(c => { s1.add(new Option(c, c)); s2.add(new Option(c, c)); });
+s1.value = 'や'; s2.value = 'ま';
+s1.onchange = s2.onchange = refresh;
+document.getElementById('t').oninput = e => { document.getElementById('tv').textContent = e.target.value+'%'; render(); };
+document.getElementById('frac').oninput = e => { document.getElementById('fv').textContent = e.target.value+'%'; };
+document.getElementById('play').onclick = () => play(false);
+document.getElementById('playg').onclick = () => play(true);
+refresh();
+</script>

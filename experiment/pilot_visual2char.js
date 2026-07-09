@@ -172,11 +172,81 @@ const ALGOS = {
   },
 };
 
+// ---- メッシュ(ワープ)モーフィング = 古典的な画像モーフィング ----------------
+// 事前計算した対ごとのメッシュ頂点対応(morph_mesh.bin)を読み、規則格子 G_A(恒等)
+// と変形先 G_B を線形補間して、テクスチャを貼った三角形メッシュをワープし重ねる。
+let meshData = null;
+async function loadMeshData() {
+  try {
+    const man = await (await fetch("morph_mesh_manifest.json")).json();
+    const buf = new Uint8Array(await (await fetch("morph_mesh.bin")).arrayBuffer());
+    const M = man.grid, S = man.size, step = (S - 1) / (M - 1);
+    const idx = {}; man.chars.forEach((c, i) => idx[c] = i);
+    const GA = [];
+    for (let r = 0; r < M; r++) for (let c = 0; c < M; c++) GA.push([c * step, r * step]);
+    const tris = [];
+    for (let r = 0; r < M - 1; r++) for (let c = 0; c < M - 1; c++) {
+      const a = r * M + c, b = r * M + c + 1, d = (r + 1) * M + c, e = (r + 1) * M + c + 1;
+      tris.push([a, b, d]); tris.push([b, e, d]);
+    }
+    meshData = { M, S, idx, buf, GA, tris, chars: man.chars };
+  } catch (e) { meshData = null; console.warn("morph_mesh 読み込み不可 (morph は fade で代替):", e.message); }
+}
+function getGB(c1, c2) {
+  const { M, S, idx, buf, chars } = meshData, n = M * M;
+  const base = (idx[c1] * chars.length + idx[c2]) * n * 2;
+  const gb = new Array(n);
+  for (let i = 0; i < n; i++) gb[i] = [buf[base + i * 2] * S / 255, buf[base + i * 2 + 1] * S / 255];
+  return gb;
+}
+function solve3(rows, y) {   // 3x3 連立を Cramer で解く
+  const [[a, b, c], [d, e, f], [g, h, i]] = rows;
+  const det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+  if (Math.abs(det) < 1e-9) return null;
+  const dx = y[0] * (e * i - f * h) - b * (y[1] * i - f * y[2]) + c * (y[1] * h - e * y[2]);
+  const dy = a * (y[1] * i - f * y[2]) - y[0] * (d * i - f * g) + c * (d * y[2] - y[1] * g);
+  const dz = a * (e * y[2] - y[1] * h) - b * (d * y[2] - y[1] * g) + y[0] * (d * h - e * g);
+  return [dx / det, dy / det, dz / det];
+}
+function drawTexTri(img, s0, s1, s2, d0, d1, d2, alpha) {
+  const S = [[s0[0], s0[1], 1], [s1[0], s1[1], 1], [s2[0], s2[1], 1]];
+  const ace = solve3(S, [d0[0], d1[0], d2[0]]);   // 画面X = a*sx + c*sy + e
+  const bdf = solve3(S, [d0[1], d1[1], d2[1]]);   // 画面Y = b*sx + d*sy + f
+  if (!ace || !bdf) return;
+  sctx.save();
+  sctx.globalAlpha = alpha;
+  sctx.beginPath(); sctx.moveTo(d0[0], d0[1]); sctx.lineTo(d1[0], d1[1]); sctx.lineTo(d2[0], d2[1]); sctx.closePath(); sctx.clip();
+  sctx.setTransform(ace[0], bdf[0], ace[1], bdf[1], ace[2], bdf[2]);
+  sctx.drawImage(img, 0, 0, SIZE, SIZE);
+  sctx.setTransform(1, 0, 0, 1, 0, 0);
+  sctx.restore();
+}
+// C1→C2 のモーフィングの、進み u∈[0,1] の時点の見えを描く
+function renderMorph(c1, c2, u) {
+  clearStage();
+  if (!meshData) { ALGOS.fade(c2, u); return; }   // データ無しの代替
+  const GA = meshData.GA, GB = getGB(c1, c2), tris = meshData.tris;
+  const V = GA.map((p, i) => [(1 - u) * p[0] + u * GB[i][0], (1 - u) * p[1] + u * GB[i][1]]);
+  for (const [i, j, k] of tris) drawTexTri(imgs[c1], GA[i], GA[j], GA[k], V[i], V[j], V[k], 1);   // C1 を土台に
+  for (const [i, j, k] of tris) drawTexTri(imgs[c2], GB[i], GB[j], GB[k], V[i], V[j], V[k], u);   // C2 を u で重ねる
+}
+function playMorph(c1, c2, frac) {
+  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  const cut = frac / 100, t0 = performance.now();
+  function frame(now) {
+    const u = (now - t0) / CHAR_MS;                // 0→1 を 0.2s で
+    if (u < cut) { renderMorph(c1, c2, u); rafId = requestAnimationFrame(frame); }
+    else { clearStage(); rafId = null; }           // frac% で消去
+  }
+  clearStage(); rafId = requestAnimationFrame(frame);
+}
+
 // ---- 2文字シーケンスの再生 --------------------------------------------------
 // C1 を 0→0.2s でアルゴリズム提示し、0.2s で一瞬で消去して C2 に切り替える。
 // C2 は frac% 時点 (0.2s × frac/100) で消去する。経過時間ベースで描く。
 function playSeq(c1, c2, frac, algoName) {
   if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  if (algoName === "morph") { playMorph(c1, c2, frac); return; }   // モーフィングは C1→C2 の単一提示
   const render = ALGOS[algoName];
   const c2End = CHAR_MS + CHAR_MS * frac / 100;
   const t0 = performance.now();
@@ -345,6 +415,7 @@ async function boot(){
   $("modeTrial").onclick=()=>setMode("trial");
   try { await loadAll(); }
   catch(e){ $("loading").textContent="起動エラー: "+e.message; $("loading").style.color="#900"; return; }
+  await loadMeshData();   // morph 用のメッシュ頂点対応 (無ければ morph は fade で代替)
   clearStage();
   setupInspect(); setupTrial(); drawStats(); setMode("inspect");
 }
