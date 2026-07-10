@@ -32,7 +32,7 @@ def render_inclusive_caption(
 
     Args:
         text: 字幕・読み上げるテキスト（かな推奨）
-        pitch: 音階名(例 'E4','B3','A#4')または周波数[Hz]
+        pitch: 音階名(例 'E4','B3','A#4')または周波数[Hz]。カンマ区切りで1文字ごとに指定可(例 'B3,E4,G4')。1つだけなら全文字に適用
         speed: 1秒あたりの文字数（既定5=0.2秒/文字）
         out: 出力mp4のパス
         engine: 'tones'(自己完結のトーン合成) か 'voicevox'(ローカルTTS, 要エンジン)

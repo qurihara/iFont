@@ -35,23 +35,37 @@ def note_to_hz(pitch: str) -> float:
     return 440.0 * 2 ** ((midi - 69) / 12.0)
 
 
-def synth_tones(n_chars: int, pitch_hz: float, char_dur: float,
-                rise: bool = False, sr: int = 44100):
-    """1文字ずつトーンを並べた音を作る（float リスト）。
+def build_pitch_list(pitch_arg, n_chars: int, rise: bool = False):
+    """--pitch 引数から、1文字ごとの周波数[Hz]リストを作る。
 
-    rise=True のとき、競技かるた風に1文字目を完全4度下げ(B3→E4 等)、2文字目以降を pitch_hz にする。
+    音高を1音ごとに自由設計できる。文脈のない単音の識別は基本周波数(F0)の広い変動に
+    頑健であり(話者正規化)、一定音高で測った対応づけ g は音高を変えた実用提示にもそのまま生きる。
+    そこで実験は一定音高(単一指定)で、実用(競技かるた等)は旋律(カンマ区切り)で、と使い分けられる。
+
+    - 単一指定(例 'E4' や '330') は全文字に適用。--rise のときのみ1文字目を完全4度下(かるた風)にする。
+    - カンマ区切り(例 'B3,E4,G4,E4,C4') は1音ごとに指定。足りなければ最後の音を繰り返し、多ければ切り詰める。
     """
+    parts = [p.strip() for p in str(pitch_arg).split(",") if p.strip()]
+    freqs = [note_to_hz(p) for p in parts]
+    if len(freqs) <= 1:
+        base = freqs[0] if freqs else note_to_hz("E4")
+        if rise:
+            return [base * 2 ** (-5 / 12.0) if i == 0 else base for i in range(n_chars)]
+        return [base] * n_chars
+    if len(freqs) < n_chars:
+        freqs = freqs + [freqs[-1]] * (n_chars - len(freqs))
+    return freqs[:n_chars]
+
+
+def synth_tones(pitches_hz, char_dur: float, sr: int = 44100):
+    """1文字ごとの周波数リスト pitches_hz を、1音ずつトーンにして並べた音を作る（float リスト）。"""
     samples = []
-    for i in range(n_chars):
-        f = pitch_hz
-        if rise and i == 0:
-            f = pitch_hz * 2 ** (-5 / 12.0)  # 完全4度下
+    for f in pitches_hz:
         m = int(char_dur * sr)
         for k in range(m):
             t = k / sr
             # 立ち上がり・減衰の窓（クリック音を避ける）
-            env = min(1.0, t / 0.02, (char_dur - t) / 0.04)
-            env = max(0.0, env)
+            env = max(0.0, min(1.0, t / 0.02, (char_dur - t) / 0.04))
             samples.append(0.5 * env * math.sin(2 * math.pi * f * t))
     return samples, sr
 

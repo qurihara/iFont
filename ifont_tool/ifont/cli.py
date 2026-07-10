@@ -1,10 +1,15 @@
 """iFont: テキスト・音階・速度から、字幕と音声再生が同期した動画を出力する CLI。
 
 例:
-    ifont-render --text "ちはやふる" --pitch E4 --speed 5 --rise --out out.mp4
+    # 実験用: 一定音高(モノトーン)
+    ifont-render --text "ちはやふる" --pitch E4 --speed 5 --out out.mp4
+    # 実用: 1文字ごとに音高を設計(旋律)
+    ifont-render --text "ちはやふる" --pitch "B3,E4,G4,E4,C4" --speed 4 --out out.mp4
 
 字幕は、各文字の音が流れる区間の中で、文字単位の視聴覚対応 g（gmodel）に従って
 fade で立ち上がる。音声は既定でトーン合成（音階=pitch）、--engine voicevox で TTS。
+音高は1文字ごとに自由設計できる（--pitch にカンマ区切り）。単音の識別は基本周波数の
+広い変動に頑健なため、一定音高で測った g は音高を変えた実用提示にもそのまま生きる。
 """
 import argparse
 import os
@@ -27,7 +32,7 @@ def build(text, pitch="E4", speed=5.0, out="out.mp4", engine="tones",
     if not os.path.exists(font):
         raise FileNotFoundError(f"フォントが見つからない: {font}")
     char_dur = 1.0 / float(speed)          # 1文字あたり秒
-    pitch_hz = audio.note_to_hz(pitch)
+    pitches_hz = audio.build_pitch_list(pitch, len(chars), rise=rise)  # 1文字ごとの音高
 
     work = tempfile.mkdtemp(prefix="ifont_")
     frames_dir = os.path.join(work, "frames")
@@ -44,7 +49,7 @@ def build(text, pitch="E4", speed=5.0, out="out.mp4", engine="tones",
             print(f"[warn] VOICEVOX を使えませんでした({e})。トーン合成に切り替えます。")
             used_engine = "tones"
     if used_engine == "tones":
-        samples, sr = audio.synth_tones(len(chars), pitch_hz, char_dur, rise=rise)
+        samples, sr = audio.synth_tones(pitches_hz, char_dur)
         audio.write_wav(samples, sr, wav_path)
 
     # --- 字幕フレーム ---
@@ -67,7 +72,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="ifont-render", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--text", required=True, help="字幕・読み上げるテキスト（かな推奨）")
-    ap.add_argument("--pitch", default="E4", help="音階名(例 E4, B3, A#4)または周波数[Hz]")
+    ap.add_argument("--pitch", default="E4",
+                    help="音階名(例 E4, B3, A#4)または周波数[Hz]。カンマ区切りで1文字ごとに指定可"
+                         "(例 'B3,E4,G4,E4,C4')。1つだけなら全文字に適用")
     ap.add_argument("--speed", type=float, default=5.0, help="1秒あたりの文字数（既定5=0.2秒/文字）")
     ap.add_argument("--out", default="out.mp4", help="出力mp4のパス")
     ap.add_argument("--engine", choices=["tones", "voicevox"], default="tones",
