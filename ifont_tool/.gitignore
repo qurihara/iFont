@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.venv/
+# 生成物(サンプルは examples/ に置く。ルートの out.mp4 等は無視)
+/out.mp4
+*.tmp.mp4

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ifont"
+version = "0.1.0"
+description = "テキスト・音階・速度から、字幕と音声再生が同期した動画を出力するインクルーシブ字幕ツール（モックアップ）"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "丸山礼華" },
+  { name = "栗原一貴" },
+]
+dependencies = [
+  "pillow>=9",
+]
+
+[project.optional-dependencies]
+# LLM から操作する MCP サーバを動かす場合
+mcp = ["mcp>=1.0"]
+# ffmpeg を同梱の Python 実装で使いたい場合（システムの ffmpeg があれば不要）
+ffmpeg = ["imageio-ffmpeg>=0.4"]
+
+[project.scripts]
+ifont-render = "ifont.cli:main"
+
+[tool.setuptools]
+packages = ["ifont"]
