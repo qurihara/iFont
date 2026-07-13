@@ -53,11 +53,11 @@ def f_interf():
     for sstar,c,lab in [(400,INK,'視覚 S*≈400ms'),(320,TEAL,'聴覚 S*≈320ms')]:
         ax.axvline(sstar,color=c,ls=':',lw=1.4); ax.text(sstar+4,-27,lab,fontsize=8.6,color=c,rotation=90,va='bottom')
     ax.set_xlabel('文字間 SOA (ms)',fontsize=11,color=TEXT)
-    ax.set_ylabel('干渉指標 I(S) = 実測2文字精度 − 単文字合成予測 (%)',fontsize=10.5,color=TEXT)
+    ax.set_ylabel('干渉指標 I(S) (%)',fontsize=11,color=TEXT)
+    ax.set_title('I(S) = 実測の2文字精度 − 単文字合成予測',fontsize=10,color=TEXT,pad=8)
     ax.set_xlim(100,700); ax.set_ylim(-32,6); ax.legend(fontsize=8.6,loc='lower right',frameon=False)
     for s in ['top','right']: ax.spines[s].set_visible(False)
     ax.grid(True,color=GRID,lw=0.6)
-    ax.text(150,-6,'短SOAで実測<合成予測(干渉)\n臨界SOA以上で等価=単純合成が成立',fontsize=9,color=CORAL)
     save(fig,"fig_interference.png")
 
 if __name__=="__main__":
