@@ -31,14 +31,39 @@ let trials = [], results = [], ti = 0;
 
 function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 
+// 正解表(answer_key_merged.json)を読み込む。Git管理外のため、同ディレクトリからの
+// fetch に失敗した場合(GitHub Pages 等)は、研究者が手元のファイルを選択して読み込む。
+async function loadAnswerKey() {
+  if (!P.has("nokey")) {
+    try {
+      const r = await fetch("answer_key_merged.json", {cache:"no-store"});
+      if (r.ok) return await r.json();
+    } catch (e) { /* fetch不可 → ファイル選択へ */ }
+  }
+  return await new Promise((resolve) => {
+    screen.innerHTML = `<h1>正解表を選択してください</h1>
+      <p class="muted">このページはかな→音声ファイルの対応づけに <b>answer_key_merged.json</b>(Git管理外・研究者のみ保有)が必要です。
+      公開サーバには置いていないため、手元のファイルを選択してください。ファイルは<b>この端末内でのみ</b>使われ、どこにも送信されません。</p>
+      <p><input type="file" id="akfile" accept=".json,application/json"></p>`;
+    document.getElementById("akfile").addEventListener("change", (ev) => {
+      const f = ev.target.files[0];
+      if (!f) return;
+      const rd = new FileReader();
+      rd.onload = () => {
+        try { resolve(JSON.parse(rd.result)); }
+        catch (e) { screen.querySelector("p.muted").textContent = "JSONとして読めませんでした: " + e.message; }
+      };
+      rd.readAsText(f);
+    });
+  });
+}
+
 async function preload() {
   screen.innerHTML = `<h1>読み込み中…</h1><p class="muted">マニフェストと正解表(ローカル)、音声72クリップを読み込んでいます。</p>`;
   const mres = await fetch("audio1char_manifest.json", {cache:"no-store"});
   if (!mres.ok) throw new Error("audio1char_manifest.json が読めない");
   const manifest = await mres.json();
-  const ares = await fetch("answer_key_merged.json", {cache:"no-store"});
-  if (!ares.ok) throw new Error("answer_key_merged.json が読めない(Git管理外。研究者のローカル配信でのみ動く)");
-  const akey = await ares.json();
+  const akey = await loadAnswerKey();
   for (const s of manifest.stimuli) {
     const rec = akey[`audio1char|${s.id}`];
     if (rec && rec.char) stimByChar[rec.char] = s;
