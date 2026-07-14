@@ -66,16 +66,27 @@ function drawChar(ctx, ch) {
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
   if (imgs[ch]) ctx.drawImage(imgs[ch], 0, 0, SIZE, SIZE);
 }
+// 後方マスク: 数枚のかなを描いた画を小タイルに切り、位置と向きをシャッフルした「構造マスク」。
+// 目標文字と同じ線の太さ・空間周波数をもつが、可読なかなにはならない(＝別の文字と混同されない)。
+function buildMaskSource() {
+  const off = document.createElement("canvas"); off.width=SIZE; off.height=SIZE;
+  const o = off.getContext("2d");
+  o.fillStyle="#fff"; o.fillRect(0,0,SIZE,SIZE);
+  for (let i=0;i<4;i++){ const ch=pick(CHARS); if (imgs[ch]) o.drawImage(imgs[ch],0,0,SIZE,SIZE); }
+  return off;
+}
 function drawMask(ctx) {
-  // 後方マスク: 別のかなを複数枚重ねたパターンマスク
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.save(); ctx.globalAlpha = 0.55;
-  for (let i=0;i<6;i++){
-    const ch = pick(CHARS);
-    const dx=(Math.random()-0.5)*40, dy=(Math.random()-0.5)*40;
-    if (imgs[ch]) ctx.drawImage(imgs[ch], dx, dy, SIZE, SIZE);
+  const src = buildMaskSource();
+  const N = 16, ts = SIZE / N;   // 16x16タイルに切って、各セルへランダムなタイルを回転して貼る(細かい線テクスチャ)
+  for (let gy=0; gy<N; gy++) for (let gx=0; gx<N; gx++){
+    const sx = Math.floor(Math.random()*N)*ts, sy = Math.floor(Math.random()*N)*ts;
+    ctx.save();
+    ctx.translate(gx*ts+ts/2, gy*ts+ts/2);
+    ctx.rotate((Math.floor(Math.random()*4))*Math.PI/2);   // 90°単位の回転で可読性を消す
+    ctx.drawImage(src, sx, sy, ts, ts, -ts/2, -ts/2, ts, ts);
+    ctx.restore();
   }
-  ctx.restore();
 }
 
 function runTrial() {
@@ -108,8 +119,8 @@ function runTrial() {
 
 function respond(t, inPractice, tShown) {
   const stage = document.getElementById("stage");
-  stage.innerHTML = `<div style="text-align:center"><div class="ask">一瞬見えた1文字を選んでください</div>
-    <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
+  stage.innerHTML = `<div style="text-align:center"><div class="ask">最後に一瞬見えた1文字を選んでください</div>
+    <div class="muted">分からなければ勘でOK（モザイク模様は答えではありません）</div></div>`;
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_78) for (const ch of row) {
     if (ch==="") { const s=document.createElement("div"); s.className="kana spacer"; grid.appendChild(s); continue; }
@@ -174,7 +185,7 @@ function start() {
 }
 function intro() {
   const maskNote = MASK_MS>0
-    ? `すぐに <b>モザイク模様</b> が出ます <span class="muted">（目に残る残像を消すためのもの。<b>別の文字ではありません／答えなくてよい</b>）</span>`
+    ? `すぐに <b>文字にならないモザイク模様</b> が出ます <span class="muted">（目の残像を消すためのもの。<b>読めるかなではありません／答えなくてよい</b>）</span>`
     : `すぐに画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
     <p><b>1問で答える文字は「1つ」だけです。</b>画面はこの順に進みます。</p>
@@ -182,7 +193,7 @@ function intro() {
       <li>中央の <b>＋</b> を見つめる</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される</li>
       <li>${maskNote}</li>
-      <li>いま一瞬見えた <b>その1文字</b> を、下のかなの表から選ぶ</li>
+      <li><b>最後に一瞬見えた1文字</b> を、下のかなの表から選ぶ</li>
     </ol>
     <p class="muted">わざと短く・見えにくく提示しているので、半分くらい勘になる問題もあります。
     分からなければ推測で選んでください（外れも大切なデータです）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>

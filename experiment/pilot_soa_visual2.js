@@ -61,11 +61,27 @@ function buildTrials() {
 
 function newCanvas() { const c=document.createElement("canvas"); c.id="stim"; c.width=SIZE; c.height=SIZE; return c; }
 function drawChar(ctx, ch) { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); if (imgs[ch]) ctx.drawImage(imgs[ch],0,0,SIZE,SIZE); }
+// 中立マスク: 数枚のかなを描いた画を小タイルに切り、位置と向きをシャッフルした「構造マスク」。
+// 目標文字と同じ線の太さ・空間周波数をもつが、可読なかなにはならない(＝別の文字と混同されない)。
+function buildMaskSource() {
+  const off = document.createElement("canvas"); off.width=SIZE; off.height=SIZE;
+  const o = off.getContext("2d");
+  o.fillStyle="#fff"; o.fillRect(0,0,SIZE,SIZE);
+  for (let i=0;i<4;i++){ const ch=pick(CHARS); if (imgs[ch]) o.drawImage(imgs[ch],0,0,SIZE,SIZE); }
+  return off;
+}
 function drawMask(ctx) {
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.save(); ctx.globalAlpha = 0.55;
-  for (let i=0;i<6;i++){ const ch=pick(CHARS); ctx.drawImage(imgs[ch],(Math.random()-0.5)*40,(Math.random()-0.5)*40,SIZE,SIZE); }
-  ctx.restore();
+  const src = buildMaskSource();
+  const N = 16, ts = SIZE / N;   // 細かい線テクスチャ(可読なかなにならない構造マスク)
+  for (let gy=0; gy<N; gy++) for (let gx=0; gx<N; gx++){
+    const sx = Math.floor(Math.random()*N)*ts, sy = Math.floor(Math.random()*N)*ts;
+    ctx.save();
+    ctx.translate(gx*ts+ts/2, gy*ts+ts/2);
+    ctx.rotate((Math.floor(Math.random()*4))*Math.PI/2);
+    ctx.drawImage(src, sx, sy, ts, ts, -ts/2, -ts/2, ts, ts);
+    ctx.restore();
+  }
 }
 
 function runTrial() {
@@ -190,7 +206,7 @@ function intro() {
       <li>中央の <b>＋</b> を見つめる</li>
       <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間）</li>
       <li>同じ場所に <b>2文字目</b> が出て1文字目を<b>上書き</b>する（同じ時間だけ）</li>
-      <li><b>モザイク模様</b>が出る <span class="muted">（残像消し。答えなくてよい）</span></li>
+      <li><b>文字にならないモザイク模様</b>が出る <span class="muted">（残像消し。読めるかなではない／答えなくてよい）</span></li>
       <li><b>1文字目 → 2文字目</b> の順に、それぞれ下のかなの表から選ぶ</li>
     </ol>
     <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
