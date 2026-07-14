@@ -52,8 +52,10 @@ function buildTrials() {
   const main = [];
   for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2]=pickPair(); main.push({ S, c1, c2, practice:false }); }
   shuffle(main);
+  // 練習は流れを覚えるため、あえて長め(見やすい)SOAの2水準から出す
+  const easy = [...SOA_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({ S: pick(SOA_LEVELS), c1, c2, practice:true }); }
+  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({ S: pick(easy), c1, c2, practice:true }); }
   return prac.concat(main);
 }
 
@@ -94,18 +96,29 @@ function runTrial() {
 function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
     askOne(t, 2, (r2) => {
-      if (!inPractice) results.push({
-        c1: t.c1, c2: t.c2, S: t.S,
-        resp1: r1, resp2: r2,
-        correct1: r1 === t.c1, correct2: r2 === t.c2,
-      });
-      ti++; runTrial();
+      if (!inPractice) {
+        results.push({
+          c1: t.c1, c2: t.c2, S: t.S,
+          resp1: r1, resp2: r2,
+          correct1: r1 === t.c1, correct2: r2 === t.c2,
+        });
+        ti++; runTrial(); return;
+      }
+      // 練習: 2文字の正解を提示して流れを覚えてもらう
+      const ok1 = r1===t.c1, ok2 = r2===t.c2;
+      screen.innerHTML = `<div style="text-align:center;padding:30px">
+        <p>正解 — 1文字目「<b style="font-size:20px">${t.c1}</b>」<span style="color:${ok1?'#2E7D8F':'#C25B4E'}">${ok1?'◯':'×'}</span>
+        ／ 2文字目「<b style="font-size:20px">${t.c2}</b>」<span style="color:${ok2?'#2E7D8F':'#C25B4E'}">${ok2?'◯':'×'}</span></p>
+        <p class="muted">これは練習です。本番も同じ流れ（＋ → 1文字目 → 2文字目で上書き → モザイク → 2つ回答）をくり返します。</p></div>`;
+      setTimeout(() => { ti++; runTrial(); }, 1600);
     });
   });
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
-  stage.innerHTML = `<div style="text-align:center"><div class="ask">${pos}文字目は？</div></div>`;
+  const label = pos===1 ? "1文字目（先に出た文字）は？" : "2文字目（上書きした文字）は？";
+  stage.innerHTML = `<div style="text-align:center"><div class="ask">${label}</div>
+    <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
   document.getElementById("grid")?.remove();
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_78) for (const ch of row) {
@@ -172,11 +185,17 @@ function showResults() {
 function start() { trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p>画面中央に、かなが<b>2文字続けて</b>表示されます。1文字目は次の文字が出るまで(<b>SOA=${SOA_LEVELS.join("・")}ms</b>)、
-    2文字目も同じ時間だけ表示され、直後に「マスク」が出ます。そのあと、<b>1文字目と2文字目を順に</b>50音の表から選んでください。</p>
-    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回) ＋練習${N_PRACTICE}。マスク${MASK_MS}ms。
-    音声・通信なし。結果はこの端末内でJSON保存できます。</p>
-    <p><button class="primary" id="go">開始する</button></p>`;
+    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。画面はこの順に進みます。</p>
+    <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
+      <li>中央の <b>＋</b> を見つめる</li>
+      <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間）</li>
+      <li>同じ場所に <b>2文字目</b> が出て1文字目を<b>上書き</b>する（同じ時間だけ）</li>
+      <li><b>モザイク模様</b>が出る <span class="muted">（残像消し。答えなくてよい）</span></li>
+      <li><b>1文字目 → 2文字目</b> の順に、それぞれ下のかなの表から選ぶ</li>
+    </ol>
+    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
+    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
+    <p><button class="primary" id="go">練習を始める</button></p>`;
   document.getElementById("go").onclick = start;
 }
 

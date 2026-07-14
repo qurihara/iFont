@@ -5,6 +5,7 @@
 "use strict";
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=8&mask=250) ----
+// mask=0 にすると後方マスクを置かず「1文字を出して消すだけ」になる(残像込みの比較・体感用。本番は必ずマスクあり)。
 const P = new URLSearchParams(location.search);
 const D_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 8);   // 各水準の試行数
@@ -49,8 +50,10 @@ function buildTrials() {
   const main = [];
   for (const D of D_LEVELS) for (let k=0;k<PER_LEVEL;k++) main.push({ D, ch: pick(CHARS), practice:false });
   shuffle(main);
+  // 練習は流れを覚えるため、あえて長め(見やすい)の2水準から出す
+  const easy = [...D_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) prac.push({ D: pick(D_LEVELS), ch: pick(CHARS), practice:true });
+  for (let k=0;k<N_PRACTICE;k++) prac.push({ D: pick(easy), ch: pick(CHARS), practice:true });
   return prac.concat(main);
 }
 
@@ -83,7 +86,7 @@ function runTrial() {
   const stage = document.getElementById("stage");
   const canvas = newCanvas(); stage.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  // 注視点 → 露出D → マスクMASK_MS → 応答
+  // 注視点 → 露出D → マスクMASK_MS(0なら白紙) → 応答
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
   ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
   ctx.fillText("+", SIZE/2, SIZE/2);
@@ -92,7 +95,11 @@ function runTrial() {
   function frame(now) {
     const el = now - t0;
     if (phase==="fix" && el >= FIX_MS) { phase="target"; drawChar(ctx, t.ch); }
-    else if (phase==="target" && el >= FIX_MS + t.D) { phase="mask"; drawMask(ctx); }
+    else if (phase==="target" && el >= FIX_MS + t.D) {
+      phase="mask";
+      if (MASK_MS>0) drawMask(ctx);
+      else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }  // mask=0: 出して消すだけ(残像込み・比較用)
+    }
     else if (phase==="mask" && el >= FIX_MS + t.D + MASK_MS) { phase="resp"; return respond(t, inPractice, now); }
     requestAnimationFrame(frame);
   }
@@ -101,15 +108,22 @@ function runTrial() {
 
 function respond(t, inPractice, tShown) {
   const stage = document.getElementById("stage");
-  stage.innerHTML = `<div style="text-align:center"><div class="muted">提示された文字は？</div></div>`;
+  stage.innerHTML = `<div style="text-align:center"><div class="ask">一瞬見えた1文字を選んでください</div>
+    <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_78) for (const ch of row) {
     if (ch==="") { const s=document.createElement("div"); s.className="kana spacer"; grid.appendChild(s); continue; }
     const b = document.createElement("button"); b.className="kana"; b.textContent=ch;
     b.onclick = () => {
       const rt = performance.now() - tShown;
-      if (!inPractice) results.push({ char:t.ch, D:t.D, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) });
-      ti++; runTrial();
+      if (!inPractice) { results.push({ char:t.ch, D:t.D, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) }); ti++; runTrial(); return; }
+      // 練習: 正解を短く提示して流れを覚えてもらう
+      const ok = ch===t.ch;
+      screen.innerHTML = `<div style="text-align:center;padding:34px">
+        <div style="font-size:44px;color:${ok?'#2E7D8F':'#C25B4E'}">${ok?'◯':'×'}</div>
+        <p>一瞬見えていたのは「<b style="font-size:22px">${t.ch}</b>」でした。</p>
+        <p class="muted">これは練習です。本番も同じ流れ（＋ → 一瞬の1文字 → モザイク → 回答）をくり返します。</p></div>`;
+      setTimeout(() => { ti++; runTrial(); }, 1300);
     };
     grid.appendChild(b);
   }
@@ -159,12 +173,21 @@ function start() {
   trials = buildTrials(); results = []; ti = 0; runTrial();
 }
 function intro() {
+  const maskNote = MASK_MS>0
+    ? `すぐに <b>モザイク模様</b> が出ます <span class="muted">（目に残る残像を消すためのもの。<b>別の文字ではありません／答えなくてよい</b>）</span>`
+    : `すぐに画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
-    <p>画面中央に、かな1文字が <b>${D_LEVELS.join("・")}ms</b> のいずれかの短い時間だけ表示され、直後に別のかなが重なった「マスク」が出ます。
-    その後、<b>提示された1文字を50音の表から選んで</b>ください。</p>
-    <p class="muted">水準ごと${PER_LEVEL}試行 (計${D_LEVELS.length*PER_LEVEL}試行) ＋練習${N_PRACTICE}。マスク${MASK_MS}ms。所要5〜8分。
-    音声・通信なし。結果はこの端末内でJSON保存できます。</p>
-    <p><button class="primary" id="go">開始する</button></p>`;
+    <p><b>1問で答える文字は「1つ」だけです。</b>画面はこの順に進みます。</p>
+    <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
+      <li>中央の <b>＋</b> を見つめる</li>
+      <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される</li>
+      <li>${maskNote}</li>
+      <li>いま一瞬見えた <b>その1文字</b> を、下のかなの表から選ぶ</li>
+    </ol>
+    <p class="muted">わざと短く・見えにくく提示しているので、半分くらい勘になる問題もあります。
+    分からなければ推測で選んでください（外れも大切なデータです）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
+    <p class="muted">水準ごと${PER_LEVEL}試行 (計${D_LEVELS.length*PER_LEVEL}試行)。所要5〜8分。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
+    <p><button class="primary" id="go">練習を始める</button></p>`;
   document.getElementById("go").onclick = start;
 }
 

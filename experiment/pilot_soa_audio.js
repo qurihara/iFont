@@ -89,8 +89,10 @@ function buildTrials() {
   const main = [];
   for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2]=pickPair(); main.push({S,c1,c2,practice:false}); }
   shuffle(main);
+  // 練習は流れを覚えるため、あえて長め(聞き取りやすい)SOAの2水準から出す
+  const easy = [...SOA_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({S:pick(SOA_LEVELS),c1,c2,practice:true}); }
+  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({S:pick(easy),c1,c2,practice:true}); }
   return prac.concat(main);
 }
 
@@ -139,15 +141,26 @@ function runTrial() {
 function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
     askOne(t, 2, (r2) => {
-      if (!inPractice) results.push({ c1:t.c1, c2:t.c2, S:t.S, resp1:r1, resp2:r2,
-        correct1:r1===t.c1, correct2:r2===t.c2 });
-      ti++; runTrial();
+      if (!inPractice) {
+        results.push({ c1:t.c1, c2:t.c2, S:t.S, resp1:r1, resp2:r2,
+          correct1:r1===t.c1, correct2:r2===t.c2 });
+        ti++; runTrial(); return;
+      }
+      // 練習: 2文字の正解を提示して流れを覚えてもらう
+      const ok1 = r1===t.c1, ok2 = r2===t.c2;
+      screen.innerHTML = `<div style="text-align:center;padding:30px">
+        <p>正解 — 1文字目「<b style="font-size:20px">${t.c1}</b>」<span style="color:${ok1?'#2E7D8F':'#C25B4E'}">${ok1?'◯':'×'}</span>
+        ／ 2文字目「<b style="font-size:20px">${t.c2}</b>」<span style="color:${ok2?'#2E7D8F':'#C25B4E'}">${ok2?'◯':'×'}</span></p>
+        <p class="muted">これは練習です。本番も同じ流れ（1つ目の音 → 2つ目の音 → 雑音 → 2つ回答）をくり返します。</p></div>`;
+      setTimeout(() => { ti++; runTrial(); }, 1600);
     });
   });
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
-  stage.innerHTML = `<div class="ask" style="font-size:18px">${pos}文字目は？</div>`;
+  const label = pos===1 ? "1文字目（先に聞こえた音）は？" : "2文字目（あとに聞こえた音）は？";
+  stage.innerHTML = `<div class="ask" style="font-size:18px">${label}</div>
+    <div class="muted">分からなければ勘でOK（雑音は答えではありません）</div>`;
   document.getElementById("grid")?.remove();
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_AUDIO) for (const ch of row) {
@@ -211,11 +224,16 @@ function showResults() {
 function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p>かなの音声が<b>2文字続けて</b>流れます。1文字目は次の文字の開始(<b>SOA=${SOA_LEVELS.join("・")}ms</b>)で打ち切られ、
-    2文字目も同じ時間で打ち切られて雑音(マスク)が流れます。そのあと、<b>1文字目と2文字目を順に</b>50音の表から選んでください。</p>
-    <p class="muted">水準ごと${PER_LEVEL}対＋練習${N_PRACTICE}。音声は単音プール(B3・0.2秒/モーラ)。
-    研究者向けパイロットページです。ヘッドホン推奨・音量を確認してから開始してください。</p>
-    <p><button class="primary" id="go">開始する</button></p>`;
+    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。この順で進みます。</p>
+    <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
+      <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの長さで打ち切り）</li>
+      <li>すぐ <b>2つ目</b> の音が鳴る（同じ長さで打ち切り）</li>
+      <li>短い <b>雑音</b> が鳴る <span class="muted">（区切りの合図。答えなくてよい）</span></li>
+      <li><b>1つ目 → 2つ目</b> の順に、下のかなの表から選ぶ</li>
+    </ol>
+    <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
+    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声は単音プール(B3・0.2秒/モーラ)。<b>ヘッドホン推奨・音量を確認</b>してから始めてください。</p>
+    <p><button class="primary" id="go">練習を始める</button></p>`;
   document.getElementById("go").onclick = start;
 }
 
