@@ -12,8 +12,13 @@ const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map
 const PER_LEVEL = Number(P.get("perlevel") || 6);
 const N_PRACTICE = Number(P.get("practice") || 2);
 const MASK_MS = Number(P.get("mask") || 250);
-const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // 出題前のカウントダウン秒(0で無効・?countdown=3等で調整)
+const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // countdownモード時の秒数
+const START_MODE = P.get("start") || "click";        // "click"(既定・自己ペース) / "countdown" / "none"
 const FADE_S = 0.008;                       // 打ち切りのクリック音を避けるフェード
+
+// 端末環境(解析用にログ)
+const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
+  screen: `${window.screen.width}x${window.screen.height}`, touch: (navigator.maxTouchPoints || 0) > 0 };
 
 // audio1char.js と同じ 72字グリッド
 const GRID_AUDIO = [
@@ -137,13 +142,30 @@ function runTrial() {
   screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div>
     <div id="stage">♪</div>`;
   const stage = document.getElementById("stage");
-  runCountdown(stage, () => {
+  startGate(stage, () => {
     stage.innerHTML = "♪";
     const waitMs = playSeq(t);
     setTimeout(() => respond(t, inPractice), waitMs + 120);
   });
 }
-// 出題前のカウントダウン(耳を澄ませる準備)。COUNTDOWN_S 秒だけ数字を出してから done() を呼ぶ。
+// 出題の開始ゲート。既定はクリック/スペースで自己ペース開始(準備を保証)。押下後に短い間をおいて再生。
+function startGate(stage, onPlay) {
+  const begin = () => {
+    stage.innerHTML = `<div style="text-align:center"><div style="font-size:40px;color:#2E7D8F">♪</div><div class="muted">まもなく音が鳴ります…</div></div>`;
+    setTimeout(onPlay, 500 + Math.floor(Math.random()*300));   // クリック直後の即発火を避けるゆらぎ
+  };
+  if (START_MODE === "none") return begin();
+  if (START_MODE === "countdown") return runCountdown(stage, begin);
+  stage.style.height = "auto";
+  stage.innerHTML = `<div style="text-align:center;padding:24px">
+    <button class="primary" id="startBtn">準備ができたら開始（またはスペースキー）</button>
+    <div class="muted" style="margin-top:8px">押すと少し後に、音が2つ続けて鳴ります。耳を澄ませてください。</div></div>`;
+  const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
+  function go(){ document.removeEventListener("keydown", key); begin(); }
+  document.getElementById("startBtn").addEventListener("click", go, { once: true });
+  document.addEventListener("keydown", key);
+}
+// カウントダウン(countdownモード用)。COUNTDOWN_S 秒だけ数字を出してから done() を呼ぶ。
 function runCountdown(stage, done) {
   if (COUNTDOWN_S <= 0) return done();
   let s = COUNTDOWN_S;
@@ -235,7 +257,7 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{SOA_LEVELS,PER_LEVEL,MASK_MS,pitch:"B3",mora_dur_s:0.2}, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{SOA_LEVELS,PER_LEVEL,MASK_MS,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };
@@ -243,18 +265,29 @@ function showResults() {
 
 function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
+  const startNote = START_MODE==="click"
+    ? `各問題は、準備ができたら <b>ボタン（またはスペースキー）</b> を押して自分のペースで始めます。`
+    : START_MODE==="countdown" ? `各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。` : ``;
+  const mobileNote = ENV.touch
+    ? `スマートフォンの内蔵スピーカーでは正しく聞き取れません。必ず<b>ヘッドホン／イヤホン</b>を使ってください。` : ``;
   screen.innerHTML = `<h1>iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。以下の手順で進みます。</p>
+    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
+      <li>準備ができたら <b>開始</b>（ボタン／スペース）</li>
       <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの長さで打ち切り）</li>
       <li>すぐ <b>2つ目</b> の音が鳴る（同じ長さで打ち切り）</li>
       <li>短い <b>雑音</b> が鳴る <span class="muted">（区切りの合図。答えなくてよい）</span></li>
       <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ</li>
     </ol>
     <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
-    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声は単音プール(B3・0.2秒/モーラ)。<b>ヘッドホン推奨・音量を確認</b>してから始めてください。</p>
-    <p><button class="primary" id="go">練習を始める</button></p>`;
-  document.getElementById("go").onclick = start;
+    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声は単音プール(B3・0.2秒/モーラ)。</p>
+    <p style="background:#fff6f4;border:1px solid #f0d0c8;border-radius:8px;padding:10px 12px">
+      <label style="cursor:pointer"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
+      <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
+    <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める</button></p>`;
+  const hp = document.getElementById("hp"), go = document.getElementById("go");
+  hp.addEventListener("change", () => { go.disabled = !hp.checked; go.style.opacity = hp.checked ? "1" : ".5"; });
+  go.onclick = () => { if (hp.checked) start(); };
 }
 
 (async function(){

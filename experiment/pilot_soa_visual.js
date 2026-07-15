@@ -12,9 +12,19 @@ const PER_LEVEL = Number(P.get("perlevel") || 8);   // 各水準の試行数
 const N_PRACTICE = Number(P.get("practice") || 3);
 const MASK_MS = Number(P.get("mask") || 250);       // 後方マスク時間
 const FIX_MS = 400;                                  // 注視点
-const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // 出題前のカウントダウン秒(0で無効・?countdown=3等で調整)
+const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // countdownモード時の秒数
 const COUNTDOWN_MS = COUNTDOWN_S * 1000;
+const START_MODE = P.get("start") || "click";        // "click"(既定・自己ペース) / "countdown" / "none"
+const FIX_JITTER = 300;                              // 注視点の追加ゆらぎ上限(ms・先読み防止)
 const SIZE = 256;
+
+// 端末・表示環境(実測タイミング解析用にログする)
+const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
+  screen: `${window.screen.width}x${window.screen.height}`, touch: (navigator.maxTouchPoints || 0) > 0, refreshHz: null };
+(function measureRefresh(){ let n=0; const t0=performance.now();
+  function f(now){ n++; if(n<40) requestAnimationFrame(f); else ENV.refreshHz = Math.round(1000/((now-t0)/n)); }
+  requestAnimationFrame(f);
+})();
 
 const GRID_78 = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
@@ -115,27 +125,52 @@ function runTrial() {
   const inPractice = t.practice;
   screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`}</div><div id="stage"></div>`;
   const stage = document.getElementById("stage");
+  startGate(stage, () => presentTrial(t, inPractice, stage));
+}
+
+// 出題の開始ゲート。既定はクリック/スペースで自己ペース開始(準備と中央注視を保証)。
+function startGate(stage, onStart) {
+  if (START_MODE === "none") return onStart();
+  if (START_MODE === "countdown") {
+    const canvas = newCanvas(); stage.appendChild(canvas);
+    const ctx = canvas.getContext("2d"); const t0 = performance.now(); let lastSec = -1;
+    (function cd(now){ const remain = COUNTDOWN_MS - (now - t0);
+      if (remain > 0) { const s = Math.ceil(remain/1000); if (s!==lastSec){ drawCountdown(ctx, s); lastSec=s; } requestAnimationFrame(cd); }
+      else onStart();
+    })(performance.now());
+    return;
+  }
+  stage.style.height = "auto";
+  stage.innerHTML = `<div style="text-align:center;padding:24px">
+    <button class="primary" id="startBtn">準備ができたら開始（またはスペースキー）</button>
+    <div class="muted" style="margin-top:8px">押すと中央に ＋ が出て、少し後に問題が出ます。＋を見ていてください。</div></div>`;
+  const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
+  function go(){ document.removeEventListener("keydown", key); onStart(); }
+  document.getElementById("startBtn").addEventListener("click", go, { once: true });
+  document.addEventListener("keydown", key);
+}
+
+// 刺激提示: 注視点(ゆらぎ付き) → 露出D → マスクMASK_MS(0なら白紙) → 応答。実際の表示msを記録。
+function presentTrial(t, inPractice, stage) {
+  stage.style.height = ""; stage.innerHTML = "";
   const canvas = newCanvas(); stage.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  // カウントダウン(視線を中央へ集める) → 注視点 → 露出D → マスクMASK_MS(0なら白紙) → 応答
+  drawFix(ctx);
+  const fixDur = FIX_MS + Math.floor(Math.random() * FIX_JITTER);   // 先読み防止のゆらぎ
   const t0 = performance.now();
-  let phase = COUNTDOWN_MS > 0 ? "count" : "fix";
-  if (phase === "fix") drawFix(ctx);
-  let lastSec = -1;
+  let phase = "fix", tOn = 0, tOff = 0;
   function frame(now) {
     const el = now - t0;
-    if (phase === "count") {
-      const remain = COUNTDOWN_MS - el;
-      if (remain > 0) { const s = Math.ceil(remain/1000); if (s !== lastSec) { drawCountdown(ctx, s); lastSec = s; } }
-      else { phase = "fix"; drawFix(ctx); }
-    }
-    else if (phase==="fix" && el >= COUNTDOWN_MS + FIX_MS) { phase="target"; drawChar(ctx, t.ch); }
-    else if (phase==="target" && el >= COUNTDOWN_MS + FIX_MS + t.D) {
+    if (phase==="fix" && el >= fixDur) { phase="target"; drawChar(ctx, t.ch); tOn = now; }
+    else if (phase==="target" && el >= fixDur + t.D) {
       phase="mask";
       if (MASK_MS>0) drawMask(ctx);
       else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }  // mask=0: 出して消すだけ(残像込み・比較用)
+      tOff = now;
     }
-    else if (phase==="mask" && el >= COUNTDOWN_MS + FIX_MS + t.D + MASK_MS) { phase="resp"; return respond(t, inPractice, now); }
+    else if (phase==="mask" && el >= fixDur + t.D + MASK_MS) {
+      phase="resp"; t._actualMs = Math.round(tOff - tOn); return respond(t, inPractice, now);
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -152,7 +187,7 @@ function respond(t, inPractice, tShown) {
     const b = document.createElement("button"); b.className="kana"; b.textContent=ch;
     b.onclick = () => {
       const rt = performance.now() - tShown;
-      if (!inPractice) { results.push({ char:t.ch, D:t.D, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) }); ti++; runTrial(); return; }
+      if (!inPractice) { results.push({ char:t.ch, D:t.D, actual_ms:t._actualMs, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) }); ti++; runTrial(); return; }
       // 練習: 正解を短く提示して流れを覚えてもらう
       const ok = ch===t.ch;
       screen.innerHTML = `<div style="text-align:center;padding:34px">
@@ -199,7 +234,7 @@ function showResults() {
     ${svgCurve(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{D_LEVELS,PER_LEVEL,MASK_MS,FIX_MS}, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{D_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_visual_${Date.now()}.json`; a.click();
   };
@@ -212,10 +247,17 @@ function intro() {
   const maskNote = MASK_MS>0
     ? `目の残像を消すために <b>モザイク模様</b> が出ます`
     : `画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
+  const startNote = START_MODE==="click"
+    ? `各問題は、準備ができたら <b>ボタン（またはスペースキー）</b> を押して自分のペースで始めます。`
+    : START_MODE==="countdown" ? `各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。` : ``;
+  const pcNote = ENV.touch
+    ? `<p class="muted" style="color:#C25B4E">この実験は表示のタイミングが重要です。<b>できればPC（パソコン）での参加を推奨します。</b>スマートフォンの場合は横向き・明るさ最大でお願いします。</p>` : ``;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
-    <p><b>1問で答える文字は「1つ」だけです。</b>各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。以下の手順で進みます。</p>
+    ${pcNote}
+    <p><b>1問で答える文字は「1つ」だけです。</b>${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
-      <li>中央の <b>＋</b> を見つめる</li>
+      <li>準備ができたら <b>開始</b>（ボタン／スペース）</li>
+      <li>中央に <b>＋</b> が出るので、そこを見つめる</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される。<b>この文字を覚えてください</b></li>
       <li>${maskNote}</li>
       <li><b>最初に表示された文字</b> を、かなの表から選ぶ</li>
