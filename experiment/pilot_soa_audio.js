@@ -33,7 +33,7 @@ const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 72字
 
 const screen = document.getElementById("screen");
 let audioCtx = null, stimByChar = {}, bufByChar = {};
-let trials = [], results = [], ti = 0;
+let trials = [], results = [], ti = 0, mainStarted = false;
 
 function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 
@@ -135,11 +135,26 @@ function playSeq(t) {
   return (t0 + 2*S + MASK_MS/1000 - ctx.currentTime) * 1000;   // 終了までのms
 }
 
+// 練習の後、本番に入る前の確認画面。クリック/スペースで本番開始。
+function showMainGate(next) {
+  const nMain = trials.length - N_PRACTICE;
+  screen.innerHTML = `<div style="text-align:center;padding:40px 20px">
+    <h2 style="color:#1E2A5E">これから本番です</h2>
+    <p>本番では <b>正解は表示されません</b>。ここからの回答が記録されます。</p>
+    <p class="muted">本番は <b>${nMain}問</b>（各2文字回答）です。やり方は練習と同じです。ヘッドホンの装着を確認してください。</p>
+    <p style="margin-top:20px"><button class="primary" id="mainGo">本番を始める（またはスペースキー）</button></p></div>`;
+  const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
+  function go(){ document.removeEventListener("keydown", key); next(); }
+  document.getElementById("mainGo").addEventListener("click", go, { once: true });
+  document.addEventListener("keydown", key);
+}
+
 function runTrial() {
   if (ti >= trials.length) return showResults();
   const t = trials[ti];
   const inPractice = t.practice;
-  screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div>
+  if (!inPractice && !mainStarted) { mainStarted = true; return showMainGate(runTrial); }
+  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div>
     <div id="stage">♪</div>`;
   const stage = document.getElementById("stage");
   startGate(stage, () => {
@@ -263,7 +278,7 @@ function showResults() {
   };
 }
 
-function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; runTrial(); }
+function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; mainStarted = false; runTrial(); }
 function intro() {
   const startNote = START_MODE==="click"
     ? `各問題は、準備ができたら <b>ボタン（またはスペースキー）</b> を押して自分のペースで始めます。`
@@ -279,12 +294,12 @@ function intro() {
       <li>短い <b>雑音</b> が鳴る <span class="muted">（区切りの合図。答えなくてよい）</span></li>
       <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ</li>
     </ol>
-    <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
-    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声は単音プール(B3・0.2秒/モーラ)。</p>
+    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要7〜10分。</p>
+    <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。音声は単音プール(B3・0.2秒/モーラ)。</p>
     <p style="background:#fff6f4;border:1px solid #f0d0c8;border-radius:8px;padding:10px 12px">
       <label style="cursor:pointer"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
       <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
-    <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める</button></p>`;
+    <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める（${N_PRACTICE}問）</button></p>`;
   const hp = document.getElementById("hp"), go = document.getElementById("go");
   hp.addEventListener("change", () => { go.disabled = !hp.checked; go.style.opacity = hp.checked ? "1" : ".5"; });
   go.onclick = () => { if (hp.checked) start(); };

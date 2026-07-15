@@ -41,7 +41,7 @@ const CHARS = GRID_78.flat().filter(Boolean);   // 78字
 
 const screen = document.getElementById("screen");
 const imgs = {};
-let trials = [], results = [], ti = 0;
+let trials = [], results = [], ti = 0, mainStarted = false;
 
 function loadImage(ch) {
   return new Promise((res, rej) => {
@@ -103,9 +103,24 @@ function runTrial() {
   if (ti >= trials.length) return showResults();
   const t = trials[ti];
   const inPractice = t.practice;
-  screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div><div id="stage"></div>`;
+  if (!inPractice && !mainStarted) { mainStarted = true; return showMainGate(runTrial); }
+  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div><div id="stage"></div>`;
   const stage = document.getElementById("stage");
   startGate(stage, (ctx) => presentTrial(t, inPractice, ctx));
+}
+
+// 練習の後、本番に入る前の確認画面。クリック/スペースで本番開始。
+function showMainGate(next) {
+  const nMain = trials.length - N_PRACTICE;
+  screen.innerHTML = `<div style="text-align:center;padding:40px 20px">
+    <h2 style="color:#1E2A5E">これから本番です</h2>
+    <p>本番では <b>正解は表示されません</b>。ここからの回答が記録されます。</p>
+    <p class="muted">本番は <b>${nMain}問</b>（各2文字回答）です。やり方は練習と同じです。</p>
+    <p style="margin-top:20px"><button class="primary" id="mainGo">本番を始める（またはスペースキー）</button></p></div>`;
+  const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
+  function go(){ document.removeEventListener("keydown", key); next(); }
+  document.getElementById("mainGo").addEventListener("click", go, { once: true });
+  document.addEventListener("keydown", key);
 }
 
 // 開始ゲート: 文字表示枠(canvas)と「＋」を最初から出し、その下にボタンを置く。
@@ -259,7 +274,7 @@ function showResults() {
   };
 }
 
-function start() { trials = buildTrials(); results = []; ti = 0; runTrial(); }
+function start() { trials = buildTrials(); results = []; ti = 0; mainStarted = false; runTrial(); }
 function intro() {
   const startNote = START_MODE==="click"
     ? `各問題は、準備ができたら <b>ボタン（またはスペースキー）</b> を押して自分のペースで始めます。`
@@ -277,9 +292,9 @@ function intro() {
       <li><b>モザイク模様</b>が出る <span class="muted">（目の残像を消すためのものです）</span></li>
       <li><b>1文字目 → 2文字目</b> の順に、それぞれかなの表から選ぶ</li>
     </ol>
-    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
-    <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
-    <p><button class="primary" id="go">練習を始める</button></p>`;
+    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要7〜10分。</p>
+    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
+    <p><button class="primary" id="go">練習を始める（${N_PRACTICE}問）</button></p>`;
   document.getElementById("go").onclick = start;
 }
 
