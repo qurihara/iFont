@@ -120,7 +120,7 @@ function runTrial() {
 function respond(t, inPractice, tShown) {
   const stage = document.getElementById("stage");
   stage.style.height = "auto";   // 刺激用の空欄を詰めて、かなの表をプロンプト直下に出す
-  stage.innerHTML = `<div style="text-align:center"><div class="ask">最後に一瞬見えた1文字を選んでください</div>
+  stage.innerHTML = `<div style="text-align:center"><div class="ask">最初に表示された文字を選んでください</div>
     <div class="muted">分からなければ勘でOK（モザイク模様は答えではありません）</div></div>`;
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_78) for (const ch of row) {
@@ -133,7 +133,7 @@ function respond(t, inPractice, tShown) {
       const ok = ch===t.ch;
       screen.innerHTML = `<div style="text-align:center;padding:34px">
         <div style="font-size:44px;color:${ok?'#2E7D8F':'#C25B4E'}">${ok?'◯':'×'}</div>
-        <p>一瞬見えていたのは「<b style="font-size:22px">${t.ch}</b>」でした。</p>
+        <p>表示されていたのは「<b style="font-size:22px">${t.ch}</b>」でした。</p>
         <p class="muted">これは練習です。本番も同じ流れ（＋ → 一瞬の1文字 → モザイク → 回答）をくり返します。</p></div>`;
       setTimeout(() => { ti++; runTrial(); }, 1300);
     };
@@ -186,15 +186,15 @@ function start() {
 }
 function intro() {
   const maskNote = MASK_MS>0
-    ? `<b>モザイク模様</b> が出ます <span class="muted">（目の残像を消すためのものです。）</span>`
+    ? `目の残像を消すために <b>モザイク模様</b> が出ます`
     : `画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
     <p><b>1問で答える文字は「1つ」だけです。</b>以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>中央の <b>＋</b> を見つめる</li>
-      <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される</li>
+      <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される。<b>この文字を覚えてください</b></li>
       <li>${maskNote}</li>
-      <li><b>最後に一瞬見えた1文字</b> を、かなの表から選ぶ</li>
+      <li><b>最初に表示された文字</b> を、かなの表から選ぶ</li>
     </ol>
     <p class="muted">わざと短く・見えにくく提示しているので、半分くらい勘になる問題もあります。
     分からなければ推測で選んでください（外れも大切なデータです）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
