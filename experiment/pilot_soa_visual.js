@@ -125,36 +125,39 @@ function runTrial() {
   const inPractice = t.practice;
   screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`}</div><div id="stage"></div>`;
   const stage = document.getElementById("stage");
-  startGate(stage, () => presentTrial(t, inPractice, stage));
+  startGate(stage, (ctx) => presentTrial(t, inPractice, ctx));
 }
 
-// 出題の開始ゲート。既定はクリック/スペースで自己ペース開始(準備と中央注視を保証)。
+// 開始ゲート: 文字表示枠(canvas)と「＋」を最初から出し、その下にボタンを置く。
+// ボタンは表示枠の外(下)にあるので、押してもカーソルが刺激に被らず、枠も動かない。
 function startGate(stage, onStart) {
-  if (START_MODE === "none") return onStart();
+  stage.style.height = "auto"; stage.innerHTML = "";
+  const box = document.createElement("div"); box.style.textAlign = "center";
+  const canvas = newCanvas(); canvas.style.display = "block"; canvas.style.margin = "0 auto";
+  box.appendChild(canvas); stage.appendChild(box);
+  const ctx = canvas.getContext("2d"); drawFix(ctx);
+
+  if (START_MODE === "none") return onStart(ctx);
   if (START_MODE === "countdown") {
-    const canvas = newCanvas(); stage.appendChild(canvas);
-    const ctx = canvas.getContext("2d"); const t0 = performance.now(); let lastSec = -1;
+    const t0 = performance.now(); let lastSec = -1;
     (function cd(now){ const remain = COUNTDOWN_MS - (now - t0);
       if (remain > 0) { const s = Math.ceil(remain/1000); if (s!==lastSec){ drawCountdown(ctx, s); lastSec=s; } requestAnimationFrame(cd); }
-      else onStart();
+      else { drawFix(ctx); onStart(ctx); }
     })(performance.now());
     return;
   }
-  stage.style.height = "auto";
-  stage.innerHTML = `<div style="text-align:center;padding:24px">
-    <button class="primary" id="startBtn">準備ができたら開始（またはスペースキー）</button>
-    <div class="muted" style="margin-top:8px">押すと中央に ＋ が出て、少し後に問題が出ます。＋を見ていてください。</div></div>`;
+  const btnWrap = document.createElement("div"); btnWrap.style.marginTop = "14px";
+  btnWrap.innerHTML = `<button class="primary" id="startBtn">準備ができたら開始（またはスペースキー）</button>
+    <div class="muted" style="margin-top:6px">上の枠の中央にある ＋ を見たまま、このボタンを押してください</div>`;
+  box.appendChild(btnWrap);
   const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
-  function go(){ document.removeEventListener("keydown", key); onStart(); }
+  function go(){ document.removeEventListener("keydown", key); btnWrap.style.visibility = "hidden"; onStart(ctx); }
   document.getElementById("startBtn").addEventListener("click", go, { once: true });
   document.addEventListener("keydown", key);
 }
 
-// 刺激提示: 注視点(ゆらぎ付き) → 露出D → マスクMASK_MS(0なら白紙) → 応答。実際の表示msを記録。
-function presentTrial(t, inPractice, stage) {
-  stage.style.height = ""; stage.innerHTML = "";
-  const canvas = newCanvas(); stage.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
+// 刺激提示: 既存canvasに 注視点(ゆらぎ付き) → 露出D → マスクMASK_MS(0なら白紙) → 応答。実際の表示msを記録。
+function presentTrial(t, inPractice, ctx) {
   drawFix(ctx);
   const fixDur = FIX_MS + Math.floor(Math.random() * FIX_JITTER);   // 先読み防止のゆらぎ
   const t0 = performance.now();
@@ -256,8 +259,8 @@ function intro() {
     ${pcNote}
     <p><b>1問で答える文字は「1つ」だけです。</b>${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
-      <li>準備ができたら <b>開始</b>（ボタン／スペース）</li>
-      <li>中央に <b>＋</b> が出るので、そこを見つめる</li>
+      <li>表示枠の中央にある <b>＋</b> を見つめる</li>
+      <li>見たまま、枠の下の <b>[開始]</b> ボタン（またはスペース）を押す</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される。<b>この文字を覚えてください</b></li>
       <li>${maskNote}</li>
       <li><b>最初に表示された文字</b> を、かなの表から選ぶ</li>
