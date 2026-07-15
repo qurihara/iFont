@@ -7,7 +7,7 @@
 //        公開ページでは動かない(研究者のローカル配信専用)。
 "use strict";
 
-const VERSION = "1.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -273,7 +273,7 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{SOA_LEVELS,PER_LEVEL,MASK_MS,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,MASK_MS,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };

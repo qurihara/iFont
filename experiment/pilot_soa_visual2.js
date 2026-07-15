@@ -7,7 +7,7 @@
 "use strict";
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=6&mask=250) ----
-const VERSION = "1.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2回答)
@@ -28,9 +28,9 @@ const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
   requestAnimationFrame(f);
 })();
 
-// v1.2: 聴覚グリッドと一致させた「独立モーラ72字」。小書きかな(っゃゅょ)と ゐゑ は
-// 単独の区別できる音を持たず変換gに乗らないため除外(ツールでは通常どおり描画)。ゔは残す。
-const GRID_KANA = [
+// 既定は、視覚と聴覚で一致する「独立モーラ72字」を用いる。小書きかな(っゃゅょ)と ゐゑ は、
+// 単独では区別できる音を持たず変換gに乗らないため、既定の実験からは外している(ツールでは通常どおり描画する)。ゔは残す。
+const GRID_MORA = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
   ["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],
@@ -38,7 +38,22 @@ const GRID_KANA = [
   ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
   ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゔ","","","",""],
 ];
-const CHARS = GRID_KANA.flat().filter(Boolean);   // 72字
+// 基礎データモード(?charset=full)では、小書きかな(っゃゅょ)と ゐゑ を加えた全字を用いる。
+// この基礎データは本体の変換gとは分けて解析する。日本語のかなが視覚的にどれだけ識別できるかの
+// 基礎的なデータ(かな識別のノルム)を取ることが目的で、今回の論文では使わない場合がある。
+const GRID_FULL = [
+  ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
+  ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
+  ["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],
+  ["わ","","","","を"],["ん","","","",""],
+  ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
+  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],
+  ["ゃ","","ゅ","","ょ"],["っ","","","",""],
+  ["ゐ","","","","ゑ"],["ゔ","","","",""],
+];
+const CHARSET = (P.get("charset") === "full") ? "full" : "mora";
+const GRID_KANA = CHARSET === "full" ? GRID_FULL : GRID_MORA;
+const CHARS = GRID_KANA.flat().filter(Boolean);   // mora=72字 / full=78字
 
 const screen = document.getElementById("screen");
 const imgs = {};
@@ -269,7 +284,7 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{SOA_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,CHARSET,SOA_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_visual2_${Date.now()}.json`; a.click();
   };
@@ -282,8 +297,10 @@ function intro() {
     : START_MODE==="countdown" ? `各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。` : ``;
   const pcNote = ENV.touch
     ? `<p class="muted" style="color:#C25B4E">この実験は表示のタイミングが重要です。<b>できればPC（パソコン）での参加を推奨します。</b>スマートフォンの場合は横向き・明るさ最大でお願いします。</p>` : ``;
+  const charsetNote = CHARSET==="full"
+    ? `<p class="muted" style="color:#2E7D8F">基礎データモードです。小書きかな（っゃゅょ）と ゐゑ を含む全字（${CHARS.length}字）で行います。</p>` : ``;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB)</h1>
-    ${pcNote}
+    ${pcNote}${charsetNote}
     <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>表示枠の中央にある <b>＋</b> を見つめる</li>
