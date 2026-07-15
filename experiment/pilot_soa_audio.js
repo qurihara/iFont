@@ -158,6 +158,7 @@ function respond(t, inPractice) {
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
+  stage.style.height = "auto";   // 聴取エリアの空欄を詰めて、かなの表をプロンプト直下に出す
   const label = pos===1 ? "1文字目（先に聞こえた音）は？" : "2文字目（あとに聞こえた音）は？";
   stage.innerHTML = `<div class="ask" style="font-size:18px">${label}</div>
     <div class="muted">分からなければ勘でOK（雑音は答えではありません）</div>`;
@@ -224,12 +225,12 @@ function showResults() {
 function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。この順で進みます。</p>
+    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの長さで打ち切り）</li>
       <li>すぐ <b>2つ目</b> の音が鳴る（同じ長さで打ち切り）</li>
       <li>短い <b>雑音</b> が鳴る <span class="muted">（区切りの合図。答えなくてよい）</span></li>
-      <li><b>1つ目 → 2つ目</b> の順に、下のかなの表から選ぶ</li>
+      <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ</li>
     </ol>
     <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
     <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声は単音プール(B3・0.2秒/モーラ)。<b>ヘッドホン推奨・音量を確認</b>してから始めてください。</p>

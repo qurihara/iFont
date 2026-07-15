@@ -119,6 +119,7 @@ function runTrial() {
 
 function respond(t, inPractice, tShown) {
   const stage = document.getElementById("stage");
+  stage.style.height = "auto";   // 刺激用の空欄を詰めて、かなの表をプロンプト直下に出す
   stage.innerHTML = `<div style="text-align:center"><div class="ask">最後に一瞬見えた1文字を選んでください</div>
     <div class="muted">分からなければ勘でOK（モザイク模様は答えではありません）</div></div>`;
   const grid = document.createElement("div"); grid.id="grid";
@@ -185,15 +186,15 @@ function start() {
 }
 function intro() {
   const maskNote = MASK_MS>0
-    ? `すぐに <b>文字にならないモザイク模様</b> が出ます <span class="muted">（目の残像を消すためのもの。<b>読めるかなではありません／答えなくてよい</b>）</span>`
-    : `すぐに画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
+    ? `<b>モザイク模様</b> が出ます <span class="muted">（目の残像を消すためのものです。）</span>`
+    : `画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
-    <p><b>1問で答える文字は「1つ」だけです。</b>画面はこの順に進みます。</p>
+    <p><b>1問で答える文字は「1つ」だけです。</b>以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>中央の <b>＋</b> を見つめる</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される</li>
       <li>${maskNote}</li>
-      <li><b>最後に一瞬見えた1文字</b> を、下のかなの表から選ぶ</li>
+      <li><b>最後に一瞬見えた1文字</b> を、かなの表から選ぶ</li>
     </ol>
     <p class="muted">わざと短く・見えにくく提示しているので、半分くらい勘になる問題もあります。
     分からなければ推測で選んでください（外れも大切なデータです）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>

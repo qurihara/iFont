@@ -132,6 +132,7 @@ function respond(t, inPractice) {
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
+  stage.style.height = "auto";   // 刺激用の空欄を詰めて、かなの表をプロンプト直下に出す
   const label = pos===1 ? "1文字目（先に出た文字）は？" : "2文字目（上書きした文字）は？";
   stage.innerHTML = `<div style="text-align:center"><div class="ask">${label}</div>
     <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
@@ -201,13 +202,13 @@ function showResults() {
 function start() { trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。画面はこの順に進みます。</p>
+    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>中央の <b>＋</b> を見つめる</li>
       <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間）</li>
       <li>同じ場所に <b>2文字目</b> が出て1文字目を<b>上書き</b>する（同じ時間だけ）</li>
-      <li><b>文字にならないモザイク模様</b>が出る <span class="muted">（残像消し。読めるかなではない／答えなくてよい）</span></li>
-      <li><b>1文字目 → 2文字目</b> の順に、それぞれ下のかなの表から選ぶ</li>
+      <li><b>モザイク模様</b>が出る <span class="muted">（目の残像を消すためのものです）</span></li>
+      <li><b>1文字目 → 2文字目</b> の順に、それぞれかなの表から選ぶ</li>
     </ol>
     <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。まず練習が${N_PRACTICE}問あり、正解が表示されます。</p>
     <p class="muted">水準ごと${PER_LEVEL}対 (計${SOA_LEVELS.length*PER_LEVEL}対=回答${SOA_LEVELS.length*PER_LEVEL*2}回)。所要7〜10分。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
