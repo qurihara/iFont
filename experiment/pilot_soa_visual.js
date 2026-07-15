@@ -4,11 +4,13 @@
 // jsPsych・音声・サーバ不要。base/<かな>.png を流用。結果は画面表示＋JSONダウンロード。
 "use strict";
 
-// ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=8&mask=250) ----
+// ---- 設定 (URLパラメータで上書き可: ?levels=17,33,50,67,83,100,150,250&perlevel=8&mask=250) ----
 // mask=0 にすると後方マスクを置かず「1文字を出して消すだけ」になる(残像込みの比較・体感用。本番は必ずマスクあり)。
-const VERSION = "1.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.3";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
-const D_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
+// v1.3: 鮮明な単文字は100msでほぼ天井だったため、下り坂を捉えるフレーム単位の短い水準(≈1〜5フレーム@60Hz)を既定に追加。
+// 本番の水準を決めるためのパイロット。actual_ms を毎試行記録するので、17ms(1フレーム)級の実表示時間もログで検証できる。
+const D_LEVELS = (P.get("levels") || "17,33,50,67,83,100,150,250").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 8);   // 各水準の試行数
 const N_PRACTICE = Number(P.get("practice") || 3);
 const MASK_MS = Number(P.get("mask") || 250);       // 後方マスク時間
