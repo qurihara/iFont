@@ -7,7 +7,7 @@
 //        公開ページでは動かない(研究者のローカル配信専用)。
 "use strict";
 
-const VERSION = "1.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);

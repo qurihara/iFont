@@ -7,7 +7,7 @@
 "use strict";
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=6&mask=250) ----
-const VERSION = "1.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2回答)
@@ -28,17 +28,17 @@ const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
   requestAnimationFrame(f);
 })();
 
-const GRID_78 = [
+// v1.2: 聴覚グリッドと一致させた「独立モーラ72字」。小書きかな(っゃゅょ)と ゐゑ は
+// 単独の区別できる音を持たず変換gに乗らないため除外(ツールでは通常どおり描画)。ゔは残す。
+const GRID_KANA = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
   ["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],
   ["わ","","","","を"],["ん","","","",""],
   ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
-  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],
-  ["ゃ","","ゅ","","ょ"],["っ","","","",""],
-  ["ゐ","","","","ゑ"],["ゔ","","","",""],
+  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゔ","","","",""],
 ];
-const CHARS = GRID_78.flat().filter(Boolean);   // 78字
+const CHARS = GRID_KANA.flat().filter(Boolean);   // 72字
 
 const screen = document.getElementById("screen");
 const imgs = {};
@@ -214,7 +214,7 @@ function askOne(t, pos, done) {
     <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
   document.getElementById("grid")?.remove();
   const grid = document.createElement("div"); grid.id="grid";
-  for (const row of GRID_78) for (const ch of row) {
+  for (const row of GRID_KANA) for (const ch of row) {
     if (ch==="") { const s=document.createElement("div"); s.className="kana spacer"; grid.appendChild(s); continue; }
     const b=document.createElement("button"); b.className="kana"; b.textContent=ch;
     b.onclick = () => done(ch);
