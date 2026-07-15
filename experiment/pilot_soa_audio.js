@@ -7,6 +7,7 @@
 //        公開ページでは動かない(研究者のローカル配信専用)。
 "use strict";
 
+const VERSION = "1.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -299,7 +300,8 @@ function intro() {
     <p style="background:#fff6f4;border:1px solid #f0d0c8;border-radius:8px;padding:10px 12px">
       <label style="cursor:pointer"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
       <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
-    <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める（${N_PRACTICE}問）</button></p>`;
+    <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める（${N_PRACTICE}問）</button></p>
+    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
   const hp = document.getElementById("hp"), go = document.getElementById("go");
   hp.addEventListener("change", () => { go.disabled = !hp.checked; go.style.opacity = hp.checked ? "1" : ".5"; });
   go.onclick = () => { if (hp.checked) start(); };

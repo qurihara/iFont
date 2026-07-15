@@ -7,6 +7,7 @@
 "use strict";
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=6&mask=250) ----
+const VERSION = "1.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2回答)
@@ -293,8 +294,9 @@ function intro() {
       <li><b>1文字目 → 2文字目</b> の順に、それぞれかなの表から選ぶ</li>
     </ol>
     <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要7〜10分。</p>
-    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。音声・通信なし。結果はこの端末内でJSON保存できます。</p>
-    <p><button class="primary" id="go">練習を始める（${N_PRACTICE}問）</button></p>`;
+    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。回答はこの端末の中だけで完結します。</p>
+    <p><button class="primary" id="go">練習を始める（${N_PRACTICE}問）</button></p>
+    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
   document.getElementById("go").onclick = start;
 }
 
