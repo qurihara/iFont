@@ -12,6 +12,8 @@ const PER_LEVEL = Number(P.get("perlevel") || 8);   // 各水準の試行数
 const N_PRACTICE = Number(P.get("practice") || 3);
 const MASK_MS = Number(P.get("mask") || 250);       // 後方マスク時間
 const FIX_MS = 400;                                  // 注視点
+const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // 出題前のカウントダウン秒(0で無効・?countdown=3等で調整)
+const COUNTDOWN_MS = COUNTDOWN_S * 1000;
 const SIZE = 256;
 
 const GRID_78 = [
@@ -94,6 +96,19 @@ function drawMask(ctx) {
   }
 }
 
+function drawFix(ctx) {
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("+", SIZE/2, SIZE/2);
+}
+function drawCountdown(ctx, sec) {
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+  ctx.fillStyle="#2E7D8F"; ctx.font="bold 72px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(String(sec), SIZE/2, SIZE/2 - 12);
+  ctx.fillStyle="#8a93a6"; ctx.font="15px system-ui";
+  ctx.fillText("中央を見て準備してください", SIZE/2, SIZE/2 + 52);
+}
+
 function runTrial() {
   if (ti >= trials.length) return showResults();
   const t = trials[ti];
@@ -102,21 +117,25 @@ function runTrial() {
   const stage = document.getElementById("stage");
   const canvas = newCanvas(); stage.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  // 注視点 → 露出D → マスクMASK_MS(0なら白紙) → 応答
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText("+", SIZE/2, SIZE/2);
+  // カウントダウン(視線を中央へ集める) → 注視点 → 露出D → マスクMASK_MS(0なら白紙) → 応答
   const t0 = performance.now();
-  let phase = "fix";
+  let phase = COUNTDOWN_MS > 0 ? "count" : "fix";
+  if (phase === "fix") drawFix(ctx);
+  let lastSec = -1;
   function frame(now) {
     const el = now - t0;
-    if (phase==="fix" && el >= FIX_MS) { phase="target"; drawChar(ctx, t.ch); }
-    else if (phase==="target" && el >= FIX_MS + t.D) {
+    if (phase === "count") {
+      const remain = COUNTDOWN_MS - el;
+      if (remain > 0) { const s = Math.ceil(remain/1000); if (s !== lastSec) { drawCountdown(ctx, s); lastSec = s; } }
+      else { phase = "fix"; drawFix(ctx); }
+    }
+    else if (phase==="fix" && el >= COUNTDOWN_MS + FIX_MS) { phase="target"; drawChar(ctx, t.ch); }
+    else if (phase==="target" && el >= COUNTDOWN_MS + FIX_MS + t.D) {
       phase="mask";
       if (MASK_MS>0) drawMask(ctx);
       else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }  // mask=0: 出して消すだけ(残像込み・比較用)
     }
-    else if (phase==="mask" && el >= FIX_MS + t.D + MASK_MS) { phase="resp"; return respond(t, inPractice, now); }
+    else if (phase==="mask" && el >= COUNTDOWN_MS + FIX_MS + t.D + MASK_MS) { phase="resp"; return respond(t, inPractice, now); }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -194,7 +213,7 @@ function intro() {
     ? `目の残像を消すために <b>モザイク模様</b> が出ます`
     : `画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
   screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
-    <p><b>1問で答える文字は「1つ」だけです。</b>以下の手順で進みます。</p>
+    <p><b>1問で答える文字は「1つ」だけです。</b>各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>中央の <b>＋</b> を見つめる</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される。<b>この文字を覚えてください</b></li>

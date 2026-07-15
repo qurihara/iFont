@@ -12,6 +12,7 @@ const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map
 const PER_LEVEL = Number(P.get("perlevel") || 6);
 const N_PRACTICE = Number(P.get("practice") || 2);
 const MASK_MS = Number(P.get("mask") || 250);
+const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // 出題前のカウントダウン秒(0で無効・?countdown=3等で調整)
 const FADE_S = 0.008;                       // 打ち切りのクリック音を避けるフェード
 
 // audio1char.js と同じ 72字グリッド
@@ -135,8 +136,26 @@ function runTrial() {
   const inPractice = t.practice;
   screen.innerHTML = `<div class="muted">${inPractice ? "練習" : `試行 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div>
     <div id="stage">♪</div>`;
-  const waitMs = playSeq(t);
-  setTimeout(() => respond(t, inPractice), waitMs + 120);
+  const stage = document.getElementById("stage");
+  runCountdown(stage, () => {
+    stage.innerHTML = "♪";
+    const waitMs = playSeq(t);
+    setTimeout(() => respond(t, inPractice), waitMs + 120);
+  });
+}
+// 出題前のカウントダウン(耳を澄ませる準備)。COUNTDOWN_S 秒だけ数字を出してから done() を呼ぶ。
+function runCountdown(stage, done) {
+  if (COUNTDOWN_S <= 0) return done();
+  let s = COUNTDOWN_S;
+  const render = () => { stage.innerHTML =
+    `<div style="text-align:center"><div style="font-size:64px;font-weight:700;color:#2E7D8F">${s}</div>` +
+    `<div class="muted">まもなく音が鳴ります（耳を澄ませて）</div></div>`; };
+  render();
+  const iv = setInterval(() => {
+    s -= 1;
+    if (s <= 0) { clearInterval(iv); done(); }
+    else render();
+  }, 1000);
 }
 function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
@@ -225,7 +244,7 @@ function showResults() {
 function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。以下の手順で進みます。</p>
+    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの長さで打ち切り）</li>
       <li>すぐ <b>2つ目</b> の音が鳴る（同じ長さで打ち切り）</li>

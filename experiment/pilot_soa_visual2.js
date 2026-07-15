@@ -13,6 +13,8 @@ const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2
 const N_PRACTICE = Number(P.get("practice") || 2);
 const MASK_MS = Number(P.get("mask") || 250);       // 末尾の中立マスク時間
 const FIX_MS = 400;
+const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // 出題前のカウントダウン秒(0で無効・?countdown=3等で調整)
+const COUNTDOWN_MS = COUNTDOWN_S * 1000;
 const SIZE = 256;
 
 const GRID_78 = [
@@ -95,21 +97,37 @@ function runTrial() {
   const stage = document.getElementById("stage");
   const canvas = newCanvas(); stage.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText("+", SIZE/2, SIZE/2);
+  // カウントダウン(視線を中央へ集める) → 注視 → char1(SOA) → char2(SOA, char1を上書き) → マスク → 回答
   const t0 = performance.now();
-  let phase = "fix";
-  // 注視 → char1(SOA) → char2(SOA, char1を上書き) → マスク(MASK_MS) → 回答
+  let phase = COUNTDOWN_MS > 0 ? "count" : "fix";
+  if (phase === "fix") drawFix(ctx);
+  let lastSec = -1;
   function frame(now) {
     const el = now - t0;
-    if (phase==="fix" && el >= FIX_MS) { phase="c1"; drawChar(ctx, t.c1); }
-    else if (phase==="c1" && el >= FIX_MS + t.S) { phase="c2"; drawChar(ctx, t.c2); }
-    else if (phase==="c2" && el >= FIX_MS + 2*t.S) { phase="mask"; drawMask(ctx); }
-    else if (phase==="mask" && el >= FIX_MS + 2*t.S + MASK_MS) { return respond(t, inPractice); }
+    if (phase === "count") {
+      const remain = COUNTDOWN_MS - el;
+      if (remain > 0) { const s = Math.ceil(remain/1000); if (s !== lastSec) { drawCountdown(ctx, s); lastSec = s; } }
+      else { phase = "fix"; drawFix(ctx); }
+    }
+    else if (phase==="fix" && el >= COUNTDOWN_MS + FIX_MS) { phase="c1"; drawChar(ctx, t.c1); }
+    else if (phase==="c1" && el >= COUNTDOWN_MS + FIX_MS + t.S) { phase="c2"; drawChar(ctx, t.c2); }
+    else if (phase==="c2" && el >= COUNTDOWN_MS + FIX_MS + 2*t.S) { phase="mask"; drawMask(ctx); }
+    else if (phase==="mask" && el >= COUNTDOWN_MS + FIX_MS + 2*t.S + MASK_MS) { return respond(t, inPractice); }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+}
+function drawFix(ctx) {
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("+", SIZE/2, SIZE/2);
+}
+function drawCountdown(ctx, sec) {
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+  ctx.fillStyle="#2E7D8F"; ctx.font="bold 72px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(String(sec), SIZE/2, SIZE/2 - 12);
+  ctx.fillStyle="#8a93a6"; ctx.font="15px system-ui";
+  ctx.fillText("中央を見て準備してください", SIZE/2, SIZE/2 + 52);
 }
 
 function respond(t, inPractice) {
@@ -205,7 +223,7 @@ function showResults() {
 function start() { trials = buildTrials(); results = []; ti = 0; runTrial(); }
 function intro() {
   screen.innerHTML = `<h1>iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。以下の手順で進みます。</p>
+    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>中央の <b>＋</b> を見つめる</li>
       <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間）</li>
