@@ -7,7 +7,7 @@
 //        公開ページでは動かない(研究者のローカル配信専用)。
 "use strict";
 
-const VERSION = "1.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.5";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -21,16 +21,19 @@ const FADE_S = 0.008;                       // 打ち切りのクリック音を
 const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
   screen: `${window.screen.width}x${window.screen.height}`, touch: (navigator.maxTouchPoints || 0) > 0 };
 
-// audio1char.js と同じ 72字グリッド
+// v1.5: 「区別できる音」68音のグリッド。を・ぢ・づ は現代標準語で お・じ・ず と同音
+// (本番プールでも同一の音声ファイル)、ゔ は日本語話者の多くが ぶ と区別して聞かないため、
+// 出題と回答の両方から外した(PI決定 2026-07-17)。これらの字形は視覚セットには残り、
+// 運用では同じ音の相手(お・じ・ず・ぶ)の聴覚曲線と対応づける。
 const GRID_AUDIO = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
   ["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],
-  ["わ","","","","を"],["ん","","","",""],
-  ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
-  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゔ","","","",""],
+  ["わ","","","","ん"],
+  ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","","","で","ど"],
+  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],
 ];
-const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 72字
+const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 68音
 
 const screen = document.getElementById("screen");
 let audioCtx = null, stimByChar = {}, bufByChar = {};
@@ -66,7 +69,7 @@ async function loadAnswerKey() {
 }
 
 async function preload() {
-  screen.innerHTML = `<h1>読み込み中…</h1><p class="muted">マニフェストと正解表(ローカル)、音声72クリップを読み込んでいます。</p>`;
+  screen.innerHTML = `<h1>読み込み中…</h1><p class="muted">マニフェストと正解表(ローカル)、音声68クリップを読み込んでいます。</p>`;
   const mres = await fetch("audio1char_manifest.json", {cache:"no-store"});
   if (!mres.ok) throw new Error("audio1char_manifest.json が読めない");
   const manifest = await mres.json();
@@ -76,8 +79,8 @@ async function preload() {
     if (rec && rec.char) stimByChar[rec.char] = s;
   }
   const have = CHARS.filter(c => stimByChar[c]);
-  if (have.length < 60) throw new Error(`正解表と音声の対応が不足(${have.length}/72)`);
-  // 72クリップをデコード
+  if (have.length < 60) throw new Error(`正解表と音声の対応が不足(${have.length}/68)`);
+  // 68クリップをデコード
   let done = 0;
   await Promise.all(have.map(async ch => {
     const s = stimByChar[ch];

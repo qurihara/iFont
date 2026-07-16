@@ -7,7 +7,7 @@
 "use strict";
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=6&mask=250) ----
-const VERSION = "1.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.5";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2回答)
