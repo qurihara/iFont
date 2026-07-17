@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.5";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.6";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 // v2.3: 音声プールを再合成(VOICEVOX 0.25.2)。う・んの音量をvolumeScaleで底上げ、
 //   F0実測の狭域化でま・びのオクターブ誤り補正を解消、切り出し位置を敏感しきい値で作り直し。
 //   同名ファイルの中身が変わったので、キャッシュを避けるため取得URLに ?v= を付ける。
@@ -19,7 +19,10 @@ const P = new URLSearchParams(location.search);
 const POOL = P.get("pool") || "";
 const POOL_BASE = POOL ? `candidate_pools/${POOL}/` : "";
 const POOL_NAMES = { cand108: "候補A: 東北きりたん", cand94: "候補B: 中部つるぎ",
-  cand9: "候補C: 波音リツ", cand21: "候補D: 剣崎雌雄(男)", cand45: "候補E: 櫻歌ミコ", cand53: "候補F: 麒ヶ島宗麟(男)" };
+  cand9: "候補C: 波音リツ", cand21: "候補D: 剣崎雌雄(男)", cand45: "候補E: 櫻歌ミコ", cand53: "候補F: 麒ヶ島宗麟(男)",
+  // v2.6: 音高違いの聴き比べ。E4=かるたのメイン音程(栗原指摘)。
+  // C4=男性読手いなばくんの実測主音程(262Hzが75%。オクターブ下げないと判明)。
+  cand108e4: "きりたん・E4版", cand21c4: "剣崎雌雄・C4版(いなば音程)", cand53c4: "麒ヶ島宗麟・C4版(いなば音程)" };
 const POOL_LABEL = POOL ? (POOL_NAMES[POOL] || POOL) : "現行: 四国めたん";
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);

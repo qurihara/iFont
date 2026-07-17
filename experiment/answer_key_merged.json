@@ -51046,5 +51046,1949 @@
   "vol_scale": 1.788,
   "speaker": 53,
   "pool": "cand53"
+ },
+ "audio1char|007162a99a02ad0d5c6e": {
+  "char": "あ",
+  "target": "あ",
+  "f0_hz": 330.3,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|cc64d184e5d0e589f75e": {
+  "char": "い",
+  "target": "い",
+  "f0_hz": 321.7,
+  "corrected": false,
+  "vol_scale": 1.233,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|25d6eb8fc33b6989d024": {
+  "char": "う",
+  "target": "う",
+  "f0_hz": 323.0,
+  "corrected": false,
+  "vol_scale": 1.373,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|eebacfa34698f63687d5": {
+  "char": "え",
+  "target": "え",
+  "f0_hz": 322.3,
+  "corrected": false,
+  "vol_scale": 0.882,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|45cf7592648b1b882c5e": {
+  "char": "お",
+  "target": "お",
+  "f0_hz": 328.3,
+  "corrected": false,
+  "vol_scale": 0.447,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|5d74d92d6316dd11ecc5": {
+  "char": "か",
+  "target": "か",
+  "f0_hz": 326.4,
+  "corrected": false,
+  "vol_scale": 0.306,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|027b376382c5f3e7c335": {
+  "char": "き",
+  "target": "き",
+  "f0_hz": 331.5,
+  "corrected": false,
+  "vol_scale": 1.221,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|e0162e8967fe77d1e2fd": {
+  "char": "く",
+  "target": "く",
+  "f0_hz": 321.6,
+  "corrected": false,
+  "vol_scale": 1.363,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|ca5af28fe6def67a1b48": {
+  "char": "け",
+  "target": "け",
+  "f0_hz": 324.0,
+  "corrected": false,
+  "vol_scale": 0.931,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|888fdfed731658bf02b9": {
+  "char": "こ",
+  "target": "こ",
+  "f0_hz": 325.0,
+  "corrected": false,
+  "vol_scale": 0.46,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|ac33afa256934c5f5bed": {
+  "char": "さ",
+  "target": "さ",
+  "f0_hz": 319.5,
+  "corrected": true,
+  "vol_scale": 2.045,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|3e7aca60a39e560667c3": {
+  "char": "し",
+  "target": "し",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 2.151,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c63a2b24dacd83f8390f": {
+  "char": "す",
+  "target": "す",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 4.462,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|8586c1351b49628f19f9": {
+  "char": "せ",
+  "target": "せ",
+  "f0_hz": null,
+  "corrected": true,
+  "vol_scale": 2.929,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|dc626bad24c693b4112c": {
+  "char": "そ",
+  "target": "そ",
+  "f0_hz": 332.1,
+  "corrected": true,
+  "vol_scale": 1.106,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|0c2c5db60679d13a9faf": {
+  "char": "た",
+  "target": "た",
+  "f0_hz": 323.9,
+  "corrected": false,
+  "vol_scale": 0.308,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|329c52e1a0abfce220b5": {
+  "char": "ち",
+  "target": "ち",
+  "f0_hz": 329.9,
+  "corrected": false,
+  "vol_scale": 1.462,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c3c586a6a9046198c601": {
+  "char": "つ",
+  "target": "つ",
+  "f0_hz": 321.9,
+  "corrected": true,
+  "vol_scale": 1.607,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|41d4c6edb6c7769cf330": {
+  "char": "て",
+  "target": "て",
+  "f0_hz": 321.0,
+  "corrected": false,
+  "vol_scale": 0.951,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|1419a03e363f3c9b2668": {
+  "char": "と",
+  "target": "と",
+  "f0_hz": 324.1,
+  "corrected": false,
+  "vol_scale": 0.452,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|17e79404b01036dcf5c2": {
+  "char": "な",
+  "target": "な",
+  "f0_hz": 327.3,
+  "corrected": false,
+  "vol_scale": 0.362,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|5f24e0919e0ace218853": {
+  "char": "に",
+  "target": "に",
+  "f0_hz": 330.2,
+  "corrected": false,
+  "vol_scale": 1.652,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|a42adc2d512357dcc583": {
+  "char": "ぬ",
+  "target": "ぬ",
+  "f0_hz": 325.6,
+  "corrected": false,
+  "vol_scale": 1.289,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|4a606d9701eb65729071": {
+  "char": "ね",
+  "target": "ね",
+  "f0_hz": 327.3,
+  "corrected": false,
+  "vol_scale": 0.822,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|1ac05953903253514c36": {
+  "char": "の",
+  "target": "の",
+  "f0_hz": 326.4,
+  "corrected": false,
+  "vol_scale": 0.519,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|fe95f359e45289bf3441": {
+  "char": "は",
+  "target": "は",
+  "f0_hz": 331.1,
+  "corrected": false,
+  "vol_scale": 1.113,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|3c1c8ad8e93a431ebb2e": {
+  "char": "ひ",
+  "target": "ひ",
+  "f0_hz": 335.4,
+  "corrected": true,
+  "vol_scale": 2.773,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|65c840f9dca6622c9dec": {
+  "char": "ふ",
+  "target": "ふ",
+  "f0_hz": 326.1,
+  "corrected": true,
+  "vol_scale": 2.366,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|2815fd9219873d81a02f": {
+  "char": "へ",
+  "target": "へ",
+  "f0_hz": 322.1,
+  "corrected": false,
+  "vol_scale": 1.054,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|cf10206e786cd4815faa": {
+  "char": "ほ",
+  "target": "ほ",
+  "f0_hz": 322.9,
+  "corrected": false,
+  "vol_scale": 0.426,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|104152921cd8d819c3ed": {
+  "char": "ま",
+  "target": "ま",
+  "f0_hz": 326.0,
+  "corrected": false,
+  "vol_scale": 0.406,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|dc56636cd0814d970886": {
+  "char": "み",
+  "target": "み",
+  "f0_hz": 328.4,
+  "corrected": false,
+  "vol_scale": 1.309,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|f989fc17f4095767eab1": {
+  "char": "む",
+  "target": "む",
+  "f0_hz": 328.6,
+  "corrected": false,
+  "vol_scale": 1.098,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|a067b66bf427ed83131b": {
+  "char": "め",
+  "target": "め",
+  "f0_hz": 321.3,
+  "corrected": false,
+  "vol_scale": 0.748,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|4d23c883c54ee5d049f8": {
+  "char": "も",
+  "target": "も",
+  "f0_hz": 325.8,
+  "corrected": false,
+  "vol_scale": 0.502,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|e7c9e4be7b93da031573": {
+  "char": "や",
+  "target": "や",
+  "f0_hz": 335.5,
+  "corrected": false,
+  "vol_scale": 0.419,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|9dee73b781b3ebc926f8": {
+  "char": "ゆ",
+  "target": "ゆ",
+  "f0_hz": 324.2,
+  "corrected": false,
+  "vol_scale": 1.316,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|e5d621dc69536eb8aead": {
+  "char": "よ",
+  "target": "よ",
+  "f0_hz": 334.1,
+  "corrected": false,
+  "vol_scale": 0.467,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|7c9a79a8fe0af224c6ba": {
+  "char": "ら",
+  "target": "ら",
+  "f0_hz": 325.7,
+  "corrected": false,
+  "vol_scale": 0.322,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|98dedb39650d9a4983d0": {
+  "char": "り",
+  "target": "り",
+  "f0_hz": 327.0,
+  "corrected": false,
+  "vol_scale": 1.287,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c9ce58520fbe730832c6": {
+  "char": "る",
+  "target": "る",
+  "f0_hz": 329.3,
+  "corrected": false,
+  "vol_scale": 1.309,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c29e8e2078176f9fd790": {
+  "char": "れ",
+  "target": "れ",
+  "f0_hz": 326.4,
+  "corrected": false,
+  "vol_scale": 0.755,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|d0c979654a8e235a0c5f": {
+  "char": "ろ",
+  "target": "ろ",
+  "f0_hz": 327.2,
+  "corrected": false,
+  "vol_scale": 0.48,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|8b33d24a4a97d7357b2a": {
+  "char": "わ",
+  "target": "わ",
+  "f0_hz": 326.3,
+  "corrected": false,
+  "vol_scale": 0.305,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|04afa82b5722b6a04e0a": {
+  "char": "を",
+  "target": "を",
+  "f0_hz": 328.3,
+  "corrected": false,
+  "vol_scale": 0.447,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|cd8a6e5d41b106946467": {
+  "char": "ん",
+  "target": "ん",
+  "f0_hz": 332.6,
+  "corrected": true,
+  "vol_scale": 2.059,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|901af3075152f1c6ab73": {
+  "char": "が",
+  "target": "が",
+  "f0_hz": 329.3,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|5fa1c2ced07dcc2d7863": {
+  "char": "ぎ",
+  "target": "ぎ",
+  "f0_hz": 327.8,
+  "corrected": false,
+  "vol_scale": 1.268,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|b0a4a280c08f0b4d5755": {
+  "char": "ぐ",
+  "target": "ぐ",
+  "f0_hz": 325.4,
+  "corrected": false,
+  "vol_scale": 1.208,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|126845a252e31eb6a75b": {
+  "char": "げ",
+  "target": "げ",
+  "f0_hz": 326.9,
+  "corrected": false,
+  "vol_scale": 1.073,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|395950ff521357fdc200": {
+  "char": "ご",
+  "target": "ご",
+  "f0_hz": 326.2,
+  "corrected": false,
+  "vol_scale": 0.455,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|04a658580f6ee521bc72": {
+  "char": "ざ",
+  "target": "ざ",
+  "f0_hz": 330.1,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|d1781dbd60610b813d63": {
+  "char": "じ",
+  "target": "じ",
+  "f0_hz": 335.2,
+  "corrected": false,
+  "vol_scale": 1.274,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|1c223e3e7ac8a44c0a87": {
+  "char": "ず",
+  "target": "ず",
+  "f0_hz": 330.6,
+  "corrected": true,
+  "vol_scale": 1.572,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|398234991b316949bdbe": {
+  "char": "ぜ",
+  "target": "ぜ",
+  "f0_hz": 330.2,
+  "corrected": false,
+  "vol_scale": 1.138,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|6f7ef738aa742b400efd": {
+  "char": "ぞ",
+  "target": "ぞ",
+  "f0_hz": 329.2,
+  "corrected": false,
+  "vol_scale": 0.386,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|d357e201aec62e0f94e2": {
+  "char": "だ",
+  "target": "だ",
+  "f0_hz": 330.0,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|4d1dec95bef423b64487": {
+  "char": "ぢ",
+  "target": "ぢ",
+  "f0_hz": 335.2,
+  "corrected": false,
+  "vol_scale": 1.274,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|56e58a03ec1f61504b08": {
+  "char": "づ",
+  "target": "づ",
+  "f0_hz": 330.6,
+  "corrected": true,
+  "vol_scale": 1.572,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|f542a991a9f35dc22016": {
+  "char": "で",
+  "target": "で",
+  "f0_hz": 327.6,
+  "corrected": false,
+  "vol_scale": 0.873,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|17730da8725ce04985b3": {
+  "char": "ど",
+  "target": "ど",
+  "f0_hz": 326.8,
+  "corrected": false,
+  "vol_scale": 0.467,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|2ce579ebc0426a0d6c98": {
+  "char": "ば",
+  "target": "ば",
+  "f0_hz": 325.4,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|be5c99f5e60a5dcdd72d": {
+  "char": "び",
+  "target": "び",
+  "f0_hz": 326.5,
+  "corrected": false,
+  "vol_scale": 1.182,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|a8893dcbf031c2f25aaf": {
+  "char": "ぶ",
+  "target": "ぶ",
+  "f0_hz": 323.6,
+  "corrected": false,
+  "vol_scale": 1.203,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|18a308fa53bef03aa9dc": {
+  "char": "べ",
+  "target": "べ",
+  "f0_hz": 325.4,
+  "corrected": false,
+  "vol_scale": 0.865,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|46583a18580efcdfc784": {
+  "char": "ぼ",
+  "target": "ぼ",
+  "f0_hz": 326.8,
+  "corrected": false,
+  "vol_scale": 0.466,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c52d3016c33d063434b8": {
+  "char": "ぱ",
+  "target": "ぱ",
+  "f0_hz": 324.8,
+  "corrected": false,
+  "vol_scale": 0.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|770c178a5e741be88206": {
+  "char": "ぴ",
+  "target": "ぴ",
+  "f0_hz": 328.8,
+  "corrected": false,
+  "vol_scale": 1.3,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|0b7f9dad2ca4fae76db6": {
+  "char": "ぷ",
+  "target": "ぷ",
+  "f0_hz": 325.2,
+  "corrected": false,
+  "vol_scale": 1.248,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|cf0343e4c47e34fb980d": {
+  "char": "ぺ",
+  "target": "ぺ",
+  "f0_hz": 321.8,
+  "corrected": false,
+  "vol_scale": 0.914,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|000fc8a5ba9d18a2afba": {
+  "char": "ぽ",
+  "target": "ぽ",
+  "f0_hz": 321.5,
+  "corrected": false,
+  "vol_scale": 0.446,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|c9889b3c49854e218427": {
+  "char": "ゔ",
+  "target": "ゔ",
+  "f0_hz": 322.4,
+  "corrected": false,
+  "vol_scale": 1.184,
+  "speaker": 108,
+  "pool": "cand108e4"
+ },
+ "audio1char|d7e67ef05897ed88c26e": {
+  "char": "あ",
+  "target": "あ",
+  "f0_hz": 259.2,
+  "corrected": false,
+  "vol_scale": 0.819,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|8ef954c1ac5bf5503b74": {
+  "char": "い",
+  "target": "い",
+  "f0_hz": 259.0,
+  "corrected": false,
+  "vol_scale": 0.896,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|1acaf507c9bfd0b30819": {
+  "char": "う",
+  "target": "う",
+  "f0_hz": 265.4,
+  "corrected": true,
+  "vol_scale": 1.45,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|34b04e64ae7a7cf6b3a2": {
+  "char": "え",
+  "target": "え",
+  "f0_hz": 257.9,
+  "corrected": false,
+  "vol_scale": 0.825,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|995b22268c0a1ef084ca": {
+  "char": "お",
+  "target": "お",
+  "f0_hz": 267.7,
+  "corrected": false,
+  "vol_scale": 2.033,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|1716763973704e385bf8": {
+  "char": "か",
+  "target": "か",
+  "f0_hz": 266.8,
+  "corrected": false,
+  "vol_scale": 0.866,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|dc03e46674e68ce15b21": {
+  "char": "き",
+  "target": "き",
+  "f0_hz": 255.5,
+  "corrected": true,
+  "vol_scale": 1.25,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|b3ec9fb69acbee5011d9": {
+  "char": "く",
+  "target": "く",
+  "f0_hz": 266.3,
+  "corrected": false,
+  "vol_scale": 2.439,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|c2a0e79ba9c0bcac11bb": {
+  "char": "け",
+  "target": "け",
+  "f0_hz": 258.6,
+  "corrected": false,
+  "vol_scale": 0.879,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|29e8c8184610374a933b": {
+  "char": "こ",
+  "target": "こ",
+  "f0_hz": 267.4,
+  "corrected": false,
+  "vol_scale": 1.052,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|fd55414dcd85c3ef69a3": {
+  "char": "さ",
+  "target": "さ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.264,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|ba752319ab7f2a93edcf": {
+  "char": "し",
+  "target": "し",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.125,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|015ff9d7060e772e613e": {
+  "char": "す",
+  "target": "す",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.2,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|dbd7cd3bd837a935206e": {
+  "char": "せ",
+  "target": "せ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.167,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|9ae97691d2ef429a206f": {
+  "char": "そ",
+  "target": "そ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.205,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|30344da8d2393b3a5cd0": {
+  "char": "た",
+  "target": "た",
+  "f0_hz": 263.6,
+  "corrected": false,
+  "vol_scale": 0.954,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|755be931e2f89c9ddaa5": {
+  "char": "ち",
+  "target": "ち",
+  "f0_hz": 264.0,
+  "corrected": false,
+  "vol_scale": 1.25,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|d92eb49502e3f01403a4": {
+  "char": "つ",
+  "target": "つ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.397,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|702a035f9e8fced26957": {
+  "char": "て",
+  "target": "て",
+  "f0_hz": 256.1,
+  "corrected": false,
+  "vol_scale": 1.078,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|2571244b53fce11f3701": {
+  "char": "と",
+  "target": "と",
+  "f0_hz": 261.9,
+  "corrected": false,
+  "vol_scale": 1.737,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|04569154d6dbb07df839": {
+  "char": "な",
+  "target": "な",
+  "f0_hz": 263.8,
+  "corrected": false,
+  "vol_scale": 0.919,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|c2c06d4fabdcef37c229": {
+  "char": "に",
+  "target": "に",
+  "f0_hz": 266.6,
+  "corrected": false,
+  "vol_scale": 1.141,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|4c3c6467d804f6cf6069": {
+  "char": "ぬ",
+  "target": "ぬ",
+  "f0_hz": 266.4,
+  "corrected": true,
+  "vol_scale": 2.232,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|27287e4a843b199b4760": {
+  "char": "ね",
+  "target": "ね",
+  "f0_hz": 258.0,
+  "corrected": false,
+  "vol_scale": 0.928,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|8c154682993a9a9195cd": {
+  "char": "の",
+  "target": "の",
+  "f0_hz": 268.1,
+  "corrected": true,
+  "vol_scale": 0.752,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|b9e65dfb9ec5d520fc1c": {
+  "char": "は",
+  "target": "は",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 1.69,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|023ed81bf334df931e58": {
+  "char": "ひ",
+  "target": "ひ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 3.018,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|e8b4588f393032a820a5": {
+  "char": "ふ",
+  "target": "ふ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 10.962,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|9130f35994fbc6456190": {
+  "char": "へ",
+  "target": "へ",
+  "f0_hz": 261.5,
+  "corrected": false,
+  "vol_scale": 1.588,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|bff82c94a4ea885fb42c": {
+  "char": "ほ",
+  "target": "ほ",
+  "f0_hz": null,
+  "corrected": false,
+  "vol_scale": 4.803,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|d305ada86f95ce370d87": {
+  "char": "ま",
+  "target": "ま",
+  "f0_hz": 268.5,
+  "corrected": false,
+  "vol_scale": 0.767,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|ccfe878940a9938893e4": {
+  "char": "み",
+  "target": "み",
+  "f0_hz": 264.4,
+  "corrected": false,
+  "vol_scale": 1.027,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|65bf069a2c7c7d555344": {
+  "char": "む",
+  "target": "む",
+  "f0_hz": 269.9,
+  "corrected": true,
+  "vol_scale": 3.139,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|3d620f075619994a27f8": {
+  "char": "め",
+  "target": "め",
+  "f0_hz": 259.4,
+  "corrected": false,
+  "vol_scale": 0.736,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|5655cb6a03cb0c0797da": {
+  "char": "も",
+  "target": "も",
+  "f0_hz": 269.0,
+  "corrected": true,
+  "vol_scale": 0.84,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|0acc749addbc9a0ea1b2": {
+  "char": "や",
+  "target": "や",
+  "f0_hz": 267.6,
+  "corrected": false,
+  "vol_scale": 0.463,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|c6f28105c0e5b9b1386c": {
+  "char": "ゆ",
+  "target": "ゆ",
+  "f0_hz": 267.6,
+  "corrected": false,
+  "vol_scale": 0.81,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|b561c6a7f76bbb3886c5": {
+  "char": "よ",
+  "target": "よ",
+  "f0_hz": 269.9,
+  "corrected": true,
+  "vol_scale": 0.359,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|cf1230ab5f41e1044661": {
+  "char": "ら",
+  "target": "ら",
+  "f0_hz": 260.2,
+  "corrected": false,
+  "vol_scale": 0.564,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|df0655f73be6558083b9": {
+  "char": "り",
+  "target": "り",
+  "f0_hz": 264.7,
+  "corrected": false,
+  "vol_scale": 0.856,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|112856e1ec2cdd06d2f6": {
+  "char": "る",
+  "target": "る",
+  "f0_hz": 268.2,
+  "corrected": true,
+  "vol_scale": 1.161,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|18382528604c1c2bc07a": {
+  "char": "れ",
+  "target": "れ",
+  "f0_hz": 256.4,
+  "corrected": false,
+  "vol_scale": 0.718,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|3ea8dc33cbe8377f179d": {
+  "char": "ろ",
+  "target": "ろ",
+  "f0_hz": 269.3,
+  "corrected": false,
+  "vol_scale": 0.601,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|50a8cba9c437ecbcc57b": {
+  "char": "わ",
+  "target": "わ",
+  "f0_hz": 265.9,
+  "corrected": false,
+  "vol_scale": 0.716,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|eaded5c4c3d3a8429b2c": {
+  "char": "を",
+  "target": "を",
+  "f0_hz": 267.7,
+  "corrected": false,
+  "vol_scale": 2.033,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|fade67660d339bc404a6": {
+  "char": "ん",
+  "target": "ん",
+  "f0_hz": 268.4,
+  "corrected": true,
+  "vol_scale": 1.933,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|2d0deb26d5721e43db72": {
+  "char": "が",
+  "target": "が",
+  "f0_hz": 265.3,
+  "corrected": false,
+  "vol_scale": 0.621,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|9d2895178af68a8c9d6b": {
+  "char": "ぎ",
+  "target": "ぎ",
+  "f0_hz": 265.2,
+  "corrected": false,
+  "vol_scale": 0.819,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|1c9e7540383095f57116": {
+  "char": "ぐ",
+  "target": "ぐ",
+  "f0_hz": 268.1,
+  "corrected": true,
+  "vol_scale": 1.069,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|bb4884c916034f6d0c2b": {
+  "char": "げ",
+  "target": "げ",
+  "f0_hz": 258.3,
+  "corrected": false,
+  "vol_scale": 0.757,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|5b659cbc1aa70f701b99": {
+  "char": "ご",
+  "target": "ご",
+  "f0_hz": 266.5,
+  "corrected": true,
+  "vol_scale": 0.504,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|89d068750d0903ba8050": {
+  "char": "ざ",
+  "target": "ざ",
+  "f0_hz": 268.6,
+  "corrected": true,
+  "vol_scale": 0.662,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|bf863fe89be78e0575ae": {
+  "char": "じ",
+  "target": "じ",
+  "f0_hz": 262.7,
+  "corrected": false,
+  "vol_scale": 0.958,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|2bd5bd7c047aca81a5ab": {
+  "char": "ず",
+  "target": "ず",
+  "f0_hz": 267.5,
+  "corrected": true,
+  "vol_scale": 1.523,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|448f083f4d5fcec7aca0": {
+  "char": "ぜ",
+  "target": "ぜ",
+  "f0_hz": 265.3,
+  "corrected": false,
+  "vol_scale": 0.754,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|270ed90f7f27bd3089ea": {
+  "char": "ぞ",
+  "target": "ぞ",
+  "f0_hz": 267.9,
+  "corrected": true,
+  "vol_scale": 1.059,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|61cd923e19cb6c671413": {
+  "char": "だ",
+  "target": "だ",
+  "f0_hz": 267.8,
+  "corrected": false,
+  "vol_scale": 0.773,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|67aa6022ce87be29463d": {
+  "char": "ぢ",
+  "target": "ぢ",
+  "f0_hz": 262.7,
+  "corrected": false,
+  "vol_scale": 0.958,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|21441a74c3b8010153b1": {
+  "char": "づ",
+  "target": "づ",
+  "f0_hz": 267.5,
+  "corrected": true,
+  "vol_scale": 1.523,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|b75feadd1128f65291e2": {
+  "char": "で",
+  "target": "で",
+  "f0_hz": 256.3,
+  "corrected": false,
+  "vol_scale": 0.776,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|9d50d49f094a66f94f76": {
+  "char": "ど",
+  "target": "ど",
+  "f0_hz": 268.3,
+  "corrected": true,
+  "vol_scale": 0.695,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|281fc35b9a5555ec162e": {
+  "char": "ば",
+  "target": "ば",
+  "f0_hz": 267.0,
+  "corrected": false,
+  "vol_scale": 0.54,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|9b9f243c04040183a4d5": {
+  "char": "び",
+  "target": "び",
+  "f0_hz": 265.6,
+  "corrected": false,
+  "vol_scale": 0.885,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|43f6ccd385c58ef4b423": {
+  "char": "ぶ",
+  "target": "ぶ",
+  "f0_hz": 270.0,
+  "corrected": true,
+  "vol_scale": 1.525,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|37f259856e99825762c8": {
+  "char": "べ",
+  "target": "べ",
+  "f0_hz": 263.2,
+  "corrected": false,
+  "vol_scale": 0.784,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|272cfe954c7b67264572": {
+  "char": "ぼ",
+  "target": "ぼ",
+  "f0_hz": 268.1,
+  "corrected": false,
+  "vol_scale": 1.45,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|f1202eb5e2edc08a4728": {
+  "char": "ぱ",
+  "target": "ぱ",
+  "f0_hz": 262.2,
+  "corrected": true,
+  "vol_scale": 0.602,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|416d0c3b3f957517f628": {
+  "char": "ぴ",
+  "target": "ぴ",
+  "f0_hz": 258.0,
+  "corrected": false,
+  "vol_scale": 1.042,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|77bf0879c8345f690ae7": {
+  "char": "ぷ",
+  "target": "ぷ",
+  "f0_hz": 268.4,
+  "corrected": true,
+  "vol_scale": 2.34,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|708f1037e795a7200455": {
+  "char": "ぺ",
+  "target": "ぺ",
+  "f0_hz": 258.6,
+  "corrected": false,
+  "vol_scale": 0.974,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|36a5567c2eb82258fdf7": {
+  "char": "ぽ",
+  "target": "ぽ",
+  "f0_hz": 264.2,
+  "corrected": true,
+  "vol_scale": 1.45,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|61ca4c4215e942f2532c": {
+  "char": "ゔ",
+  "target": "ゔ",
+  "f0_hz": 269.1,
+  "corrected": true,
+  "vol_scale": 1.921,
+  "speaker": 21,
+  "pool": "cand21c4"
+ },
+ "audio1char|d9014896c172369f537f": {
+  "char": "あ",
+  "target": "あ",
+  "f0_hz": 265.4,
+  "corrected": false,
+  "vol_scale": 0.546,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|1766112ca6f0464e4918": {
+  "char": "い",
+  "target": "い",
+  "f0_hz": 264.1,
+  "corrected": true,
+  "vol_scale": 0.844,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|c7a91ae380742213948f": {
+  "char": "う",
+  "target": "う",
+  "f0_hz": 268.1,
+  "corrected": true,
+  "vol_scale": 1.11,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|ebd35555823cce334d53": {
+  "char": "え",
+  "target": "え",
+  "f0_hz": 267.2,
+  "corrected": false,
+  "vol_scale": 1.149,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|68783952efedc1ec25d1": {
+  "char": "お",
+  "target": "お",
+  "f0_hz": 260.7,
+  "corrected": false,
+  "vol_scale": 1.082,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|72d7cbd01d9b96e04c75": {
+  "char": "か",
+  "target": "か",
+  "f0_hz": 258.4,
+  "corrected": true,
+  "vol_scale": 0.787,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|7edbf8f4d432ae968b34": {
+  "char": "き",
+  "target": "き",
+  "f0_hz": 265.8,
+  "corrected": true,
+  "vol_scale": 1.084,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|abee0e523305f96b2485": {
+  "char": "く",
+  "target": "く",
+  "f0_hz": 255.0,
+  "corrected": false,
+  "vol_scale": 1.129,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|bd6718910f0ec6d13f33": {
+  "char": "け",
+  "target": "け",
+  "f0_hz": 266.7,
+  "corrected": false,
+  "vol_scale": 0.536,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|114c779bcd3a39fef49a": {
+  "char": "こ",
+  "target": "こ",
+  "f0_hz": 268.2,
+  "corrected": false,
+  "vol_scale": 1.203,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|55e8e74fc1e89ed36019": {
+  "char": "さ",
+  "target": "さ",
+  "f0_hz": 263.6,
+  "corrected": false,
+  "vol_scale": 0.864,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|d159d5da830dbe8b3957": {
+  "char": "し",
+  "target": "し",
+  "f0_hz": 247.1,
+  "corrected": true,
+  "vol_scale": 2.434,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|624cd2d33372114a6017": {
+  "char": "す",
+  "target": "す",
+  "f0_hz": 252.2,
+  "corrected": true,
+  "vol_scale": 3.955,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|e49028b957badab30bd5": {
+  "char": "せ",
+  "target": "せ",
+  "f0_hz": 258.6,
+  "corrected": true,
+  "vol_scale": 1.905,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|0df343cc7ca70cbec98a": {
+  "char": "そ",
+  "target": "そ",
+  "f0_hz": 260.9,
+  "corrected": false,
+  "vol_scale": 1.047,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|909d09c31ca61c0d0d5b": {
+  "char": "た",
+  "target": "た",
+  "f0_hz": 266.5,
+  "corrected": false,
+  "vol_scale": 0.864,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|c59d06d64e60201bcfc3": {
+  "char": "ち",
+  "target": "ち",
+  "f0_hz": 254.8,
+  "corrected": false,
+  "vol_scale": 1.571,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|06769a260f60b66b9ef8": {
+  "char": "つ",
+  "target": "つ",
+  "f0_hz": 258.5,
+  "corrected": true,
+  "vol_scale": 2.478,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|0f8045d10e19df948c6e": {
+  "char": "て",
+  "target": "て",
+  "f0_hz": 261.4,
+  "corrected": true,
+  "vol_scale": 0.982,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|064f84f30b78933b2217": {
+  "char": "と",
+  "target": "と",
+  "f0_hz": 266.8,
+  "corrected": false,
+  "vol_scale": 0.81,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|69d052ef4f8e3e0916e4": {
+  "char": "な",
+  "target": "な",
+  "f0_hz": 268.5,
+  "corrected": false,
+  "vol_scale": 0.837,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|e065c7f8b7535b280911": {
+  "char": "に",
+  "target": "に",
+  "f0_hz": 262.0,
+  "corrected": false,
+  "vol_scale": 1.074,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|078dc5b7d0380082b611": {
+  "char": "ぬ",
+  "target": "ぬ",
+  "f0_hz": 261.2,
+  "corrected": true,
+  "vol_scale": 1.285,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|ac92bf5d773e73e65815": {
+  "char": "ね",
+  "target": "ね",
+  "f0_hz": 268.4,
+  "corrected": false,
+  "vol_scale": 0.878,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|6f9d48ff9c355dcfcde3": {
+  "char": "の",
+  "target": "の",
+  "f0_hz": 252.3,
+  "corrected": true,
+  "vol_scale": 0.503,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|c69cc89f883cc5024c24": {
+  "char": "は",
+  "target": "は",
+  "f0_hz": 265.5,
+  "corrected": false,
+  "vol_scale": 0.676,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|22f77d9a7486be3a3eaf": {
+  "char": "ひ",
+  "target": "ひ",
+  "f0_hz": 248.3,
+  "corrected": true,
+  "vol_scale": 1.438,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|a9495fa8868c8dde2116": {
+  "char": "ふ",
+  "target": "ふ",
+  "f0_hz": 261.2,
+  "corrected": true,
+  "vol_scale": 1.007,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|2704e85c9dd9b3e1373e": {
+  "char": "へ",
+  "target": "へ",
+  "f0_hz": 244.5,
+  "corrected": true,
+  "vol_scale": 0.65,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|7553048daabfafd1ab65": {
+  "char": "ほ",
+  "target": "ほ",
+  "f0_hz": 262.5,
+  "corrected": false,
+  "vol_scale": 0.904,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|0792641f868c2cef1a2c": {
+  "char": "ま",
+  "target": "ま",
+  "f0_hz": 268.5,
+  "corrected": false,
+  "vol_scale": 0.856,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|2f4f1252aa635027814b": {
+  "char": "み",
+  "target": "み",
+  "f0_hz": 266.6,
+  "corrected": true,
+  "vol_scale": 0.863,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|90971d34f82a49f047fa": {
+  "char": "む",
+  "target": "む",
+  "f0_hz": 246.3,
+  "corrected": true,
+  "vol_scale": 1.033,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|2ff2b390f69d489025fb": {
+  "char": "め",
+  "target": "め",
+  "f0_hz": 262.8,
+  "corrected": true,
+  "vol_scale": 0.637,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|0dbb2eb6405802b47b46": {
+  "char": "も",
+  "target": "も",
+  "f0_hz": 268.5,
+  "corrected": false,
+  "vol_scale": 1.0,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|f591154fef180044571f": {
+  "char": "や",
+  "target": "や",
+  "f0_hz": 267.8,
+  "corrected": true,
+  "vol_scale": 0.557,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|157f79357cfe492211f6": {
+  "char": "ゆ",
+  "target": "ゆ",
+  "f0_hz": 258.8,
+  "corrected": true,
+  "vol_scale": 1.699,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|d2f2ca415138191a0328": {
+  "char": "よ",
+  "target": "よ",
+  "f0_hz": 261.8,
+  "corrected": true,
+  "vol_scale": 0.895,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|4b2bdd502864ff61d3da": {
+  "char": "ら",
+  "target": "ら",
+  "f0_hz": 265.9,
+  "corrected": true,
+  "vol_scale": 0.661,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|3fa58262943088ddba2e": {
+  "char": "り",
+  "target": "り",
+  "f0_hz": 256.6,
+  "corrected": false,
+  "vol_scale": 1.0,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|21c19a066ea25915cce6": {
+  "char": "る",
+  "target": "る",
+  "f0_hz": 259.3,
+  "corrected": false,
+  "vol_scale": 1.188,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|02ec1ccb64800d6acc94": {
+  "char": "れ",
+  "target": "れ",
+  "f0_hz": 262.3,
+  "corrected": true,
+  "vol_scale": 0.892,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|71d74cce409f0b1ae32a": {
+  "char": "ろ",
+  "target": "ろ",
+  "f0_hz": 258.7,
+  "corrected": true,
+  "vol_scale": 0.941,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|002d2f87a3531fcdd2ed": {
+  "char": "わ",
+  "target": "わ",
+  "f0_hz": 267.3,
+  "corrected": false,
+  "vol_scale": 0.602,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|11f29a100aa4e1214e25": {
+  "char": "を",
+  "target": "を",
+  "f0_hz": 260.7,
+  "corrected": false,
+  "vol_scale": 1.082,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|1de66a7d95b6a7e454db": {
+  "char": "ん",
+  "target": "ん",
+  "f0_hz": 257.6,
+  "corrected": false,
+  "vol_scale": 3.0,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|5dd2f2369b41b4845cd5": {
+  "char": "が",
+  "target": "が",
+  "f0_hz": 268.8,
+  "corrected": true,
+  "vol_scale": 0.898,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|c582cd589e22ec8aa474": {
+  "char": "ぎ",
+  "target": "ぎ",
+  "f0_hz": 276.6,
+  "corrected": true,
+  "vol_scale": 1.051,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|de97c736d3744d605edb": {
+  "char": "ぐ",
+  "target": "ぐ",
+  "f0_hz": 255.4,
+  "corrected": false,
+  "vol_scale": 0.962,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|95911b43cfe15ae4866d": {
+  "char": "げ",
+  "target": "げ",
+  "f0_hz": 262.3,
+  "corrected": true,
+  "vol_scale": 0.79,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|92ba9b9f165c376706d8": {
+  "char": "ご",
+  "target": "ご",
+  "f0_hz": 261.6,
+  "corrected": true,
+  "vol_scale": 1.003,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|858379f7377aa7e0efa1": {
+  "char": "ざ",
+  "target": "ざ",
+  "f0_hz": 267.8,
+  "corrected": true,
+  "vol_scale": 0.918,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|b62c421dbb8b6e6a8f41": {
+  "char": "じ",
+  "target": "じ",
+  "f0_hz": 259.1,
+  "corrected": false,
+  "vol_scale": 1.808,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|42abe2099cd015bfa39d": {
+  "char": "ず",
+  "target": "ず",
+  "f0_hz": 261.8,
+  "corrected": false,
+  "vol_scale": 1.505,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|5ce49986abb6edf7d238": {
+  "char": "ぜ",
+  "target": "ぜ",
+  "f0_hz": 256.3,
+  "corrected": true,
+  "vol_scale": 1.107,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|4a07e99c062dcc22412a": {
+  "char": "ぞ",
+  "target": "ぞ",
+  "f0_hz": 261.3,
+  "corrected": true,
+  "vol_scale": 0.788,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|51ba479c5778071708f2": {
+  "char": "だ",
+  "target": "だ",
+  "f0_hz": 268.9,
+  "corrected": false,
+  "vol_scale": 0.906,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|ecc2adfbbc5394770c93": {
+  "char": "ぢ",
+  "target": "ぢ",
+  "f0_hz": 259.1,
+  "corrected": false,
+  "vol_scale": 1.808,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|86c522fbc82b39cb6eb6": {
+  "char": "づ",
+  "target": "づ",
+  "f0_hz": 261.8,
+  "corrected": false,
+  "vol_scale": 1.505,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|aef0f94b3b36b2c16dcf": {
+  "char": "で",
+  "target": "で",
+  "f0_hz": 261.5,
+  "corrected": true,
+  "vol_scale": 1.088,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|97840ff19b9d3c9fcc94": {
+  "char": "ど",
+  "target": "ど",
+  "f0_hz": 262.3,
+  "corrected": true,
+  "vol_scale": 0.902,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|bbcbd7a443433b6defe6": {
+  "char": "ば",
+  "target": "ば",
+  "f0_hz": 265.6,
+  "corrected": false,
+  "vol_scale": 0.822,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|6e2211e431fed3fe5918": {
+  "char": "び",
+  "target": "び",
+  "f0_hz": 254.9,
+  "corrected": false,
+  "vol_scale": 0.925,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|818549e01f04051ea690": {
+  "char": "ぶ",
+  "target": "ぶ",
+  "f0_hz": 262.2,
+  "corrected": true,
+  "vol_scale": 1.011,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|af1138d64c4fb2d760ea": {
+  "char": "べ",
+  "target": "べ",
+  "f0_hz": 260.3,
+  "corrected": true,
+  "vol_scale": 0.827,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|f21f9b618f70c42b4f36": {
+  "char": "ぼ",
+  "target": "ぼ",
+  "f0_hz": 259.8,
+  "corrected": true,
+  "vol_scale": 1.118,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|11893f920f22df37ecb1": {
+  "char": "ぱ",
+  "target": "ぱ",
+  "f0_hz": 264.0,
+  "corrected": false,
+  "vol_scale": 0.677,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|13e66c269cbc27a18bb7": {
+  "char": "ぴ",
+  "target": "ぴ",
+  "f0_hz": 258.3,
+  "corrected": true,
+  "vol_scale": 1.083,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|82d4d1179c58263cc5e6": {
+  "char": "ぷ",
+  "target": "ぷ",
+  "f0_hz": 255.3,
+  "corrected": true,
+  "vol_scale": 1.088,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|8a5fde8c2c8941811084": {
+  "char": "ぺ",
+  "target": "ぺ",
+  "f0_hz": 262.3,
+  "corrected": true,
+  "vol_scale": 0.606,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|bfb9d8cbd37209a25319": {
+  "char": "ぽ",
+  "target": "ぽ",
+  "f0_hz": 260.0,
+  "corrected": false,
+  "vol_scale": 1.195,
+  "speaker": 53,
+  "pool": "cand53c4"
+ },
+ "audio1char|28fd72642378c8eaa6a3": {
+  "char": "ゔ",
+  "target": "ゔ",
+  "f0_hz": 247.8,
+  "corrected": true,
+  "vol_scale": 1.564,
+  "speaker": 53,
+  "pool": "cand53c4"
  }
 }
