@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -357,7 +357,40 @@ function intro() {
   go.onclick = () => { if (hp.checked) start(); };
 }
 
+// v2.2: 音の点検モード(?check=1)。課題を通さずに、正規化後の68音を1音ずつ確かめる。
+// かなを押すとその音が本番と同じ処理(音響的開始からのゲート・A特性の増幅)で1回鳴る。
+// 「すべて順に再生」は五十音順に流し、いま鳴っている音のかなを表示する。
+function playOne(ch){
+  const ctx = ensureCtx(); ctx.resume();
+  const s = ctx.createBufferSource(); s.buffer = gatedBuffer(ch, 0.2); s.connect(ctx.destination); s.start();
+}
+function showCheck(){
+  const A = avail();
+  const btn = c => c ? `<button class="kbtn" data-ch="${c}" style="width:44px;height:44px;margin:2px;font-size:20px">${c}</button>`
+                     : `<span style="display:inline-block;width:48px"></span>`;
+  const rows = GRID_AUDIO.map(row => `<div>${row.map(btn).join("")}</div>`).join("");
+  screen.innerHTML = `<h1>音の点検モード（全${A.length}音）</h1>
+    <p class="muted">かなを押すと、その音が<b>本番とまったく同じ処理</b>(増幅・200ms)で1回鳴ります。
+    「すべて順に再生」は五十音順に0.7秒間隔で流します。弱い・聞こえない・別の音に聞こえるものがあればメモして報告してください。</p>
+    <p><button class="primary" id="playAll">すべて順に再生</button>
+       <span id="nowCh" style="font-size:32px;font-weight:700;color:#2E7D8F;margin-left:16px"></span></p>
+    <div>${rows}</div>`;
+  screen.querySelectorAll(".kbtn").forEach(b => b.addEventListener("click", () => {
+    document.getElementById("nowCh").textContent = b.dataset.ch;
+    playOne(b.dataset.ch);
+  }));
+  let playing = false;
+  document.getElementById("playAll").addEventListener("click", () => {
+    if (playing) return; playing = true;
+    A.forEach((ch, i) => setTimeout(() => {
+      document.getElementById("nowCh").textContent = ch;
+      playOne(ch);
+      if (i === A.length - 1) playing = false;
+    }, i * 700));
+  });
+}
+
 (async function(){
-  try { await preload(); intro(); }
+  try { await preload(); if (P.has("check")) showCheck(); else intro(); }
   catch(e){ screen.innerHTML = `<h1>読み込みエラー</h1><p class="muted">${e.message}</p>`; }
 })();
