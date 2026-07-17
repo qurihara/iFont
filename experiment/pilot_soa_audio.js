@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "1.8";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.9";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -124,13 +124,15 @@ function gatedBuffer(ch, gateS) {
   const s = stimByChar[ch], src = bufByChar[ch];
   const sr = src.sampleRate;
   const onMs = (onsets[ch] && onsets[ch].acoustic_onset_ms) || 0;
+  // v1.9: クリップ間の音量差(最大36倍)を正規化する。増幅率は事前計算(有音部RMSを中央値に揃え、ピーク0.85で頭打ち)。
+  const gain = (onsets[ch] && onsets[ch].gain) || 1.0;
   const start = Math.floor((s.char_onset_s + onMs/1000) * sr);
   const avail = Math.max(0.01, s.char_dur_s - onMs/1000);   // スロット末までの残り
   const dur = Math.min(gateS, avail);
   const n = Math.max(1, Math.floor(dur * sr));
   const out = ensureCtx().createBuffer(1, n, sr);
   const a = src.getChannelData(0), b = out.getChannelData(0);
-  for (let i=0;i<n;i++) b[i] = a[start+i] || 0;
+  for (let i=0;i<n;i++) b[i] = (a[start+i] || 0) * gain;
   const nf = Math.min(Math.floor(FADE_S*sr), n>>1);
   for (let i=0;i<nf;i++){ b[i]*=i/nf; b[n-1-i]*=i/nf; }   // 立上げ/立下げフェード
   return out;
@@ -284,7 +286,7 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,ONSET_ANCHORED:true,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,ONSET_ANCHORED:true,LOUDNESS_NORMALIZED:true,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };
