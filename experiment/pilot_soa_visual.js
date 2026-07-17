@@ -319,7 +319,8 @@ function intro() {
     ? `<p class="muted" style="color:#C25B4E">この実験は表示のタイミングが重要です。<b>できればPC（パソコン）での参加を推奨します。</b>スマートフォンの場合は横向き・明るさ最大でお願いします。</p>` : ``;
   const charsetNote = CHARSET==="full"
     ? `<p class="muted" style="color:#2E7D8F">基礎データモードです。小書きかな（っゃゅょ）と ゐゑ を含む全字（${CHARS.length}字）で行います。</p>` : ``;
-  screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (ブロックA)</h1>
+  screen.innerHTML = `<h1>iFont パイロット: 視覚・単文字の露出時間 (甲課題)</h1>
+    <p class="muted" style="background:#f4f4f6;border-radius:8px;padding:8px 12px">この課題は本番の実験構成から外れました（v1.7で乙課題に統合）。比較・参照用に残しています。</p>
     ${pcNote}${charsetNote}
     <p><b>1問で答える文字は「1つ」だけです。</b>${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">

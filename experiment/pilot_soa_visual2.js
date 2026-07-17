@@ -1,18 +1,21 @@
-// iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB) 自己完結版。
-// 先行文字(char1)をフル鮮明で SOA[ms] 提示し、次の事象(char2)で同じ固定領域を上書きする。
-// char2 も SOA[ms] 提示したのち中立マスク(別かな重畳)で打ち切り、両文字を50音グリッドで回答させる。
-// SOA を恒常法で掃引し、位置別(char1=上書きされる先頭 / char2=末尾)の識別率を得る。
-// ブロックA(pilot_soa_visual.html)の f(D) と引き算すれば干渉指標 I(S)=実測−f(S) になる。
+// iFont パイロット: 視覚・連続する文字の間隔掃引(乙課題) 自己完結版。
+// v1.7: 較正の視覚課題を乙ひとつに統合した(PI決定 2026-07-17)。
+//   ・画面は「1文字目(S ms) → 2文字目が上書き(S ms) → 3文字目が上書き(S ms) → 白紙」。
+//   ・1文字目と2文字目を順に回答する。3文字目は答えない字(2文字目の見え終わりを揃える役)。
+//   ・モザイクは廃止。採点されるすべての文字が「次の文字」で見え終わる=運用と同じ形。
+//   ・判定は乙の内部で完結する: char1の正答率が S=200 で頭打ちの値(450・700)と同じなら0.2秒に干渉なし。
+//   ・下限は50ms(60Hzで3フレームの表示安全域)。それより短い水準は ?levels= の研究者調整のみ。
+//   ・この課題では小書きかな(っゃゅょ)をどの位置にも使わない(消す力が弱い/まとまり読みが起きるため。PI決定)。
+//     小書き自体の見えやすさはfracの1文字課題(78字)で測る。
 // jsPsych・音声・サーバ不要。base/<かな>.png を流用。結果は画面表示＋JSONダウンロード。
 "use strict";
 
-// ---- 設定 (URLパラメータで上書き可: ?levels=100,150,200,300,450,700&perlevel=6&mask=250) ----
-const VERSION = "1.6";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.7";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
-const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
-const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の対数(1対=2回答)
+const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
+const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の組数(1組=2回答)
 const N_PRACTICE = Number(P.get("practice") || 2);
-const MASK_MS = Number(P.get("mask") || 250);       // 末尾の中立マスク時間
+const BLANK_MS = 200;                                // 3文字目のあとの白紙(回答画面への間)
 const FIX_MS = 400;
 const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // countdownモード時の秒数
 const COUNTDOWN_MS = COUNTDOWN_S * 1000;
@@ -28,8 +31,7 @@ const ENV = { ua: navigator.userAgent, dpr: window.devicePixelRatio || 1,
   requestAnimationFrame(f);
 })();
 
-// 既定は、視覚と聴覚で一致する「独立モーラ72字」を用いる。小書きかな(っゃゅょ)と ゐゑ は、
-// 単独では区別できる音を持たず変換gに乗らないため、既定の実験からは外している(ツールでは通常どおり描画する)。ゔは残す。
+// 既定は、視覚と聴覚で対応が取れる「独立モーラ72字」。
 const GRID_MORA = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
@@ -38,9 +40,7 @@ const GRID_MORA = [
   ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
   ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゔ","","","",""],
 ];
-// 基礎データモード(?charset=full)では、小書きかな(っゃゅょ)と ゐゑ を加えた全字を用いる。
-// この基礎データは本体の変換gとは分けて解析する。日本語のかなが視覚的にどれだけ識別できるかの
-// 基礎的なデータ(かな識別のノルム)を取ることが目的で、今回の論文では使わない場合がある。
+// 基礎データモード(?charset=full)では ゐゑ を含む表を使う。小書きかなは表には出るが出題には使わない。
 const GRID_FULL = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
@@ -51,9 +51,11 @@ const GRID_FULL = [
   ["ゃ","","ゅ","","ょ"],["っ","","","",""],
   ["ゐ","","","","ゑ"],["ゔ","","","",""],
 ];
+const SMALL_KANA = ["ゃ","ゅ","ょ","っ"];
 const CHARSET = (P.get("charset") === "full") ? "full" : "mora";
 const GRID_KANA = CHARSET === "full" ? GRID_FULL : GRID_MORA;
-const CHARS = GRID_KANA.flat().filter(Boolean);   // mora=72字 / full=78字
+const GRID_CHARS = GRID_KANA.flat().filter(Boolean);
+const CHARS = GRID_CHARS.filter(c => !SMALL_KANA.includes(c));   // 出題に使う字(小書きを除く)
 
 const screen = document.getElementById("screen");
 const imgs = {};
@@ -74,45 +76,41 @@ async function preload() {
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
-function pickPair(){ const c1=pick(CHARS); let c2=pick(CHARS); while(c2===c1) c2=pick(CHARS); return [c1,c2]; }
+// 3文字の組: すべて別の字にする。1文字目と同じ字の再登場は「最初の字」の判断を壊すため。
+function pickTriple(){
+  const c1 = pick(CHARS);
+  let c2 = pick(CHARS); while (c2 === c1) c2 = pick(CHARS);
+  let c3 = pick(CHARS); while (c3 === c1 || c3 === c2) c3 = pick(CHARS);
+  return [c1, c2, c3];
+}
 
 function buildTrials() {
   const main = [];
-  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2]=pickPair(); main.push({ S, c1, c2, practice:false }); }
+  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) {
+    const [c1,c2,c3] = pickTriple(); main.push({ S, c1, c2, c3, practice:false });
+  }
   shuffle(main);
-  // 練習は流れを覚えるため、あえて長め(見やすい)SOAの2水準から出す
+  // 練習は流れを覚えるため、あえて長め(見やすい)間隔の2水準から出す
   const easy = [...SOA_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({ S: pick(easy), c1, c2, practice:true }); }
+  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2,c3]=pickTriple(); prac.push({ S: pick(easy), c1, c2, c3, practice:true }); }
   return prac.concat(main);
 }
 
 function newCanvas() { const c=document.createElement("canvas"); c.id="stim"; c.width=SIZE; c.height=SIZE; return c; }
 function drawChar(ctx, ch) { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); if (imgs[ch]) ctx.drawImage(imgs[ch],0,0,SIZE,SIZE); }
-// 中立マスク: 層化・H/V偏向の連結細線クロスハッチ・メッシュ(手続き生成・資産不要)。
-// 全セルに必ず1本描き(層化=大きな白穴を作らない)、線長をセルより長くして隣接セルと連結、
-// H/V偏向でかなの縦横ストロークに同方位マスキングを効かせる。実グリフ不使用=可読なかな/特定字の想起なし。
-// かな84字での実測: 墨率≈0.18 / 中心の最大空円≈11px(≈線幅) / 毎試行<5ms。被覆で旧スクランブル(穴32px)を大きく上回る。
-function drawMask(ctx) {
-  const C = 14, W = 1.7, JIT = 0.40, OB = 0.15, SPREAD = 0.20, LF = 1.55;
-  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, SIZE, SIZE);
-  ctx.strokeStyle = "#000"; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = W;
-  const n = Math.ceil(SIZE / C) + 1;
-  for (let gy = -1; gy <= n; gy++) for (let gx = -1; gx <= n; gx++) {
-    const cx = (gx + 0.5) * C, cy = (gy + 0.5) * C;
-    const px = cx + (Math.random() - 0.5) * 2 * JIT * C;
-    const py = cy + (Math.random() - 0.5) * 2 * JIT * C;
-    let th;
-    if (Math.random() < OB) { th = Math.random() * Math.PI; }
-    else {
-      let base = ((gx + gy) & 1) === 0 ? 0 : Math.PI / 2;
-      if (Math.random() < 0.5) base = Math.PI / 2 - base;
-      th = base + (Math.random() - 0.5) * 2 * SPREAD;
-    }
-    const ll = LF * C * (0.85 + 0.3 * Math.random());
-    const dx = Math.cos(th) * ll / 2, dy = Math.sin(th) * ll / 2;
-    ctx.beginPath(); ctx.moveTo(px - dx, py - dy); ctx.lineTo(px + dx, py + dy); ctx.stroke();
-  }
+function drawBlank(ctx) { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }
+function drawFix(ctx) {
+  drawBlank(ctx);
+  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("+", SIZE/2, SIZE/2);
+}
+function drawCountdown(ctx, sec) {
+  drawBlank(ctx);
+  ctx.fillStyle="#2E7D8F"; ctx.font="bold 72px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(String(sec), SIZE/2, SIZE/2 - 12);
+  ctx.fillStyle="#8a93a6"; ctx.font="15px system-ui";
+  ctx.fillText("中央を見て準備してください", SIZE/2, SIZE/2 + 52);
 }
 
 function runTrial() {
@@ -120,7 +118,7 @@ function runTrial() {
   const t = trials[ti];
   const inPractice = t.practice;
   if (!inPractice && !mainStarted) { mainStarted = true; return showMainGate(runTrial); }
-  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div><div id="stage"></div>`;
+  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (間隔=${t.S}ms)</div><div id="stage"></div>`;
   const stage = document.getElementById("stage");
   startGate(stage, (ctx) => presentTrial(t, inPractice, ctx));
 }
@@ -167,36 +165,25 @@ function startGate(stage, onStart) {
   document.addEventListener("keydown", key);
 }
 
-// 刺激提示: 既存canvasに 注視(ゆらぎ付き) → char1(SOA) → char2(SOA, char1を上書き) → マスク → 回答。実測SOAを記録。
+// 刺激提示: 注視(ゆらぎ付き) → c1(S) → c2(S) → c3(S) → 白紙 → 回答。実測の間隔を記録。
 function presentTrial(t, inPractice, ctx) {
   drawFix(ctx);
   const fixDur = FIX_MS + Math.floor(Math.random() * FIX_JITTER);   // 先読み防止のゆらぎ
   const t0 = performance.now();
-  let phase = "fix", t1 = 0, t2 = 0, tm = 0;
+  let phase = "fix", t1 = 0, t2 = 0, t3 = 0, tb = 0;
   function frame(now) {
     const el = now - t0;
     if (phase==="fix" && el >= fixDur) { phase="c1"; drawChar(ctx, t.c1); t1 = now; }
     else if (phase==="c1" && el >= fixDur + t.S) { phase="c2"; drawChar(ctx, t.c2); t2 = now; }
-    else if (phase==="c2" && el >= fixDur + 2*t.S) { phase="mask"; drawMask(ctx); tm = now; }
-    else if (phase==="mask" && el >= fixDur + 2*t.S + MASK_MS) {
-      t._actualSoa1 = Math.round(t2 - t1); t._actualSoa2 = Math.round(tm - t2);
+    else if (phase==="c2" && el >= fixDur + 2*t.S) { phase="c3"; drawChar(ctx, t.c3); t3 = now; }
+    else if (phase==="c3" && el >= fixDur + 3*t.S) { phase="blank"; drawBlank(ctx); tb = now; }
+    else if (phase==="blank" && el >= fixDur + 3*t.S + BLANK_MS) {
+      t._soa1 = Math.round(t2 - t1); t._soa2 = Math.round(t3 - t2); t._dur3 = Math.round(tb - t3);
       return respond(t, inPractice);
     }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
-}
-function drawFix(ctx) {
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.fillStyle="#333"; ctx.font="40px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText("+", SIZE/2, SIZE/2);
-}
-function drawCountdown(ctx, sec) {
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-  ctx.fillStyle="#2E7D8F"; ctx.font="bold 72px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText(String(sec), SIZE/2, SIZE/2 - 12);
-  ctx.fillStyle="#8a93a6"; ctx.font="15px system-ui";
-  ctx.fillText("中央を見て準備してください", SIZE/2, SIZE/2 + 52);
 }
 
 function respond(t, inPractice) {
@@ -204,29 +191,30 @@ function respond(t, inPractice) {
     askOne(t, 2, (r2) => {
       if (!inPractice) {
         results.push({
-          c1: t.c1, c2: t.c2, S: t.S,
-          actual_soa1: t._actualSoa1, actual_soa2: t._actualSoa2,
+          c1: t.c1, c2: t.c2, c3: t.c3, S: t.S,
+          actual_soa1: t._soa1, actual_soa2: t._soa2, actual_dur3: t._dur3,
           resp1: r1, resp2: r2,
           correct1: r1 === t.c1, correct2: r2 === t.c2,
         });
         ti++; runTrial(); return;
       }
-      // 練習: 2文字の正解を提示して流れを覚えてもらう
+      // 練習: 3文字の内訳を提示して流れを覚えてもらう
       const ok1 = r1===t.c1, ok2 = r2===t.c2;
       screen.innerHTML = `<div style="text-align:center;padding:30px">
         <p>正解 — 1文字目「<b style="font-size:20px">${t.c1}</b>」<span style="color:${ok1?'#2E7D8F':'#C25B4E'}">${ok1?'◯':'×'}</span>
         ／ 2文字目「<b style="font-size:20px">${t.c2}</b>」<span style="color:${ok2?'#2E7D8F':'#C25B4E'}">${ok2?'◯':'×'}</span></p>
-        <p class="muted">これは練習です。本番も同じ流れ（＋ → 1文字目 → 2文字目で上書き → モザイク → 2つ回答）をくり返します。</p></div>`;
-      setTimeout(() => { ti++; runTrial(); }, 1600);
+        <p class="muted">3文字目は「${t.c3}」でした（これは<b>答えない</b>字です）。</p>
+        <p class="muted">これは練習です。本番も同じ流れ（＋ → 1文字目 → 2文字目 → 3文字目 → 白紙 → 2つ回答）をくり返します。</p></div>`;
+      setTimeout(() => { ti++; runTrial(); }, 2000);
     });
   });
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
   stage.style.height = "auto";   // 刺激用の空欄を詰めて、かなの表をプロンプト直下に出す
-  const label = pos===1 ? "1文字目（先に出た文字）は？" : "2文字目（上書きした文字）は？";
+  const label = pos===1 ? "1文字目（最初に出た文字）は？" : "2文字目（2番目に出た文字）は？";
   stage.innerHTML = `<div style="text-align:center"><div class="ask">${label}</div>
-    <div class="muted">分からなければ勘でOK（モザイクは答えではありません）</div></div>`;
+    <div class="muted">分からなければ勘でOK（見えなかったと感じても、あとの文字を答えずに勘で選んでください）</div></div>`;
   document.getElementById("grid")?.remove();
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_KANA) for (const ch of row) {
@@ -243,9 +231,7 @@ function byLevel() {
   for (const S of SOA_LEVELS) m[S] = { n:0, ok1:0, ok2:0, okBoth:0 };
   for (const r of results) { const e=m[r.S]; e.n++; if(r.correct1)e.ok1++; if(r.correct2)e.ok2++; if(r.correct1&&r.correct2)e.okBoth++; }
   return SOA_LEVELS.map(S => ({ S, n:m[S].n,
-    acc1: m[S].n? m[S].ok1/m[S].n : null,
-    acc2: m[S].n? m[S].ok2/m[S].n : null,
-    accBoth: m[S].n? m[S].okBoth/m[S].n : null }));
+    acc1:m[S].n?m[S].ok1/m[S].n:null, acc2:m[S].n?m[S].ok2/m[S].n:null, accBoth:m[S].n?m[S].okBoth/m[S].n:null }));
 }
 function svgCurves(rows) {
   const W=460,H=230,ml=44,mb=30,mt=12,mr=12;
@@ -257,7 +243,7 @@ function svgCurves(rows) {
     const dots=rows.filter(r=>r[key]!=null).map(r=>`<circle cx="${xs(r.S)}" cy="${ys(r[key])}" r="4" fill="${color}"/>`).join("");
     return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" ${dash?`stroke-dasharray="5 3"`:""}/>`+dots;
   };
-  const chance=1/CHARS.length;
+  const chance=1/GRID_CHARS.length;
   return `<svg width="${W}" height="${H}" style="background:#fff;border:1px solid #eee">
     <line x1="${ml}" y1="${ys(chance)}" x2="${W-mr}" y2="${ys(chance)}" stroke="#bbb" stroke-dasharray="4"/>
     ${line("acc1","#1E2A5E",false)}
@@ -265,26 +251,25 @@ function svgCurves(rows) {
     <text x="${ml}" y="${H-8}" font-size="11">${lo}ms</text>
     <text x="${W-mr-34}" y="${H-8}" font-size="11">${hi}ms</text>
     <text x="8" y="${mt+8}" font-size="11">100%</text>
-    <text x="${W/2-56}" y="${H-2}" font-size="11">文字間 SOA (ms)</text>
-    <rect x="${ml+8}" y="${mt+4}" width="10" height="3" fill="#1E2A5E"/><text x="${ml+22}" y="${mt+10}" font-size="10.5">char1(上書きされる先頭)</text>
-    <rect x="${ml+8}" y="${mt+20}" width="10" height="3" fill="#2E7D8F"/><text x="${ml+22}" y="${mt+26}" font-size="10.5">char2(末尾)</text>
+    <text x="${W/2-56}" y="${H-2}" font-size="11">文字の間隔 S (ms)</text>
+    <rect x="${ml+8}" y="${mt+4}" width="10" height="3" fill="#1E2A5E"/><text x="${ml+22}" y="${mt+10}" font-size="10.5">1文字目</text>
+    <rect x="${ml+8}" y="${mt+20}" width="10" height="3" fill="#2E7D8F"/><text x="${ml+22}" y="${mt+26}" font-size="10.5">2文字目</text>
   </svg>`;
 }
 function showResults() {
   const rows = byLevel();
-  const pc = v => v==null?"-":(v*100).toFixed(0)+"%";
-  const tbl = `<table><tr><th>SOA(ms)</th>${rows.map(r=>`<td>${r.S}</td>`).join("")}</tr>
-    <tr><th>char1</th>${rows.map(r=>`<td>${pc(r.acc1)}</td>`).join("")}</tr>
-    <tr><th>char2</th>${rows.map(r=>`<td>${pc(r.acc2)}</td>`).join("")}</tr>
+  const pc=v=>v==null?"-":(v*100).toFixed(0)+"%";
+  const tbl = `<table><tr><th>間隔(ms)</th>${rows.map(r=>`<td>${r.S}</td>`).join("")}</tr>
+    <tr><th>1文字目</th>${rows.map(r=>`<td>${pc(r.acc1)}</td>`).join("")}</tr>
+    <tr><th>2文字目</th>${rows.map(r=>`<td>${pc(r.acc2)}</td>`).join("")}</tr>
     <tr><th>両方</th>${rows.map(r=>`<td>${pc(r.accBoth)}</td>`).join("")}</tr>
-    <tr><th>n(対)</th>${rows.map(r=>`<td>${r.n}</td>`).join("")}</tr></table>`;
+    <tr><th>n(組)</th>${rows.map(r=>`<td>${r.n}</td>`).join("")}</tr></table>`;
   screen.innerHTML = `<h1>パイロット完了</h1>
-    <p class="muted">SOA に対する位置別識別率。ブロックA(pilot_soa_visual.html)の f(D) と引き算すると干渉指標 I(S)=実測−f(S) になります。
-    char1 が短い SOA で落ち、SOA とともに回復すれば後方マスキング型の干渉です。</p>
+    <p class="muted">文字の間隔Sに対する位置別の識別率。1文字目の正答率が、S=200で頭打ちの値(450・700)と同じなら、0.2秒の間隔に干渉はないと判定できます。</p>
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,CHARSET,SOA_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,CHARSET,SOA_LEVELS,PER_LEVEL,BLANK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_visual2_${Date.now()}.json`; a.click();
   };
@@ -298,20 +283,22 @@ function intro() {
   const pcNote = ENV.touch
     ? `<p class="muted" style="color:#C25B4E">この実験は表示のタイミングが重要です。<b>できればPC（パソコン）での参加を推奨します。</b>スマートフォンの場合は横向き・明るさ最大でお願いします。</p>` : ``;
   const charsetNote = CHARSET==="full"
-    ? `<p class="muted" style="color:#2E7D8F">基礎データモードです。小書きかな（っゃゅょ）と ゐゑ を含む全字（${CHARS.length}字）で行います。</p>` : ``;
-  screen.innerHTML = `<h1>iFont パイロット: 視覚・2文字の SOA 掃引 (ブロックB)</h1>
+    ? `<p class="muted" style="color:#2E7D8F">基礎データモードです。回答の表に ゐ・ゑ・小書きかな を含みます（出題は小書きを除く${CHARS.length}字）。</p>` : ``;
+  screen.innerHTML = `<h1>iFont パイロット: 視覚・連続する文字の間隔掃引（乙課題）</h1>
     ${pcNote}${charsetNote}
-    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが2文字つづけて出ます。${startNote}以下の手順で進みます。</p>
+    <p><b>1問で答える文字は「2つ」です。</b>同じ場所に、かなが<b>3文字</b>つづけて出ます（3文字目は答えない字です）。${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>表示枠の中央にある <b>＋</b> を見つめる</li>
       <li>見たまま、枠の下の <b>[開始]</b> ボタン（またはスペース）を押す</li>
-      <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間）</li>
-      <li>同じ場所に <b>2文字目</b> が出て1文字目を<b>上書き</b>する（同じ時間だけ）</li>
-      <li><b>モザイク模様</b>が出る <span class="muted">（目の残像を消すためのものです）</span></li>
-      <li><b>1文字目 → 2文字目</b> の順に、それぞれかなの表から選ぶ</li>
+      <li><b>1文字目</b> が出る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間隔）</li>
+      <li>同じ場所に <b>2文字目</b>、つづけて <b>3文字目</b> が出て、前の字を順に上書きする</li>
+      <li>白紙になったら、<b>1文字目 → 2文字目</b> の順に、かなの表から選ぶ（<b>3文字目は答えない</b>）</li>
     </ol>
-    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要7〜10分。</p>
-    <p class="muted">1文字目は2文字目に上書きされるので見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。回答はこの端末の中だけで完結します。</p>
+    <p style="background:#fff8ec;border:1px solid #eadfc8;border-radius:8px;padding:10px 12px">
+    <b>必ず3文字出ます。</b>間隔が短い問題では、1文字目が見えなかったと感じることがあります。
+    そのときも、<b>あとから見えた文字を1文字目として答えず</b>、勘で選んでください。</p>
+    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要8〜12分。</p>
+    <p class="muted">前の字は次の字に上書きされて見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。回答はこの端末の中だけで完結します。</p>
     <p><button class="primary" id="go">練習を始める（${N_PRACTICE}問）</button></p>
     <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
   document.getElementById("go").onclick = start;

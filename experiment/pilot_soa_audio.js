@@ -1,18 +1,16 @@
-// iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB) 研究者向け版。
-// 単音プール(audio1char_stimuli, B3, 0.2秒/モーラ)から2文字を選び、
-// char1 を SOA[ms] だけ聞かせて char2 の開始で打ち切り(次事象=上書き)、
-// char2 も SOA[ms] で打ち切って雑音バースト(中立マスク)を置き、両文字を回答させる。
-// Web Audio でサンプル精度にスケジュールする。SOA が音長(200ms)以上なら自然に鳴り終わる。
-// 【注意】正解の対応づけに answer_key_merged.json(Git管理外・ローカルのみ)が必要。
-//        公開ページでは動かない(研究者のローカル配信専用)。
+// iFont パイロット: 聴覚・連続する音の間隔掃引(乙課題)。
+// v1.7: 視覚の乙課題と対称に、単音プール(audio1char_stimuli, B3, 0.2秒/モーラ)から3音を選び、
+// 「1つ目(S ms) → 2つ目(S ms) → 3つ目(S ms)」と連続再生する。1つ目と2つ目を回答し、3つ目は答えない音
+// (2つ目の聞こえ終わりを揃える役)。雑音バーストは廃止した。
+// Web Audio でサンプル精度にスケジュールする。間隔Sが音長(200ms)以上なら各音は自然に鳴り終わる。
+// 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "1.6";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.7";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
-const SOA_LEVELS = (P.get("levels") || "100,150,200,300,450,700").split(",").map(Number);
+const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
 const N_PRACTICE = Number(P.get("practice") || 2);
-const MASK_MS = Number(P.get("mask") || 250);
 const COUNTDOWN_S = Number(P.get("countdown") ?? 5); // countdownモード時の秒数
 const START_MODE = P.get("start") || "click";        // "click"(既定・自己ペース) / "countdown" / "none"
 const FADE_S = 0.008;                       // 打ち切りのクリック音を避けるフェード
@@ -93,16 +91,23 @@ async function preload() {
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function avail(){ return CHARS.filter(c => bufByChar[c]); }
-function pickPair(){ const A=avail(); const c1=pick(A); let c2=pick(A); while(c2===c1) c2=pick(A); return [c1,c2]; }
+// 3音の組: すべて別の音にする。1音目と同じ音の再登場は「最初の音」の判断を壊すため。
+function pickTriple(){
+  const A=avail();
+  const c1=pick(A);
+  let c2=pick(A); while(c2===c1) c2=pick(A);
+  let c3=pick(A); while(c3===c1||c3===c2) c3=pick(A);
+  return [c1,c2,c3];
+}
 
 function buildTrials() {
   const main = [];
-  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2]=pickPair(); main.push({S,c1,c2,practice:false}); }
+  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2,c3]=pickTriple(); main.push({S,c1,c2,c3,practice:false}); }
   shuffle(main);
-  // 練習は流れを覚えるため、あえて長め(聞き取りやすい)SOAの2水準から出す
+  // 練習は流れを覚えるため、あえて長め(聞き取りやすい)間隔の2水準から出す
   const easy = [...SOA_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2]=pickPair(); prac.push({S:pick(easy),c1,c2,practice:true}); }
+  for (let k=0;k<N_PRACTICE;k++) { const [c1,c2,c3]=pickTriple(); prac.push({S:pick(easy),c1,c2,c3,practice:true}); }
   return prac.concat(main);
 }
 
@@ -120,23 +125,15 @@ function gatedBuffer(ch, gateS) {
   for (let i=0;i<nf;i++){ b[i]*=i/nf; b[n-1-i]*=i/nf; }   // 立上げ/立下げフェード
   return out;
 }
-function playNoise(when, durS) {
-  const ctx = ensureCtx(); const n = Math.floor(durS*ctx.sampleRate);
-  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i=0;i<n;i++) d[i] = (Math.random()*2-1)*0.25;
-  const nf = Math.floor(FADE_S*ctx.sampleRate);
-  for (let i=0;i<nf;i++){ d[i]*=i/nf; d[n-1-i]*=i/nf; }
-  const s = ctx.createBufferSource(); s.buffer = buf; s.connect(ctx.destination); s.start(when);
-}
+// v1.7: 雑音バーストを廃止し、「答えさせない3音目」で2音目の聞こえ終わりを揃える(視覚の乙課題と対称)。
 function playSeq(t) {
   const ctx = ensureCtx();
   const t0 = ctx.currentTime + 0.15;
   const S = t.S/1000;
   const s1 = ctx.createBufferSource(); s1.buffer = gatedBuffer(t.c1, S); s1.connect(ctx.destination); s1.start(t0);
   const s2 = ctx.createBufferSource(); s2.buffer = gatedBuffer(t.c2, S); s2.connect(ctx.destination); s2.start(t0 + S);
-  playNoise(t0 + 2*S, MASK_MS/1000);
-  return (t0 + 2*S + MASK_MS/1000 - ctx.currentTime) * 1000;   // 終了までのms
+  const s3 = ctx.createBufferSource(); s3.buffer = gatedBuffer(t.c3, S); s3.connect(ctx.destination); s3.start(t0 + 2*S);
+  return (t0 + 3*S + 0.05 - ctx.currentTime) * 1000;   // 終了までのms
 }
 
 // 練習の後、本番に入る前の確認画面。クリック/スペースで本番開始。
@@ -158,7 +155,7 @@ function runTrial() {
   const t = trials[ti];
   const inPractice = t.practice;
   if (!inPractice && !mainStarted) { mainStarted = true; return showMainGate(runTrial); }
-  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (SOA=${t.S}ms)</div>
+  screen.innerHTML = `<div class="muted">${inPractice ? `練習 ${ti+1} / ${N_PRACTICE}` : `本番 ${ti-N_PRACTICE+1} / ${trials.length-N_PRACTICE}`} (間隔=${t.S}ms)</div>
     <div id="stage">♪</div>`;
   const stage = document.getElementById("stage");
   startGate(stage, () => {
@@ -178,7 +175,7 @@ function startGate(stage, onPlay) {
   stage.style.height = "auto";
   stage.innerHTML = `<div style="text-align:center;padding:24px">
     <button class="primary" id="startBtn">準備ができたら開始（またはスペースキー）</button>
-    <div class="muted" style="margin-top:8px">押すと少し後に、音が2つ続けて鳴ります。耳を澄ませてください。</div></div>`;
+    <div class="muted" style="margin-top:8px">押すと少し後に、音が3つ続けて鳴ります。耳を澄ませてください。</div></div>`;
   const key = (e) => { if (e.code === "Space" || e.key === " ") { e.preventDefault(); go(); } };
   function go(){ document.removeEventListener("keydown", key); begin(); }
   document.getElementById("startBtn").addEventListener("click", go, { once: true });
@@ -202,26 +199,27 @@ function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
     askOne(t, 2, (r2) => {
       if (!inPractice) {
-        results.push({ c1:t.c1, c2:t.c2, S:t.S, resp1:r1, resp2:r2,
+        results.push({ c1:t.c1, c2:t.c2, c3:t.c3, S:t.S, resp1:r1, resp2:r2,
           correct1:r1===t.c1, correct2:r2===t.c2 });
         ti++; runTrial(); return;
       }
-      // 練習: 2文字の正解を提示して流れを覚えてもらう
+      // 練習: 3音の内訳を提示して流れを覚えてもらう
       const ok1 = r1===t.c1, ok2 = r2===t.c2;
       screen.innerHTML = `<div style="text-align:center;padding:30px">
-        <p>正解 — 1文字目「<b style="font-size:20px">${t.c1}</b>」<span style="color:${ok1?'#2E7D8F':'#C25B4E'}">${ok1?'◯':'×'}</span>
-        ／ 2文字目「<b style="font-size:20px">${t.c2}</b>」<span style="color:${ok2?'#2E7D8F':'#C25B4E'}">${ok2?'◯':'×'}</span></p>
-        <p class="muted">これは練習です。本番も同じ流れ（1つ目の音 → 2つ目の音 → 雑音 → 2つ回答）をくり返します。</p></div>`;
-      setTimeout(() => { ti++; runTrial(); }, 1600);
+        <p>正解 — 1つ目「<b style="font-size:20px">${t.c1}</b>」<span style="color:${ok1?'#2E7D8F':'#C25B4E'}">${ok1?'◯':'×'}</span>
+        ／ 2つ目「<b style="font-size:20px">${t.c2}</b>」<span style="color:${ok2?'#2E7D8F':'#C25B4E'}">${ok2?'◯':'×'}</span></p>
+        <p class="muted">3つ目は「${t.c3}」でした（これは<b>答えない</b>音です）。</p>
+        <p class="muted">これは練習です。本番も同じ流れ（1つ目 → 2つ目 → 3つ目 → 2つ回答）をくり返します。</p></div>`;
+      setTimeout(() => { ti++; runTrial(); }, 2000);
     });
   });
 }
 function askOne(t, pos, done) {
   const stage = document.getElementById("stage");
   stage.style.height = "auto";   // 聴取エリアの空欄を詰めて、かなの表をプロンプト直下に出す
-  const label = pos===1 ? "1文字目（先に聞こえた音）は？" : "2文字目（あとに聞こえた音）は？";
+  const label = pos===1 ? "1つ目（最初に聞こえた音）は？" : "2つ目（2番目に聞こえた音）は？";
   stage.innerHTML = `<div class="ask" style="font-size:18px">${label}</div>
-    <div class="muted">分からなければ勘でOK（雑音は答えではありません）</div>`;
+    <div class="muted">分からなければ勘でOK（聞こえなかったと感じても、あとの音を答えずに勘で選んでください）</div>`;
   document.getElementById("grid")?.remove();
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_AUDIO) for (const ch of row) {
@@ -258,7 +256,7 @@ function svgCurves(rows) {
     <text x="${ml}" y="${H-8}" font-size="11">${lo}ms</text>
     <text x="${W-mr-34}" y="${H-8}" font-size="11">${hi}ms</text>
     <text x="8" y="${mt+8}" font-size="11">100%</text>
-    <text x="${W/2-56}" y="${H-2}" font-size="11">文字間 SOA (ms)</text>
+    <text x="${W/2-56}" y="${H-2}" font-size="11">音の間隔 S (ms)</text>
     <rect x="${ml+8}" y="${mt+4}" width="10" height="3" fill="#1E2A5E"/><text x="${ml+22}" y="${mt+10}" font-size="10.5">char1(先頭)</text>
     <rect x="${ml+8}" y="${mt+20}" width="10" height="3" fill="#2E7D8F"/><text x="${ml+22}" y="${mt+26}" font-size="10.5">char2(末尾)</text>
   </svg>`;
@@ -272,11 +270,11 @@ function showResults() {
     <tr><th>両方</th>${rows.map(r=>`<td>${pc(r.accBoth)}</td>`).join("")}</tr>
     <tr><th>n(対)</th>${rows.map(r=>`<td>${r.n}</td>`).join("")}</tr></table>`;
   screen.innerHTML = `<h1>パイロット完了</h1>
-    <p class="muted">SOA に対する位置別識別率(聴覚)。聴覚1文字frac(絶対ms記録・マスク条件をそろえたもの)を基準線 f(D) にすると干渉指標 I(S) になります。</p>
+    <p class="muted">音の間隔Sに対する位置別の識別率(聴覚)。1つ目の正答率が、S=200で頭打ちの値(450・700)と同じなら、0.2秒の間隔に干渉はないと判定できます。</p>
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,MASK_MS,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };
@@ -289,17 +287,19 @@ function intro() {
     : START_MODE==="countdown" ? `各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。` : ``;
   const mobileNote = ENV.touch
     ? `スマートフォンの内蔵スピーカーでは正しく聞き取れません。必ず<b>ヘッドホン／イヤホン</b>を使ってください。` : ``;
-  screen.innerHTML = `<h1>iFont パイロット: 聴覚・2文字の SOA 掃引 (ブロックB)</h1>
-    <p><b>1問で答える音は「2つ」です。</b>かなの音声が2つつづけて流れます。${startNote}以下の手順で進みます。</p>
+  screen.innerHTML = `<h1>iFont パイロット: 聴覚・連続する音の間隔掃引（乙課題）</h1>
+    <p><b>1問で答える音は「2つ」です。</b>かなの音声が<b>3つ</b>つづけて流れます（3つ目は答えない音です）。${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>準備ができたら <b>開始</b>（ボタン／スペース）</li>
-      <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの長さで打ち切り）</li>
-      <li>すぐ <b>2つ目</b> の音が鳴る（同じ長さで打ち切り）</li>
-      <li>短い <b>雑音</b> が鳴る <span class="muted">（区切りの合図。答えなくてよい）</span></li>
-      <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ</li>
+      <li><b>1つ目</b>の音（かな）が鳴る（<b>${SOA_LEVELS.join("・")}ms</b> のいずれかの間隔で次の音に切り替わる）</li>
+      <li>すぐ <b>2つ目</b>、つづけて <b>3つ目</b> の音が鳴る</li>
+      <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ（<b>3つ目は答えない</b>）</li>
     </ol>
-    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要7〜10分。</p>
-    <p class="muted">短く打ち切るので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。音声は単音プール(B3・0.2秒/モーラ)。</p>
+    <p style="background:#fff8ec;border:1px solid #eadfc8;border-radius:8px;padding:10px 12px">
+    <b>必ず3つ鳴ります。</b>間隔が短い問題では、1つ目が聞こえなかったと感じることがあります。
+    そのときも、<b>あとから聞こえた音を1つ目として答えず</b>、勘で選んでください。</p>
+    <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要8〜12分。</p>
+    <p class="muted">短く切り替わるので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。音声は単音プール(B3・0.2秒/モーラ)。</p>
     <p style="background:#fff6f4;border:1px solid #f0d0c8;border-radius:8px;padding:10px 12px">
       <label style="cursor:pointer"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
       <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
