@@ -26,7 +26,13 @@
 A=現行v3.1（長い気息）。B=気息を短く（両唇音の自然なVOT 15〜25msに調整）。C=Bに加えて、破裂〜気息の区間だけ低域寄りの音色補正（両唇らしい「拡散した」音色に）。<br>
 下段は比較用の か行・て・ば行（現行プールの音）です。</p>
 <table id="tbl"></table>
-<p class="muted" style="margin-top:14px">結果の伝え方の例: 「ぱはB、ぴはA、ぷはC…」。全部だめな字があれば「ぱは全部か行に聞こえる」でOKです。</p>
+
+<h1 style="margin-top:26px">第2ラウンド: ぷ・ぽ の追加変種</h1>
+<p class="muted">第1ラウンドの判定(ぱ=C・ぴ=A・ぺ=A)を受けて、残る ぷ・ぽ に3つの新変種を作りました。<br>
+D=Bの気息を+9dB増幅し両唇の音色に補正。E=「ふ」の摩擦音([ɸ]=両唇のpの自然な気息)を破裂の直後に移植。F=Dに加えて気息区間の低い声の成分を除去。<br>
+B・Cは第1ラウンドと同じもの(比較の基準)です。</p>
+<table id="tbl2"></table>
+<p class="muted" style="margin-top:14px">結果の伝え方の例: 「ぷはE、ぽはD」。どれもだめなら遠慮なくそう言ってください(次の手はあります)。</p>
 </div></div>
 <script>
 "use strict";
@@ -53,6 +59,18 @@ html += `<tr class="refrow"><th>比較用</th><td colspan="3">` +
   REFS.map(ch => `<button data-n="ref_${ch}">${ch}</button>`).join(" ") + `</td></tr>`;
 tbl.innerHTML = html;
 tbl.querySelectorAll("button").forEach(b => b.addEventListener("click", () => play(b.dataset.n)));
+
+// 第2ラウンド: ぷ・ぽ × B/C/D/E/F
+const tbl2 = document.getElementById("tbl2");
+let html2 = `<tr><th>字</th><th>B: 短い気息</th><th>C: B+音色補正</th><th>D: 気息を増幅</th><th>E: ふの摩擦を移植</th><th>F: D+声の漏れ除去</th></tr>`;
+for (const ch of ["ぷ","ぽ"]) {
+  html2 += `<tr><th style="font-size:20px">${ch}</th>` +
+    ["B","C","D","E","F"].map(v => `<td><button class="big" data-n="${ch}_${v}">${v}</button></td>`).join("") + `</tr>`;
+}
+html2 += `<tr class="refrow"><th>比較用</th><td colspan="5">` +
+  ["く","こ","ぶ","ぼ","ふ"].map(ch => `<button data-n="ref_${ch}">${ch}</button>`).join(" ") + `</td></tr>`;
+tbl2.innerHTML = html2;
+tbl2.querySelectorAll("button").forEach(b => b.addEventListener("click", () => play(b.dataset.n)));
 </script>
 </body>
 </html>
