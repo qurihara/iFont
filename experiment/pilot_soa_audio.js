@@ -56,9 +56,11 @@ function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.
 async function loadAnswerKey() {
   if (!P.has("nokey")) {
     try {
-      // 候補プールは専用の正解表(answer_key_1char.json)を持つ。キー形式は同じ。
-      const url = POOL ? `${POOL_BASE}answer_key_1char.json` : "answer_key_merged.json";
-      const r = await fetch(url, {cache:"no-store"});
+      // 候補プールの分も answer_key_merged.json に統合してある。
+      // ハッシュは話者IDを含むので、どの話者のプールでもキーは衝突しない。
+      // (候補プール側の answer_key_1char.json は .gitignore で公開されないため、
+      //  そちらを読むと公開サーバで404になりファイル選択画面が出てしまう)
+      const r = await fetch("answer_key_merged.json", {cache:"no-store"});
       if (r.ok) return await r.json();
     } catch (e) { /* fetch不可 → ファイル選択へ */ }
   }
