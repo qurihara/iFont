@@ -21,17 +21,24 @@ pilot_soa_audio.js(v1.8+)は、各クリップを「音響的開始」から切�
   <venv>/bin/python experiment/tools/build_onsets.py
 出力: experiment/audio1char_onsets.json
 """
-import json, os, sys, io, wave, math, subprocess
+import json, os, sys, io, wave, math, subprocess, argparse
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EXP = os.path.dirname(HERE)
 REPO = os.path.dirname(EXP)
 
-MANIFEST = os.path.join(EXP, "audio1char_manifest.json")
-ANSWERKEY = os.path.join(EXP, "answer_key_merged.json")
-STIM_DIR = os.path.join(EXP, "audio1char_stimuli")
-OUT = os.path.join(EXP, "audio1char_onsets.json")
+ap = argparse.ArgumentParser()
+ap.add_argument("--manifest", default=os.path.join(EXP, "audio1char_manifest.json"))
+ap.add_argument("--answerkey", default=os.path.join(EXP, "answer_key_merged.json"),
+                help="audio1char|<hash> 形式のキーを持つ正解表(merged でも 1char 単体でもよい)")
+ap.add_argument("--stim", default=os.path.join(EXP, "audio1char_stimuli"))
+ap.add_argument("--out", default=os.path.join(EXP, "audio1char_onsets.json"))
+_args = ap.parse_args()
+MANIFEST = _args.manifest
+ANSWERKEY = _args.answerkey
+STIM_DIR = _args.stim
+OUT = _args.out
 
 ONSET_DBFS = -63.0     # この実効レベルを超えたら「音あり」とみなす絶対しきい値。
                        # 合成の無音区間(破裂音の閉鎖)は約-90dBなので、-63は弱い子音

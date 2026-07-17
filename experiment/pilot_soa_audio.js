@@ -6,11 +6,20 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.3";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 // v2.3: 音声プールを再合成(VOICEVOX 0.25.2)。う・んの音量をvolumeScaleで底上げ、
 //   F0実測の狭域化でま・びのオクターブ誤り補正を解消、切り出し位置を敏感しきい値で作り直し。
 //   同名ファイルの中身が変わったので、キャッシュを避けるため取得URLに ?v= を付ける。
+// v2.4: 話者候補の聴き比べ(?pool=cand108 など)。candidate_pools/<pool>/ の別プールを読み、
+//   点検モード専用で鳴らす(候補プールで本番課題は実施させない)。
+//   経緯: 全127話者スタイルをB3で実測した結果、現行の四国めたん(2)はほぼ最下位
+//   (うが無声化して割れる・母音が息っぽい)で、話者変更が有力になったため。
 const P = new URLSearchParams(location.search);
+// 候補話者プール(?pool=cand108 等)。指定時は candidate_pools/<pool>/ から読み、点検モード専用。
+const POOL = P.get("pool") || "";
+const POOL_BASE = POOL ? `candidate_pools/${POOL}/` : "";
+const POOL_NAMES = { cand108: "候補A: 東北きりたん", cand94: "候補B: 中部つるぎ" };
+const POOL_LABEL = POOL ? (POOL_NAMES[POOL] || POOL) : "現行: 四国めたん";
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
 const N_PRACTICE = Number(P.get("practice") || 2);
@@ -47,7 +56,9 @@ function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.
 async function loadAnswerKey() {
   if (!P.has("nokey")) {
     try {
-      const r = await fetch("answer_key_merged.json", {cache:"no-store"});
+      // 候補プールは専用の正解表(answer_key_1char.json)を持つ。キー形式は同じ。
+      const url = POOL ? `${POOL_BASE}answer_key_1char.json` : "answer_key_merged.json";
+      const r = await fetch(url, {cache:"no-store"});
       if (r.ok) return await r.json();
     } catch (e) { /* fetch不可 → ファイル選択へ */ }
   }
@@ -71,13 +82,13 @@ async function loadAnswerKey() {
 
 async function preload() {
   screen.innerHTML = `<h1>読み込み中…</h1><p class="muted">マニフェストと正解表(ローカル)、音声68クリップを読み込んでいます。</p>`;
-  const mres = await fetch("audio1char_manifest.json", {cache:"no-store"});
+  const mres = await fetch(`${POOL_BASE}audio1char_manifest.json`, {cache:"no-store"});
   if (!mres.ok) throw new Error("audio1char_manifest.json が読めない");
   const manifest = await mres.json();
   // v1.8: 各クリップの「実際に音が始まる位置」(音響的開始)の対応表。
   // スロット先頭を起点に打ち切ると先頭50msがほぼ無音(68音中66音)で、短い間隔の試行が無音になっていたため、
   // 打ち切りの起点を実測した音響的開始に置き直す。
-  const ores = await fetch("audio1char_onsets.json", {cache:"no-store"});
+  const ores = await fetch(`${POOL_BASE}audio1char_onsets.json`, {cache:"no-store"});
   if (!ores.ok) throw new Error("audio1char_onsets.json が読めない");
   onsets = await ores.json();
   const akey = await loadAnswerKey();
@@ -91,7 +102,7 @@ async function preload() {
   let done = 0;
   await Promise.all(have.map(async ch => {
     const s = stimByChar[ch];
-    const r = await fetch(`audio1char_stimuli/${s.file}?v=${VERSION}`);
+    const r = await fetch(`${POOL_BASE}audio1char_stimuli/${s.file}?v=${VERSION}`);
     bufByChar[ch] = await ensureCtx().decodeAudioData(await r.arrayBuffer());
     done++; if (done % 12 === 0) screen.querySelector("p").textContent = `音声デコード中… ${done}/${have.length}`;
   }));
@@ -412,7 +423,12 @@ function showCheck(){
   const btn = c => c ? `<button class="kbtn" data-ch="${c}" style="width:44px;height:44px;margin:2px;font-size:20px">${c}</button>`
                      : `<span style="display:inline-block;width:48px"></span>`;
   const rows = GRID_AUDIO.map(row => `<div>${row.map(btn).join("")}</div>`).join("");
+  const poolLink = (q, label) => (POOL === q || (!POOL && !q))
+    ? `<b style="padding:4px 10px;border-radius:6px;background:#2E7D8F;color:#fff">${label}</b>`
+    : `<a style="padding:4px 10px" href="?check=1${q?`&pool=${q}`:""}">${label}</a>`;
   screen.innerHTML = `<h1>音の点検モード（全${A.length}音）</h1>
+    <p style="font-size:15px">話者を切り替えて聴き比べ:
+      ${poolLink("", "現行: 四国めたん")} ${poolLink("cand108", "候補A: 東北きりたん")} ${poolLink("cand94", "候補B: 中部つるぎ")}</p>
     ${box}
     <p class="muted">かなを押すと、その音が<b>本番とまったく同じ処理</b>(増幅・200ms)で1回鳴ります。
     「すべて順に再生」は五十音順に0.7秒間隔で流します。弱い・聞こえない・別の音に聞こえるものがあればメモして報告してください。</p>
@@ -435,6 +451,7 @@ function showCheck(){
 }
 
 (async function(){
-  try { await preload(); if (P.has("check")) showCheck(); else intro(); }
+  // 候補プール指定時は点検モード専用(候補音源で本番課題は実施させない)
+  try { await preload(); if (POOL || P.has("check")) showCheck(); else intro(); }
   catch(e){ screen.innerHTML = `<h1>読み込みエラー</h1><p class="muted">${e.message}</p>`; }
 })();
