@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.6";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "3.0";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 // v2.3: 音声プールを再合成(VOICEVOX 0.25.2)。う・んの音量をvolumeScaleで底上げ、
 //   F0実測の狭域化でま・びのオクターブ誤り補正を解消、切り出し位置を敏感しきい値で作り直し。
 //   同名ファイルの中身が変わったので、キャッシュを避けるため取得URLに ?v= を付ける。
@@ -18,12 +18,14 @@ const P = new URLSearchParams(location.search);
 // 候補話者プール(?pool=cand108 等)。指定時は candidate_pools/<pool>/ から読み、点検モード専用。
 const POOL = P.get("pool") || "";
 const POOL_BASE = POOL ? `candidate_pools/${POOL}/` : "";
-const POOL_NAMES = { cand108: "候補A: 東北きりたん", cand94: "候補B: 中部つるぎ",
-  cand9: "候補C: 波音リツ", cand21: "候補D: 剣崎雌雄(男)", cand45: "候補E: 櫻歌ミコ", cand53: "候補F: 麒ヶ島宗麟(男)",
-  // v2.6: 音高違いの聴き比べ。E4=かるたのメイン音程(栗原指摘)。
+// v3.0: 本番プールを東北きりたん(id108・B3)に切り替えた(PI試聴+全127スタイル実測で決定)。
+// 以下は聴き比べの記録として残す候補群。cand108は本番と同一なので一覧から外している。
+const POOL_NAMES = { legacy_metan: "参考: 旧 四国めたん", cand94: "候補: 中部つるぎ",
+  cand9: "候補: 波音リツ", cand21: "候補: 剣崎雌雄(男)", cand45: "候補: 櫻歌ミコ", cand53: "候補: 麒ヶ島宗麟(男)",
+  // 音高違い。E4=かるたのメイン音程(栗原指摘)。
   // C4=男性読手いなばくんの実測主音程(262Hzが75%。オクターブ下げないと判明)。
   cand108e4: "きりたん・E4版", cand21c4: "剣崎雌雄・C4版(いなば音程)", cand53c4: "麒ヶ島宗麟・C4版(いなば音程)" };
-const POOL_LABEL = POOL ? (POOL_NAMES[POOL] || POOL) : "現行: 四国めたん";
+const POOL_LABEL = POOL ? (POOL_NAMES[POOL] || POOL) : "本番: 東北きりたん";
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
 const N_PRACTICE = Number(P.get("practice") || 2);
@@ -50,8 +52,11 @@ const GRID_AUDIO = [
 const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 68音
 
 const screen = document.getElementById("screen");
-let audioCtx = null, stimByChar = {}, bufByChar = {}, onsets = {};
+let audioCtx = null, stimByChar = {}, bufByChar = {}, onsets = {}, poolMeta = {};
 let trials = [], results = [], ti = 0, mainStarted = false;
+// v3.0: 話者IDとスタイル名の対応(記録・表示用)。マニフェストのspeakerと突き合わせる。
+const SPEAKER_NAMES = { 2: "四国めたん/ノーマル", 108: "東北きりたん/ノーマル", 94: "中部つるぎ/ノーマル",
+  9: "波音リツ/ノーマル", 21: "剣崎雌雄/ノーマル", 45: "櫻歌ミコ/ロリ", 53: "麒ヶ島宗麟/ノーマル" };
 
 function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 
@@ -91,6 +96,9 @@ async function preload() {
   const mres = await fetch(`${POOL_BASE}audio1char_manifest.json`, {cache:"no-store"});
   if (!mres.ok) throw new Error("audio1char_manifest.json が読めない");
   const manifest = await mres.json();
+  // v3.0: どの話者・音高のプールを鳴らしているかを記録し、結果JSONと画面に出す。
+  poolMeta = { speaker: manifest.speaker, speaker_name: SPEAKER_NAMES[manifest.speaker] || `id=${manifest.speaker}`,
+               pitch_scheme: manifest.pitch_scheme, mora_dur_s: manifest.mora_dur_s, pool: POOL || "production" };
   // v1.8: 各クリップの「実際に音が始まる位置」(音響的開始)の対応表。
   // スロット先頭を起点に打ち切ると先頭50msがほぼ無音(68音中66音)で、短い間隔の試行が無音になっていたため、
   // 打ち切りの起点を実測した音響的開始に置き直す。
@@ -329,7 +337,11 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,ONSET_ANCHORED:true,LOUDNESS_NORMALIZED:"A-weighted",START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    // v3.0: どの話者・音高のプールで採ったデータかを config に残す(話者を変えた前後のデータを取り違えないため)
+    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,
+      speaker:poolMeta.speaker, speaker_name:poolMeta.speaker_name, pitch:poolMeta.pitch_scheme,
+      mora_dur_s:poolMeta.mora_dur_s, pool:poolMeta.pool,
+      ONSET_ANCHORED:true, LOUDNESS_NORMALIZED:"A-weighted", START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };
@@ -417,14 +429,16 @@ function poolFingerprint(){
 function showCheck(){
   const A = avail();
   const fp = poolFingerprint();
+  // v3.0: 「いま鳴っているのが誰の声か」はマニフェストのspeakerで確定させる(音響指紋より確実)。
+  // 音響指紋(poolFingerprint)は、ブラウザが古い音源をキャッシュから返す事故の検出に使う。
   const box = fp.isNew
     ? `<div style="background:#e8f6ec;border:1px solid #57a773;border-radius:8px;padding:10px 12px;margin:10px 0">
-         <b style="color:#2b6b45">✓ 再合成した新しい音源が読み込まれています（パイロット版 v${VERSION}）</b>
-         <div class="muted" style="margin-top:4px">判定の根拠(音そのものを実測): 最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}、
-         「う」=${fp.uPeak.toFixed(3)}。旧音源なら「う」は0.013前後でした。</div></div>`
+         <b style="color:#2b6b45">✓ 話者「${poolMeta.speaker_name}」・音高${poolMeta.pitch_scheme} を鳴らしています（パイロット版 v${VERSION}）</b>
+         <div class="muted" style="margin-top:4px">音源の健全性(実測): 最も小さい音「${fp.minCh}」のピーク=${fp.minPeak.toFixed(3)}、
+         「う」=${fp.uPeak.toFixed(3)}。病的に小さい音がある古い音源ならピークは0.013前後になります。</div></div>`
     : `<div style="background:#fdecec;border:1px solid #d9534f;border-radius:8px;padding:10px 12px;margin:10px 0">
          <b style="color:#a72b2b">★ 古い音源がブラウザのキャッシュから読み込まれています</b>
-         <div class="muted" style="margin-top:4px">最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}（新しい音源なら0.1前後）。
+         <div class="muted" style="margin-top:4px">最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}（健全な音源なら0.1前後）。
          <b>強制再読み込み（Macは Command+Shift+R）</b>してからもう一度お試しください。</div></div>`;
   const btn = c => c ? `<button class="kbtn" data-ch="${c}" style="width:44px;height:44px;margin:2px;font-size:20px">${c}</button>`
                      : `<span style="display:inline-block;width:48px"></span>`;
@@ -432,7 +446,7 @@ function showCheck(){
   const poolLink = (q, label) => (POOL === q || (!POOL && !q))
     ? `<b style="padding:4px 10px;border-radius:6px;background:#2E7D8F;color:#fff">${label}</b>`
     : `<a style="padding:4px 10px" href="?check=1${q?`&pool=${q}`:""}">${label}</a>`;
-  const links = [["", "現行: 四国めたん"]].concat(Object.entries(POOL_NAMES));
+  const links = [["", "本番: 東北きりたん"]].concat(Object.entries(POOL_NAMES));
   screen.innerHTML = `<h1>音の点検モード（全${A.length}音）</h1>
     <p style="font-size:15px;line-height:2.2">話者を切り替えて聴き比べ:
       ${links.map(([q, label]) => poolLink(q, label)).join(" ")}</p>
