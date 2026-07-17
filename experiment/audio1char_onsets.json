@@ -1,0 +1,290 @@
+{
+ "あ": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 190
+ },
+ "い": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "う": {
+  "acoustic_onset_ms": 0,
+  "voiced_end_ms": 200
+ },
+ "え": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 190
+ },
+ "お": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "か": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "き": {
+  "acoustic_onset_ms": 120,
+  "voiced_end_ms": 200
+ },
+ "く": {
+  "acoustic_onset_ms": 120,
+  "voiced_end_ms": 200
+ },
+ "け": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "こ": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "さ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "し": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "す": {
+  "acoustic_onset_ms": 0,
+  "voiced_end_ms": 200
+ },
+ "せ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "そ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "た": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "ち": {
+  "acoustic_onset_ms": 110,
+  "voiced_end_ms": 200
+ },
+ "つ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "て": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "と": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "な": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "に": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "ぬ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 190
+ },
+ "ね": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "の": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "は": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ひ": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "ふ": {
+  "acoustic_onset_ms": 0,
+  "voiced_end_ms": 200
+ },
+ "へ": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ほ": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ま": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "み": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "む": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 190
+ },
+ "め": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "も": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "や": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "ゆ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "よ": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "ら": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "り": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "る": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 180
+ },
+ "れ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 190
+ },
+ "ろ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "わ": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ん": {
+  "acoustic_onset_ms": 0,
+  "voiced_end_ms": 200
+ },
+ "が": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ぎ": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ぐ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "げ": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ご": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "ざ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "じ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "ず": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ぜ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "ぞ": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "だ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "で": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ど": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "ば": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "び": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "ぶ": {
+  "acoustic_onset_ms": 80,
+  "voiced_end_ms": 200
+ },
+ "べ": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ぼ": {
+  "acoustic_onset_ms": 60,
+  "voiced_end_ms": 200
+ },
+ "ぱ": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "ぴ": {
+  "acoustic_onset_ms": 130,
+  "voiced_end_ms": 200
+ },
+ "ぷ": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "ぺ": {
+  "acoustic_onset_ms": 100,
+  "voiced_end_ms": 200
+ },
+ "ぽ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "を": {
+  "acoustic_onset_ms": 50,
+  "voiced_end_ms": 200
+ },
+ "ぢ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ },
+ "づ": {
+  "acoustic_onset_ms": 70,
+  "voiced_end_ms": 200
+ },
+ "ゔ": {
+  "acoustic_onset_ms": 90,
+  "voiced_end_ms": 200
+ }
+}

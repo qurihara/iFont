@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "1.7";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.8";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -34,7 +34,7 @@ const GRID_AUDIO = [
 const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 68音
 
 const screen = document.getElementById("screen");
-let audioCtx = null, stimByChar = {}, bufByChar = {};
+let audioCtx = null, stimByChar = {}, bufByChar = {}, onsets = {};
 let trials = [], results = [], ti = 0, mainStarted = false;
 
 function ensureCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
@@ -71,6 +71,12 @@ async function preload() {
   const mres = await fetch("audio1char_manifest.json", {cache:"no-store"});
   if (!mres.ok) throw new Error("audio1char_manifest.json が読めない");
   const manifest = await mres.json();
+  // v1.8: 各クリップの「実際に音が始まる位置」(音響的開始)の対応表。
+  // スロット先頭を起点に打ち切ると先頭50msがほぼ無音(68音中66音)で、短い間隔の試行が無音になっていたため、
+  // 打ち切りの起点を実測した音響的開始に置き直す。
+  const ores = await fetch("audio1char_onsets.json", {cache:"no-store"});
+  if (!ores.ok) throw new Error("audio1char_onsets.json が読めない");
+  onsets = await ores.json();
   const akey = await loadAnswerKey();
   for (const s of manifest.stimuli) {
     const rec = akey[`audio1char|${s.id}`];
@@ -111,12 +117,16 @@ function buildTrials() {
   return prac.concat(main);
 }
 
-// クリップの「モーラ区間の先頭から d 秒」をゲートして再生するバッファを作る
+// クリップの「実際に音が始まる位置から d 秒」をゲートして再生するバッファを作る。
+// v1.8: 起点をスロット先頭でなく実測の音響的開始(audio1char_onsets.json)に置く。
+// これによりS=50でも「音の先頭50ms」が必ず鳴る(以前はほぼ無音だった)。
 function gatedBuffer(ch, gateS) {
   const s = stimByChar[ch], src = bufByChar[ch];
   const sr = src.sampleRate;
-  const start = Math.floor(s.char_onset_s * sr);
-  const dur = Math.min(gateS, s.char_dur_s);
+  const onMs = (onsets[ch] && onsets[ch].acoustic_onset_ms) || 0;
+  const start = Math.floor((s.char_onset_s + onMs/1000) * sr);
+  const avail = Math.max(0.01, s.char_dur_s - onMs/1000);   // スロット末までの残り
+  const dur = Math.min(gateS, avail);
   const n = Math.max(1, Math.floor(dur * sr));
   const out = ensureCtx().createBuffer(1, n, sr);
   const a = src.getChannelData(0), b = out.getChannelData(0);
@@ -274,7 +284,7 @@ function showResults() {
     ${svgCurves(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,SOA_LEVELS,PER_LEVEL,pitch:"B3",mora_dur_s:0.2,ONSET_ANCHORED:true,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_audio_${Date.now()}.json`; a.click();
   };
@@ -301,11 +311,23 @@ function intro() {
     <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要8〜12分。</p>
     <p class="muted">短く切り替わるので聞き取りにくい音もあります。分からなければ勘でOKです（外れも大切なデータ）。音声は単音プール(B3・0.2秒/モーラ)。</p>
     <p style="background:#fff6f4;border:1px solid #f0d0c8;border-radius:8px;padding:10px 12px">
-      <label style="cursor:pointer"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
+      <button id="sample" style="font-size:14px;padding:6px 14px;border-radius:6px;border:1px solid #c9a9a0;background:#fff;cursor:pointer">サンプル音を鳴らす（あ・か・ん）</button>
+      <span class="muted" style="margin-left:8px">聞き取りやすい音量に合わせてください</span><br>
+      <label style="cursor:pointer;display:inline-block;margin-top:8px"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
       <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
     <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める（${N_PRACTICE}問）</button></p>
     <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
   const hp = document.getElementById("hp"), go = document.getElementById("go");
+  // サンプル音: 各音を打ち切らずに(実音の全長で)0.5秒間隔で3つ鳴らす
+  document.getElementById("sample").onclick = () => {
+    const ctx = ensureCtx(); ctx.resume();
+    ["あ","か","ん"].forEach((ch, i) => {
+      if (!bufByChar[ch]) return;
+      const src = ctx.createBufferSource();
+      src.buffer = gatedBuffer(ch, 0.2);
+      src.connect(ctx.destination); src.start(ctx.currentTime + 0.1 + i*0.5);
+    });
+  };
   hp.addEventListener("change", () => { go.disabled = !hp.checked; go.style.opacity = hp.checked ? "1" : ".5"; });
   go.onclick = () => { if (hp.checked) start(); };
 }
