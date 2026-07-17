@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.0";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -106,9 +106,32 @@ function pickTriple(){
   return [c1,c2,c3];
 }
 
+// v2.1: 本番の1音目・2音目は、混ぜた音のリストから順に配り、同じ音の繰り返し出題をなくす。
+// 完全ランダムでは同じ音が偶然何度も出て(例: v1.8〜2.0の3回で「つ」「ぽ」が6回ずつ全敗)、
+// 苦手な音の偏りが特定の間隔水準の成績を歪めるため。
+function dealPairs(n){
+  const A=avail();
+  const grow=d=>{ while(d.length<n+1) d.push(...shuffle([...A])); return d; };
+  const d1=grow(shuffle([...A])).slice(0,n);
+  const d2=grow(shuffle([...A]));
+  const pairs=[];
+  for(let i=0;i<n;i++){
+    const j=d2.findIndex(c=>c!==d1[i]);
+    pairs.push([d1[i], d2.splice(j,1)[0]]);
+  }
+  return pairs;
+}
+
 function buildTrials() {
   const main = [];
-  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) { const [c1,c2,c3]=pickTriple(); main.push({S,c1,c2,c3,practice:false}); }
+  const pairs = dealPairs(SOA_LEVELS.length * PER_LEVEL);
+  const A = avail();
+  let pi = 0;
+  for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) {
+    const [c1,c2] = pairs[pi++];
+    let c3 = pick(A); while (c3===c1 || c3===c2) c3 = pick(A);
+    main.push({S,c1,c2,c3,practice:false});
+  }
   shuffle(main);
   // 練習は流れを覚えるため、あえて長め(聞き取りやすい)間隔の2水準から出す
   const easy = [...SOA_LEVELS].sort((a,b)=>b-a).slice(0,2);

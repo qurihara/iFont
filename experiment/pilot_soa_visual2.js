@@ -10,7 +10,7 @@
 // jsPsych・音声・サーバ不要。base/<かな>.png を流用。結果は画面表示＋JSONダウンロード。
 "use strict";
 
-const VERSION = "2.0";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.1";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);   // 各水準の組数(1組=2回答)
@@ -84,10 +84,28 @@ function pickTriple(){
   return [c1, c2, c3];
 }
 
+// v2.1: 本番の1文字目・2文字目は、混ぜた字のリストから順に配り、同じ字の繰り返し出題をなくす。
+// 完全ランダムでは同じ字が偶然何度も出て、苦手な字の偏りが特定の間隔水準の成績を歪めるため。
+function dealPairs(n){
+  const grow=d=>{ while(d.length<n+1) d.push(...shuffle([...CHARS])); return d; };
+  const d1=grow(shuffle([...CHARS])).slice(0,n);
+  const d2=grow(shuffle([...CHARS]));
+  const pairs=[];
+  for(let i=0;i<n;i++){
+    const j=d2.findIndex(c=>c!==d1[i]);
+    pairs.push([d1[i], d2.splice(j,1)[0]]);
+  }
+  return pairs;
+}
+
 function buildTrials() {
   const main = [];
+  const pairs = dealPairs(SOA_LEVELS.length * PER_LEVEL);
+  let pi = 0;
   for (const S of SOA_LEVELS) for (let k=0;k<PER_LEVEL;k++) {
-    const [c1,c2,c3] = pickTriple(); main.push({ S, c1, c2, c3, practice:false });
+    const [c1,c2] = pairs[pi++];
+    let c3 = pick(CHARS); while (c3===c1 || c3===c2) c3 = pick(CHARS);
+    main.push({ S, c1, c2, c3, practice:false });
   }
   shuffle(main);
   // 練習は流れを覚えるため、あえて長め(見やすい)間隔の2水準から出す
