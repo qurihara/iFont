@@ -6,7 +6,10 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.2";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.3";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+// v2.3: 音声プールを再合成(VOICEVOX 0.25.2)。う・んの音量をvolumeScaleで底上げ、
+//   F0実測の狭域化でま・びのオクターブ誤り補正を解消、切り出し位置を敏感しきい値で作り直し。
+//   同名ファイルの中身が変わったので、キャッシュを避けるため取得URLに ?v= を付ける。
 const P = new URLSearchParams(location.search);
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -88,7 +91,7 @@ async function preload() {
   let done = 0;
   await Promise.all(have.map(async ch => {
     const s = stimByChar[ch];
-    const r = await fetch(`audio1char_stimuli/${s.file}`);
+    const r = await fetch(`audio1char_stimuli/${s.file}?v=${VERSION}`);
     bufByChar[ch] = await ensureCtx().decodeAudioData(await r.arrayBuffer());
     done++; if (done % 12 === 0) screen.querySelector("p").textContent = `音声デコード中… ${done}/${have.length}`;
   }));

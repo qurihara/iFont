@@ -101,7 +101,11 @@ def build_query(m1_raw, m2_raw, base_q, p1_ln, p2_ln):
     return q, m1, m2
 
 
-def med_f0(wav_bytes, t0, t1, floor=120, ceiling=500):
+def med_f0(wav_bytes, t0, t1, floor=170, ceiling=400):
+    # floor/ceiling は B3(247)・E4(330)を含む狭域にする。
+    # 広く取ると parselmouth が半分の周期(サブハーモニック)を拾い、
+    # 実測が1オクターブ下(例: ま=126Hz)に落ちて音高補正が暴走するため
+    # (2026-07-17 の不具合修正。以前は 120/500)。
     with wave.open(io.BytesIO(wav_bytes), "rb") as w:
         fr = w.getframerate()
         x = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2").astype(np.float64) / 32768
