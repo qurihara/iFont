@@ -6,11 +6,16 @@
 
 // ---- 設定 (URLパラメータで上書き可: ?levels=17,33,50,67,83,100,150,250&perlevel=8&mask=250) ----
 // mask=0 にすると後方マスクを置かず「1文字を出して消すだけ」になる(残像込みの比較・体感用。本番は必ずマスクあり)。
-const VERSION = "1.5";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "1.6";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 const P = new URLSearchParams(location.search);
-// v1.3: 鮮明な単文字は100msでほぼ天井だったため、下り坂を捉えるフレーム単位の短い水準(≈1〜5フレーム@60Hz)を既定に追加。
-// 本番の水準を決めるためのパイロット。actual_ms を毎試行記録するので、17ms(1フレーム)級の実表示時間もログで検証できる。
-const D_LEVELS = (P.get("levels") || "17,33,50,67,83,100,150,250").split(",").map(Number);
+// v1.6: 1文字目の打ち消しを、モザイクから「別のかなによる上書き」に変更した(PI提案)。
+// モザイクの本来の狙いは文字による打ち消しの代表だったが、代表できないと分かったため本物を使う。
+// これでA実験とB実験は同じ画面(1文字目→2文字目が上書き→最後にモザイク)になり、
+// 差は「2つ覚えて答える負担」だけになる。?term=mesh で旧方式(モザイク打ち消し)と比較できる。
+// 水準は速い観察者の下り坂(17-50ms)・一般協力者の想定帯域(83-133ms)・かるた規定の判定点(200ms)・
+// 天井の錨(300ms)を張る7水準(60Hzのフレームに乗る値)。実表示時間は actual_ms に記録される。
+const D_LEVELS = (P.get("levels") || "17,33,50,83,133,200,300").split(",").map(Number);
+const TERM = (P.get("term") === "mesh") ? "mesh" : "char";   // 1文字目の打ち消し: "char"(既定) / "mesh"(旧方式)
 const PER_LEVEL = Number(P.get("perlevel") || 8);   // 各水準の試行数
 const N_PRACTICE = Number(P.get("practice") || 3);
 const MASK_MS = Number(P.get("mask") || 250);       // 後方マスク時間
@@ -76,14 +81,23 @@ async function preload() {
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 
+function pickTerm(ch) {   // 打ち消しに使う別のかな(標的とは別の字)
+  let tc = pick(CHARS); while (tc === ch) tc = pick(CHARS); return tc;
+}
 function buildTrials() {
   const main = [];
-  for (const D of D_LEVELS) for (let k=0;k<PER_LEVEL;k++) main.push({ D, ch: pick(CHARS), practice:false });
+  for (const D of D_LEVELS) for (let k=0;k<PER_LEVEL;k++) {
+    const ch = pick(CHARS);
+    main.push({ D, ch, tc: TERM==="char" ? pickTerm(ch) : null, practice:false });
+  }
   shuffle(main);
   // 練習は流れを覚えるため、あえて長め(見やすい)の2水準から出す
   const easy = [...D_LEVELS].sort((a,b)=>b-a).slice(0,2);
   const prac = [];
-  for (let k=0;k<N_PRACTICE;k++) prac.push({ D: pick(easy), ch: pick(CHARS), practice:true });
+  for (let k=0;k<N_PRACTICE;k++) {
+    const ch = pick(CHARS);
+    prac.push({ D: pick(easy), ch, tc: TERM==="char" ? pickTerm(ch) : null, practice:true });
+  }
   return prac.concat(main);
 }
 
@@ -195,17 +209,27 @@ function presentTrial(t, inPractice, ctx) {
   drawFix(ctx);
   const fixDur = FIX_MS + Math.floor(Math.random() * FIX_JITTER);   // 先読み防止のゆらぎ
   const t0 = performance.now();
+  // 打ち消しの時間: term=char では2文字目もDだけ見せてから最後の幕(モザイク)。term=mesh では従来どおり。
+  const termDur = (TERM === "char") ? t.D : 0;
   let phase = "fix", tOn = 0, tOff = 0;
   function frame(now) {
     const el = now - t0;
     if (phase==="fix" && el >= fixDur) { phase="target"; drawChar(ctx, t.ch); tOn = now; }
     else if (phase==="target" && el >= fixDur + t.D) {
-      phase="mask";
-      if (MASK_MS>0) drawMask(ctx);
-      else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }  // mask=0: 出して消すだけ(残像込み・比較用)
       tOff = now;
+      if (TERM === "char") { phase="term"; drawChar(ctx, t.tc); }            // 別のかなで上書き(=B実験と同じ打ち消し)
+      else {
+        phase="mask";
+        if (MASK_MS>0) drawMask(ctx);
+        else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }          // mask=0: 出して消すだけ(残像込み・比較用)
+      }
     }
-    else if (phase==="mask" && el >= fixDur + t.D + MASK_MS) {
+    else if (phase==="term" && el >= fixDur + t.D + termDur) {
+      phase="mask";
+      if (MASK_MS>0) drawMask(ctx);                                          // 最後の幕(2文字目の見え終わりを揃える)
+      else { ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE); }
+    }
+    else if (phase==="mask" && el >= fixDur + t.D + termDur + MASK_MS) {
       phase="resp"; t._actualMs = Math.round(tOff - tOn); return respond(t, inPractice, now);
     }
     requestAnimationFrame(frame);
@@ -217,20 +241,21 @@ function respond(t, inPractice, tShown) {
   const stage = document.getElementById("stage");
   stage.style.height = "auto";   // 刺激用の空欄を詰めて、かなの表をプロンプト直下に出す
   stage.innerHTML = `<div style="text-align:center"><div class="ask">最初に表示された文字を選んでください</div>
-    <div class="muted">分からなければ勘でOK（モザイク模様は答えではありません）</div></div>`;
+    <div class="muted">分からなければ勘でOK（${TERM==="char" ? "あとから上書きした文字やモザイク模様" : "モザイク模様"}は答えではありません）</div></div>`;
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_KANA) for (const ch of row) {
     if (ch==="") { const s=document.createElement("div"); s.className="kana spacer"; grid.appendChild(s); continue; }
     const b = document.createElement("button"); b.className="kana"; b.textContent=ch;
     b.onclick = () => {
       const rt = performance.now() - tShown;
-      if (!inPractice) { results.push({ char:t.ch, D:t.D, actual_ms:t._actualMs, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) }); ti++; runTrial(); return; }
+      if (!inPractice) { results.push({ char:t.ch, D:t.D, actual_ms:t._actualMs, term_char:t.tc, response:ch, correct: ch===t.ch, rt_ms: Math.round(rt) }); ti++; runTrial(); return; }
       // 練習: 正解を短く提示して流れを覚えてもらう
       const ok = ch===t.ch;
+      const flow = TERM==="char" ? "＋ → 1文字目 → 別の文字が上書き → モザイク → 回答" : "＋ → 一瞬の1文字 → モザイク → 回答";
       screen.innerHTML = `<div style="text-align:center;padding:34px">
         <div style="font-size:44px;color:${ok?'#2E7D8F':'#C25B4E'}">${ok?'◯':'×'}</div>
-        <p>表示されていたのは「<b style="font-size:22px">${t.ch}</b>」でした。</p>
-        <p class="muted">これは練習です。本番も同じ流れ（＋ → 一瞬の1文字 → モザイク → 回答）をくり返します。</p></div>`;
+        <p>最初に表示されていたのは「<b style="font-size:22px">${t.ch}</b>」でした。</p>
+        <p class="muted">これは練習です。本番も同じ流れ（${flow}）をくり返します。</p></div>`;
       setTimeout(() => { ti++; runTrial(); }, 1300);
     };
     grid.appendChild(b);
@@ -271,7 +296,7 @@ function showResults() {
     ${svgCurve(rows)} ${tbl}
     <p><button class="primary" id="dl">結果JSONをダウンロード</button></p>`;
   document.getElementById("dl").onclick = () => {
-    const blob = new Blob([JSON.stringify({ config:{VERSION,CHARSET,D_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
+    const blob = new Blob([JSON.stringify({ config:{VERSION,CHARSET,TERM,D_LEVELS,PER_LEVEL,MASK_MS,FIX_MS,START_MODE}, env:ENV, byLevel:rows, trials:results }, null, 2)], {type:"application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = `pilot_soa_visual_${Date.now()}.json`; a.click();
   };
@@ -281,6 +306,9 @@ function start() {
   trials = buildTrials(); results = []; ti = 0; mainStarted = false; runTrial();
 }
 function intro() {
+  const termNote = TERM==="char"
+    ? `すぐに <b>別のかな</b> が同じ場所に上書きされます <span class="muted">（この2文字目は<b>答えなくてよい</b>字です）</span>`
+    : null;
   const maskNote = MASK_MS>0
     ? `目の残像を消すために <b>モザイク模様</b> が出ます`
     : `画面が <b>白紙</b> に戻ります <span class="muted">（このモードはマスクなし。比較・体感用）</span>`;
@@ -298,6 +326,7 @@ function intro() {
       <li>表示枠の中央にある <b>＋</b> を見つめる</li>
       <li>見たまま、枠の下の <b>[開始]</b> ボタン（またはスペース）を押す</li>
       <li>かな <b>1文字</b> が一瞬（<b>${D_LEVELS.join("・")}ms</b> のいずれか）だけ表示される。<b>この文字を覚えてください</b></li>
+      ${termNote ? `<li>${termNote}</li>` : ``}
       <li>${maskNote}</li>
       <li><b>最初に表示された文字</b> を、かなの表から選ぶ</li>
     </ol>
