@@ -26,6 +26,39 @@ MORA_DUR = b2.MORA_DUR
 REPO = b2.REPO
 VOL_MIN, VOL_MAX = 0.3, 15.0   # 音量均一化のvolumeScaleの下限・上限(暴走防止)
 
+# --- VOT自動修正 (2026-07-18) ---
+# VOICEVOXは話者によって無声破裂音のVOT(破裂から声が出るまでの間)を5〜10msで合成することがあり、
+# その場合ヒトには有声(ぷ→ぐ、と→ど)に聞こえる。自然な日本語の無声破裂音のVOTは約25〜45ms。
+# 対策: 対象の子音についてVOTを実測し、不足なら子音長を伸ばして再合成する
+# (東北きりたんの実測で、子音長x2〜x3でVOTが自然域に回復することを確認済み)。
+VOT_TARGET_MS = 25
+VOT_CMULS = [1.0, 2.0, 2.5, 3.0]                  # 子音長の倍率ラダー(順に試し、目標到達で打ち切り)
+VOICELESS_STOPS = {"p", "py", "t", "k", "ky"}     # 対象(ch・tsの破擦音は自然な音なので対象外)
+
+
+def measure_vot_ms(wav_bytes, start_s, span_s=0.25, f0_lo=170, f0_hi=400):
+    """破裂(1ms包絡の最大立ち上がり)から有声化(F0検出開始)までのms。測れなければnan。"""
+    import parselmouth
+    with wave.open(io.BytesIO(wav_bytes), "rb") as w:
+        fr = w.getframerate()
+        x = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2").astype(np.float64) / 32768
+    seg = x[int(start_s * fr): int((start_s + span_s) * fr)]
+    ms = max(1, int(fr / 1000))
+    n = len(seg) // ms - 4
+    if n < 10:
+        return float("nan")
+    env = [20 * math.log10(max(float(np.sqrt(np.mean(seg[i*ms:(i+1)*ms]**2))), 1e-7)) for i in range(n)]
+    burst = max(range(n - 2), key=lambda i: env[i+2] - env[i])
+    try:
+        pp = parselmouth.Sound(seg, fr).to_pitch(0.002, f0_lo, f0_hi)
+        f = pp.selected_array["frequency"]; t = pp.xs()
+        voiced = [t[i] for i in range(len(t)) if f[i] > 0]
+        if not voiced:
+            return float("nan")
+        return voiced[0] * 1000 - burst
+    except Exception:
+        return float("nan")
+
 
 def _a_weight(f):
     """A特性(人の耳の感度)の振幅重み。1kHzで1になるよう正規化する。"""
@@ -90,9 +123,12 @@ def main():
         if base_q is None:
             base_q = q
 
-    def synth(ch, pitch_ln, vol):
-        """1モーラを pitch_ln(対数F0)・volumeScale=vol で合成し、(wav, m, q) を返す。"""
-        m = b2.set_mora(moras[ch], pitch_ln, MORA_DUR)
+    def synth(ch, pitch_ln, vol, cmul=1.0):
+        """1モーラを pitch_ln(対数F0)・volumeScale=vol・子音長cmul倍 で合成し、(wav, m, q) を返す。"""
+        m0 = dict(moras[ch])
+        if cmul != 1.0 and m0.get("consonant_length"):
+            m0["consonant_length"] = m0["consonant_length"] * cmul
+        m = b2.set_mora(m0, pitch_ln, MORA_DUR)
         q = dict(base_q)
         q["accent_phrases"] = [{"moras": [m], "accent": 1,
                                 "pause_mora": None, "is_interrogative": False}]
@@ -101,6 +137,28 @@ def main():
             q[kk] = vv
         return b2.post("/synthesis", {"speaker": args.speaker}, q), m, q
 
+    # --- 第0パス: 無声破裂音のVOT自動修正(冒頭のVOT_TARGET_MS参照) ---
+    votfix = {}   # ch -> dict(cmul, vot_ms)
+    n_votfix = 0
+    for ch in chars:
+        cons = moras[ch].get("consonant")
+        if cons not in VOICELESS_STOPS:
+            votfix[ch] = dict(cmul=1.0, vot_ms=None)
+            continue
+        best = None
+        for cm in VOT_CMULS:
+            wav, m, q = synth(ch, p_base, 1.0, cmul=cm)
+            vot = measure_vot_ms(wav, q["prePhonemeLength"])
+            best = dict(cmul=cm, vot_ms=(round(vot, 1) if vot == vot else None))
+            if vot == vot and vot >= VOT_TARGET_MS:
+                break
+        votfix[ch] = best
+        if best["cmul"] > 1.0:
+            n_votfix += 1
+    print(f"VOT修正: 子音長を伸ばした音 {n_votfix} 字 "
+          + "(" + ", ".join(f"{c}=x{votfix[c]['cmul']}" for c in chars if votfix[c]['cmul'] > 1.0) + ")",
+          file=sys.stderr)
+
     # --- 第1パス: 音高を確定し(必要なら1回補正)、素の聞こえの大きさ(A特性RMS)を測る ---
     # 目的: う・ん のように合成が病的に小さい音を、後段の過大増幅(=割れ)でなく
     #       合成時のvolumeScaleで底上げして均一化するための素データを集める。
@@ -108,14 +166,14 @@ def main():
     n_corrected = 0
     for ch in chars:
         pln = p_base
-        wav, m, q = synth(ch, pln, 1.0)
+        wav, m, q = synth(ch, pln, 1.0, cmul=votfix[ch]["cmul"])
         onset = q["prePhonemeLength"] + (m.get("consonant_length") or 0)
         f0 = b2.med_f0(wav, onset + 0.03, onset + m["vowel_length"] - 0.02)
         e = b2.cents(f0, TARGET) if f0 and not math.isnan(f0) else float("nan")
         corrected = False
         if not math.isnan(e) and abs(e) > b2.CORRECT_CENTS:
             pln = p_base + (math.log(TARGET) - math.log(f0))
-            wav, m, q = synth(ch, pln, 1.0)
+            wav, m, q = synth(ch, pln, 1.0, cmul=votfix[ch]["cmul"])
             onset = q["prePhonemeLength"] + (m.get("consonant_length") or 0)
             f0 = b2.med_f0(wav, onset + 0.03, onset + m["vowel_length"] - 0.02)
             corrected = True
@@ -136,7 +194,7 @@ def main():
         vol = max(VOL_MIN, min(VOL_MAX, vol))
         if vol > 2.0:
             n_boosted += 1
-        wav, m, q = synth(ch, p["pitch_ln"], vol)
+        wav, m, q = synth(ch, p["pitch_ln"], vol, cmul=votfix[ch]["cmul"])
         char_onset = q["prePhonemeLength"]                       # 前余白の直後 = 文字の開始
         char_dur = (m.get("consonant_length") or 0) + m["vowel_length"]
         sid = hashlib.sha1(f"{salt}|{ch}|{label}-1char|{args.speaker}".encode()).hexdigest()[:20]
@@ -152,8 +210,14 @@ def main():
             char=ch, target=ch,
             f0_hz=(round(p["f0"], 1) if p["f0"] and not math.isnan(p["f0"]) else None),
             corrected=p["corrected"], vol_scale=round(vol, 3),
+            vot_cmul=votfix[ch]["cmul"], vot_ms=votfix[ch]["vot_ms"],
         )
     print(f"音量均一化: 2倍超に持ち上げた音 {n_boosted} 字", file=sys.stderr)
+    # 2文字プールのビルダーが同じ修正を使えるよう、字→子音長倍率の表を書き出す
+    votfix_path = os.path.join(REPO, "experiment", f"audio1char_votfix_{label}_{args.speaker}.json")
+    json.dump({c: votfix[c]["cmul"] for c in chars if votfix[c]["cmul"] > 1.0},
+              open(votfix_path, "w"), ensure_ascii=False, indent=1)
+    print(f"  VOT修正表 -> {votfix_path}", file=sys.stderr)
 
     pub = dict(modality="audio1char", q_set="all", speaker=args.speaker,
                pitch_scheme=label, mora_dur_s=MORA_DUR,
