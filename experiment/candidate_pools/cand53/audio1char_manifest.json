@@ -1,0 +1,658 @@
+{
+ "modality": "audio1char",
+ "q_set": "all",
+ "speaker": 53,
+ "pitch_scheme": "B3",
+ "mora_dur_s": 0.2,
+ "count": 72,
+ "stimuli": [
+  {
+   "id": "1c782ec8c00afd143c1a",
+   "file": "1c782ec8c00afd143c1a.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "131580bedb891668ee03",
+   "file": "131580bedb891668ee03.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "3c0bf7e8d0ed90059983",
+   "file": "3c0bf7e8d0ed90059983.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "228914029b21a9d1a43a",
+   "file": "228914029b21a9d1a43a.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "8ba4c8e3274e3b418c96",
+   "file": "8ba4c8e3274e3b418c96.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "f98c08b3eda42c7935f6",
+   "file": "f98c08b3eda42c7935f6.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "0a1d81dcbe24fbe4f9ff",
+   "file": "0a1d81dcbe24fbe4f9ff.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "731a18f7429adabf86da",
+   "file": "731a18f7429adabf86da.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "ce383ab0644b7a9b1e7f",
+   "file": "ce383ab0644b7a9b1e7f.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "1927ede6daeec863454d",
+   "file": "1927ede6daeec863454d.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "fffeb026205d925b4433",
+   "file": "fffeb026205d925b4433.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "cca389197ff1aca49bd7",
+   "file": "cca389197ff1aca49bd7.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "f972dbcdab2beb948818",
+   "file": "f972dbcdab2beb948818.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "4b32de478f5fe032b375",
+   "file": "4b32de478f5fe032b375.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "d4a1a9033f806d2bf843",
+   "file": "d4a1a9033f806d2bf843.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "fef639649d9fb9fb02cc",
+   "file": "fef639649d9fb9fb02cc.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "f950ab7b6d797f42b649",
+   "file": "f950ab7b6d797f42b649.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "5ca3182de28414e3f6e8",
+   "file": "5ca3182de28414e3f6e8.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "236a8624b8d264d89048",
+   "file": "236a8624b8d264d89048.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "c201e1560e41bdc8ce52",
+   "file": "c201e1560e41bdc8ce52.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "b68af5fbb394ae33b1b2",
+   "file": "b68af5fbb394ae33b1b2.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "83731bfc75180e4d5d48",
+   "file": "83731bfc75180e4d5d48.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "0167e8be5a33a762e1ac",
+   "file": "0167e8be5a33a762e1ac.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "10fe735bfc6e0362da56",
+   "file": "10fe735bfc6e0362da56.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "c64f37ab1100963bafec",
+   "file": "c64f37ab1100963bafec.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "4abffaa1606df7ab3b17",
+   "file": "4abffaa1606df7ab3b17.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "541b176a6e1923986865",
+   "file": "541b176a6e1923986865.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "88f10c6c36ea40aee1b7",
+   "file": "88f10c6c36ea40aee1b7.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "5c0cefb7e74b9dbb5ed9",
+   "file": "5c0cefb7e74b9dbb5ed9.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "acaf11bc75864b9fcb02",
+   "file": "acaf11bc75864b9fcb02.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "2953158b1f2b02a0978f",
+   "file": "2953158b1f2b02a0978f.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "ecccaf0c3376e6e27141",
+   "file": "ecccaf0c3376e6e27141.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "2d8d7e83d2a2fe076735",
+   "file": "2d8d7e83d2a2fe076735.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "d66ecf562fabf4b0c30f",
+   "file": "d66ecf562fabf4b0c30f.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "144e97bfcf394ddc89ae",
+   "file": "144e97bfcf394ddc89ae.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "d960b70b58eadb6ca1a2",
+   "file": "d960b70b58eadb6ca1a2.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "8e25d24b986a921984de",
+   "file": "8e25d24b986a921984de.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "cf57bd750af54a085082",
+   "file": "cf57bd750af54a085082.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "862986208920b97e4690",
+   "file": "862986208920b97e4690.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "e65eec761d7b362916f0",
+   "file": "e65eec761d7b362916f0.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "e06df2468f47d9219ec2",
+   "file": "e06df2468f47d9219ec2.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "fee01d99d755b8b7b8a6",
+   "file": "fee01d99d755b8b7b8a6.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "ad42c1c797ff2fbba153",
+   "file": "ad42c1c797ff2fbba153.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "c7df3bc171128df875ad",
+   "file": "c7df3bc171128df875ad.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "b6488f9afdb3fe10196f",
+   "file": "b6488f9afdb3fe10196f.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "1396e4abf19ac782ff64",
+   "file": "1396e4abf19ac782ff64.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "293f2f09ddc332a9fc00",
+   "file": "293f2f09ddc332a9fc00.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "8707bd9855229562b82b",
+   "file": "8707bd9855229562b82b.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "17d481e48c564e0a619e",
+   "file": "17d481e48c564e0a619e.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "b398883def0b7476eade",
+   "file": "b398883def0b7476eade.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "48fa91e740e59e311638",
+   "file": "48fa91e740e59e311638.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "2093d34344661fc7f7b3",
+   "file": "2093d34344661fc7f7b3.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "d8cabb11013a498050e2",
+   "file": "d8cabb11013a498050e2.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "6bfef67ddb3deb1ab08b",
+   "file": "6bfef67ddb3deb1ab08b.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "1983b3982efe56d0ba90",
+   "file": "1983b3982efe56d0ba90.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "abc7e18ffbb25ce10add",
+   "file": "abc7e18ffbb25ce10add.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "bdac075da512587535ef",
+   "file": "bdac075da512587535ef.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "7b72d93310236d23ebd2",
+   "file": "7b72d93310236d23ebd2.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "292b52f1b6e2fbdb73a3",
+   "file": "292b52f1b6e2fbdb73a3.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "db46f7ef6d3a3b9156bc",
+   "file": "db46f7ef6d3a3b9156bc.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "ac1778348ee107269f71",
+   "file": "ac1778348ee107269f71.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "6fbe3f999e4a2684fcc4",
+   "file": "6fbe3f999e4a2684fcc4.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "e8ca59a821fad5aaaff6",
+   "file": "e8ca59a821fad5aaaff6.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "9edbf3d5fd917387f422",
+   "file": "9edbf3d5fd917387f422.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "07e3a5eb4b8e3c774a18",
+   "file": "07e3a5eb4b8e3c774a18.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "92e44dc359a50fa2b8f6",
+   "file": "92e44dc359a50fa2b8f6.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "a993b3114b3d2c618a15",
+   "file": "a993b3114b3d2c618a15.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "4b1df5a7c116b4affac1",
+   "file": "4b1df5a7c116b4affac1.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "4a2a41a641f696bdfb26",
+   "file": "4a2a41a641f696bdfb26.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "a2e2367198df8bd6388d",
+   "file": "a2e2367198df8bd6388d.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "e59c2adf2c67699551d1",
+   "file": "e59c2adf2c67699551d1.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  },
+  {
+   "id": "c387ff44e31967d6b114",
+   "file": "c387ff44e31967d6b114.mp3",
+   "char_onset_s": 0.1,
+   "char_dur_s": 0.2,
+   "sr": 24000,
+   "q_set": "all",
+   "modality": "audio1char"
+  }
+ ]
+}

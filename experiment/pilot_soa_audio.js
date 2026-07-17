@@ -6,7 +6,7 @@
 // 正解の対応づけに answer_key_merged.json が必要(現在はgit管理)。
 "use strict";
 
-const VERSION = "2.4";   // パイロットのバージョン(細かい改変ごとにインクリメント)
+const VERSION = "2.5";   // パイロットのバージョン(細かい改変ごとにインクリメント)
 // v2.3: 音声プールを再合成(VOICEVOX 0.25.2)。う・んの音量をvolumeScaleで底上げ、
 //   F0実測の狭域化でま・びのオクターブ誤り補正を解消、切り出し位置を敏感しきい値で作り直し。
 //   同名ファイルの中身が変わったので、キャッシュを避けるため取得URLに ?v= を付ける。
@@ -18,7 +18,8 @@ const P = new URLSearchParams(location.search);
 // 候補話者プール(?pool=cand108 等)。指定時は candidate_pools/<pool>/ から読み、点検モード専用。
 const POOL = P.get("pool") || "";
 const POOL_BASE = POOL ? `candidate_pools/${POOL}/` : "";
-const POOL_NAMES = { cand108: "候補A: 東北きりたん", cand94: "候補B: 中部つるぎ" };
+const POOL_NAMES = { cand108: "候補A: 東北きりたん", cand94: "候補B: 中部つるぎ",
+  cand9: "候補C: 波音リツ", cand21: "候補D: 剣崎雌雄(男)", cand45: "候補E: 櫻歌ミコ", cand53: "候補F: 麒ヶ島宗麟(男)" };
 const POOL_LABEL = POOL ? (POOL_NAMES[POOL] || POOL) : "現行: 四国めたん";
 const SOA_LEVELS = (P.get("levels") || "50,83,133,200,300,450,700").split(",").map(Number);
 const PER_LEVEL = Number(P.get("perlevel") || 6);
@@ -428,9 +429,10 @@ function showCheck(){
   const poolLink = (q, label) => (POOL === q || (!POOL && !q))
     ? `<b style="padding:4px 10px;border-radius:6px;background:#2E7D8F;color:#fff">${label}</b>`
     : `<a style="padding:4px 10px" href="?check=1${q?`&pool=${q}`:""}">${label}</a>`;
+  const links = [["", "現行: 四国めたん"]].concat(Object.entries(POOL_NAMES));
   screen.innerHTML = `<h1>音の点検モード（全${A.length}音）</h1>
-    <p style="font-size:15px">話者を切り替えて聴き比べ:
-      ${poolLink("", "現行: 四国めたん")} ${poolLink("cand108", "候補A: 東北きりたん")} ${poolLink("cand94", "候補B: 中部つるぎ")}</p>
+    <p style="font-size:15px;line-height:2.2">話者を切り替えて聴き比べ:
+      ${links.map(([q, label]) => poolLink(q, label)).join(" ")}</p>
     ${box}
     <p class="muted">かなを押すと、その音が<b>本番とまったく同じ処理</b>(増幅・200ms)で1回鳴ります。
     「すべて順に再生」は五十音順に0.7秒間隔で流します。弱い・聞こえない・別の音に聞こえるものがあればメモして報告してください。</p>
