@@ -320,12 +320,21 @@ function showResults() {
 
 function start() { ensureCtx().resume(); trials = buildTrials(); results = []; ti = 0; mainStarted = false; runTrial(); }
 function intro() {
+  // v2.3: 古い音源がキャッシュから読まれたまま本番をやるとデータが無効になるので、
+  // 音そのものを実測して警告する(点検モードと同じ判定)。
+  const fp = poolFingerprint();
+  const staleWarn = fp.isNew ? `` :
+    `<p style="background:#fdecec;border:1px solid #d9534f;border-radius:8px;padding:10px 12px">
+     <b style="color:#a72b2b">★ 古い音源がブラウザのキャッシュから読み込まれています。</b>
+     このまま実施するとデータが使えません。<b>強制再読み込み（Macは Command+Shift+R）</b>してから始めてください。
+     <span class="muted">(最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}、新しい音源なら0.1前後)</span></p>`;
   const startNote = START_MODE==="click"
     ? `各問題は、準備ができたら <b>ボタン（またはスペースキー）</b> を押して自分のペースで始めます。`
     : START_MODE==="countdown" ? `各問題の前に${COUNTDOWN_S}秒のカウントダウンが出ます。` : ``;
   const mobileNote = ENV.touch
     ? `スマートフォンの内蔵スピーカーでは正しく聞き取れません。必ず<b>ヘッドホン／イヤホン</b>を使ってください。` : ``;
   screen.innerHTML = `<h1>iFont パイロット: 聴覚・連続する音の間隔掃引（乙課題）</h1>
+    ${staleWarn}
     <p><b>1問で答える音は「2つ」です。</b>かなの音声が<b>3つ</b>つづけて流れます（3つ目は答えない音です）。${startNote}以下の手順で進みます。</p>
     <ol style="font-size:15px;line-height:1.9;padding-left:1.2em">
       <li>準備ができたら <b>開始</b>（ボタン／スペース）</li>
@@ -367,12 +376,44 @@ function playOne(ch){
   const ctx = ensureCtx(); ctx.resume();
   const s = ctx.createBufferSource(); s.buffer = gatedBuffer(ch, 0.2); s.connect(ctx.destination); s.start();
 }
+
+// v2.3: いま鳴らしている音源が再合成後のものかを、メタデータでなく
+// 「デコードした音声そのもの」を測って判定する。
+// 旧プールは合成が病的に小さい音(う=ピーク約0.013)を含み、増幅で辻褄を合わせていた。
+// 新プールは合成時に音量をそろえてあるので、最も小さい音でもピークは0.1前後ある。
+// ブラウザが古い音源をキャッシュから返している場合、ここで検出できる。
+function poolFingerprint(){
+  let minPeak = Infinity, minCh = null;
+  const per = {};
+  for (const ch of avail()) {
+    const s = stimByChar[ch], src = bufByChar[ch], sr = src.sampleRate;
+    const a = Math.floor(s.char_onset_s * sr);
+    const b = Math.floor((s.char_onset_s + s.char_dur_s) * sr);
+    const d = src.getChannelData(0);
+    let pk = 0;
+    for (let i = a; i < b && i < d.length; i++) { const v = Math.abs(d[i]); if (v > pk) pk = v; }
+    per[ch] = pk;
+    if (pk < minPeak) { minPeak = pk; minCh = ch; }
+  }
+  return { minPeak, minCh, uPeak: per["う"] || 0, isNew: minPeak > 0.05 };
+}
 function showCheck(){
   const A = avail();
+  const fp = poolFingerprint();
+  const box = fp.isNew
+    ? `<div style="background:#e8f6ec;border:1px solid #57a773;border-radius:8px;padding:10px 12px;margin:10px 0">
+         <b style="color:#2b6b45">✓ 再合成した新しい音源が読み込まれています（パイロット版 v${VERSION}）</b>
+         <div class="muted" style="margin-top:4px">判定の根拠(音そのものを実測): 最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}、
+         「う」=${fp.uPeak.toFixed(3)}。旧音源なら「う」は0.013前後でした。</div></div>`
+    : `<div style="background:#fdecec;border:1px solid #d9534f;border-radius:8px;padding:10px 12px;margin:10px 0">
+         <b style="color:#a72b2b">★ 古い音源がブラウザのキャッシュから読み込まれています</b>
+         <div class="muted" style="margin-top:4px">最も小さい音「${fp.minCh}」の音源ピーク=${fp.minPeak.toFixed(3)}（新しい音源なら0.1前後）。
+         <b>強制再読み込み（Macは Command+Shift+R）</b>してからもう一度お試しください。</div></div>`;
   const btn = c => c ? `<button class="kbtn" data-ch="${c}" style="width:44px;height:44px;margin:2px;font-size:20px">${c}</button>`
                      : `<span style="display:inline-block;width:48px"></span>`;
   const rows = GRID_AUDIO.map(row => `<div>${row.map(btn).join("")}</div>`).join("");
   screen.innerHTML = `<h1>音の点検モード（全${A.length}音）</h1>
+    ${box}
     <p class="muted">かなを押すと、その音が<b>本番とまったく同じ処理</b>(増幅・200ms)で1回鳴ります。
     「すべて順に再生」は五十音順に0.7秒間隔で流します。弱い・聞こえない・別の音に聞こえるものがあればメモして報告してください。</p>
     <p><button class="primary" id="playAll">すべて順に再生</button>
