@@ -33,6 +33,14 @@ D=Bの気息を+9dB増幅し両唇の音色に補正。E=「ふ」の摩擦音([
 B・Cは第1ラウンドと同じもの(比較の基準)です。</p>
 <table id="tbl2"></table>
 <p class="muted" style="margin-top:14px">結果の伝え方の例: 「ぷはE、ぽはD」。どれもだめなら遠慮なくそう言ってください(次の手はあります)。</p>
+
+<h1 style="margin-top:26px">第3ラウンド: ぽ の追加変種</h1>
+<p class="muted">判定済み: ぱ=C・ぴ=A・ぷ=F・ぺ=A。残る ぽ に3つの新変種です。<br>
+G=Eの強化版(ふの摩擦を35msに延長・レベル増強、破裂も両唇の音色に補正)。
+H=合格した「ぱ」の破裂+気息を移植して ぽ の母音に接続。
+I=「オッポ」と文脈合成し、促音の後の明瞭な ポ を切り出し(日本語で破裂が最もくっきり出る環境)。<br>
+Eは第2ラウンドと同じもの(基準)です。</p>
+<table id="tbl3"></table>
 </div></div>
 <script>
 "use strict";
@@ -71,6 +79,16 @@ html2 += `<tr class="refrow"><th>比較用</th><td colspan="5">` +
   ["く","こ","ぶ","ぼ","ふ"].map(ch => `<button data-n="ref_${ch}">${ch}</button>`).join(" ") + `</td></tr>`;
 tbl2.innerHTML = html2;
 tbl2.querySelectorAll("button").forEach(b => b.addEventListener("click", () => play(b.dataset.n)));
+
+// 第3ラウンド: ぽ × E/G/H/I
+const tbl3 = document.getElementById("tbl3");
+let html3 = `<tr><th>字</th><th>E: ふの摩擦を移植(基準)</th><th>G: Eの強化版</th><th>H: ぱの冒頭を移植</th><th>I: オッポから切り出し</th></tr>`;
+html3 += `<tr><th style="font-size:20px">ぽ</th>` +
+  ["E","G","H","I"].map(v => `<td><button class="big" data-n="ぽ_${v}">${v}</button></td>`).join("") + `</tr>`;
+html3 += `<tr class="refrow"><th>比較用</th><td colspan="4">` +
+  ["こ","ご","ぼ","ぱ"].map(ch => `<button data-n="${ch==="ぱ"?"ぱ_C":"ref_"+ch}">${ch==="ぱ"?"ぱ(採用版C)":ch}</button>`).join(" ") + `</td></tr>`;
+tbl3.innerHTML = html3;
+tbl3.querySelectorAll("button").forEach(b => b.addEventListener("click", () => play(b.dataset.n)));
 </script>
 </body>
 </html>
