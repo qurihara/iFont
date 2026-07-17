@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ぱ行の聞こえ調整: 変種の聴き比べ</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background:#f4f5f8; color:#1b2030; }
+  #app { max-width: 780px; margin: 0 auto; padding: 20px; }
+  .card { background:#fff; border:1px solid #e3e6ee; border-radius:10px; padding:18px; }
+  h1 { font-size: 18px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; margin-top:10px; }
+  td,th { border:1px solid #e3e6ee; padding:8px; text-align:center; }
+  button { font-size:16px; padding:8px 14px; border-radius:8px; border:1px solid #cdd3e6; background:#fbfcff; cursor:pointer; }
+  button:hover { background:#eefaff; }
+  button.big { font-size:20px; width:64px; height:48px; }
+  .muted { color:#6b7280; font-size:13px; }
+  .refrow button { background:#f2f0e8; }
+</style>
+</head>
+<body>
+<div id="app"><div class="card">
+<h1>ぱ行の聞こえ調整: 変種の聴き比べ（東北きりたん・B3）</h1>
+<p class="muted">各行の A/B/C を聴き比べて、<b>いちばん「ぱ行」に聞こえるもの</b>を字ごとに教えてください。<br>
+A=現行v3.1（長い気息）。B=気息を短く（両唇音の自然なVOT 15〜25msに調整）。C=Bに加えて、破裂〜気息の区間だけ低域寄りの音色補正（両唇らしい「拡散した」音色に）。<br>
+下段は比較用の か行・て・ば行（現行プールの音）です。</p>
+<table id="tbl"></table>
+<p class="muted" style="margin-top:14px">結果の伝え方の例: 「ぱはB、ぴはA、ぷはC…」。全部だめな字があれば「ぱは全部か行に聞こえる」でOKです。</p>
+</div></div>
+<script>
+"use strict";
+const P_ROW = ["ぱ","ぴ","ぷ","ぺ","ぽ"];
+const REFS = ["か","く","け","こ","て","ば","ぶ","べ","ぼ"];
+let ctx = null;
+function ensure(){ if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)(); return ctx; }
+const cache = {};
+async function play(name){
+  const c = ensure(); c.resume();
+  if (!cache[name]) {
+    const r = await fetch(`ptuning/${name}.wav`);
+    cache[name] = await c.decodeAudioData(await r.arrayBuffer());
+  }
+  const s = c.createBufferSource(); s.buffer = cache[name]; s.connect(c.destination); s.start();
+}
+const tbl = document.getElementById("tbl");
+let html = `<tr><th>字</th><th>A: 現行v3.1</th><th>B: 短い気息</th><th>C: B+音色補正</th></tr>`;
+for (const ch of P_ROW) {
+  html += `<tr><th style="font-size:20px">${ch}</th>` +
+    ["A","B","C"].map(v => `<td><button class="big" data-n="${ch}_${v}">${v}</button></td>`).join("") + `</tr>`;
+}
+html += `<tr class="refrow"><th>比較用</th><td colspan="3">` +
+  REFS.map(ch => `<button data-n="ref_${ch}">${ch}</button>`).join(" ") + `</td></tr>`;
+tbl.innerHTML = html;
+tbl.querySelectorAll("button").forEach(b => b.addEventListener("click", () => play(b.dataset.n)));
+</script>
+</body>
+</html>
