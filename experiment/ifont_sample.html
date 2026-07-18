@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iFont 出力サンプル（東北きりたんの実声）</title>
+<style>
+  /* 配色は競技かるた・和歌の世界に根ざす: 生成り(紙)・藍墨(文字)・朱(アクセント)・藍(音高)・金(見どころ) */
+  :root{
+    --paper:#f4efe3; --panel:#fbf7ee; --ink:#242a3a; --sub:#726b5b; --line:#e2d9c6;
+    --shu:#c1442b; --ai:#33406e; --kin:#9c7a24; --ok:#3a6b48; --slot:#ece4d2;
+    --shadow:0 1px 2px rgba(60,45,20,.05),0 8px 26px rgba(60,45,20,.06);
+    --serif:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","Songti SC",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Noto Sans JP",system-ui,-apple-system,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#15161b; --panel:#1c1e26; --ink:#ece5d6; --sub:#9a9384; --line:#2d2f3a;
+      --shu:#e26a4f; --ai:#8592c8; --kin:#d5b357; --ok:#7bcf98; --slot:#24262f;
+      --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 26px rgba(0,0,0,.4);}
+  }
+  :root[data-theme="dark"]{ --paper:#15161b; --panel:#1c1e26; --ink:#ece5d6; --sub:#9a9384; --line:#2d2f3a;
+      --shu:#e26a4f; --ai:#8592c8; --kin:#d5b357; --ok:#7bcf98; --slot:#24262f;}
+  :root[data-theme="light"]{ --paper:#f4efe3; --panel:#fbf7ee; --ink:#242a3a; --sub:#726b5b; --line:#e2d9c6;
+      --shu:#c1442b; --ai:#33406e; --kin:#9c7a24; --ok:#3a6b48; --slot:#ece4d2;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--gothic);
+    line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .wrap{max-width:900px;margin:0 auto;padding:34px 20px 64px}
+  header h1{font-family:var(--serif);font-size:27px;font-weight:600;margin:0 0 10px;letter-spacing:.02em;
+    text-wrap:balance;padding-left:14px;border-left:3px solid var(--shu)}
+  header p.lead{color:var(--sub);margin:0 0 5px;font-size:14.5px;max-width:64ch}
+  .note{font-size:12.5px;color:var(--sub);background:color-mix(in srgb,var(--kin) 9%,transparent);
+    border:1px solid color-mix(in srgb,var(--kin) 30%,transparent);border-radius:8px;padding:11px 14px;margin:16px 0 0;max-width:68ch}
+  .note b{color:var(--ink)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:24px;box-shadow:var(--shadow)}
+  .panel h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 3px}
+  .panel .k{font-size:12.5px;color:var(--sub);margin:0 0 16px}
+  .io{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 7px}
+  .io b{font-size:10.5px;color:var(--sub);font-weight:700;letter-spacing:.08em;
+    background:var(--slot);padding:3px 8px;border-radius:5px;align-self:center}
+  .io .src{font-size:17px}
+  .io .kana{font-family:var(--serif);font-size:19px;letter-spacing:.06em}
+  .io .arrow{color:var(--shu);font-weight:700}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 8px}
+  button{font:inherit;font-size:13.5px;padding:8px 15px;border-radius:9px;border:1px solid var(--line);
+    background:transparent;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s}
+  button:hover{border-color:var(--shu)}
+  button:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  button.play{background:var(--shu);color:#fff;border-color:var(--shu);font-weight:600;min-width:104px}
+  button.play:hover{filter:brightness(1.07)}
+  button[disabled]{opacity:.5;cursor:progress}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{border:0;border-radius:0}
+  .seg button.on{background:var(--ink);color:var(--paper)}
+  .stage{position:relative;margin:14px 0 4px;padding:26px 12px 12px;background:var(--slot);
+    border-radius:10px;overflow-x:auto;border:1px solid var(--line)}
+  .row{display:flex;gap:2px;min-width:min-content;position:relative}
+  .cell{position:relative;flex:0 0 auto;width:38px;text-align:center}
+  .cell .g{font-family:var(--serif);font-size:31px;line-height:1.25;height:44px;
+    transition:opacity .05s linear;color:var(--ink)}
+  .cell .snd{font-size:9px;color:var(--sub);height:13px;letter-spacing:.02em}
+  .cell.diff .snd{color:var(--kin);font-weight:700}
+  .cell .bar{height:2px;border-radius:2px;background:var(--sub);opacity:.32;margin-top:3px}
+  .cell.badge::after{content:attr(data-badge);position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+    font-size:9px;white-space:nowrap;color:var(--kin);font-weight:700;letter-spacing:.02em}
+  .cursor{position:absolute;top:16px;bottom:6px;width:2px;background:var(--shu);border-radius:2px;
+    box-shadow:0 0 7px var(--shu);opacity:0;pointer-events:none}
+  .nowplay{font-size:13px;color:var(--sub);min-height:22px;margin-top:4px}
+  .nowplay b{color:var(--shu);font-family:var(--serif);font-size:15px}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:11.5px;color:var(--sub);margin-top:12px}
+  .legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:0;background:var(--sub);opacity:.5}
+  .legend .gold::before{background:var(--kin);opacity:1}
+  table.diff{border-collapse:collapse;width:100%;font-size:13px;margin-top:10px}
+  table.diff th,table.diff td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  table.diff tr>th:first-child{background:var(--slot);font-weight:700;width:15%;font-size:12px;color:var(--sub)}
+  table.diff thead th{background:var(--slot);font-weight:700}
+  table.diff td.ok{color:var(--ok)} table.diff b{color:var(--ink)}
+  .cap{font-size:12px;color:var(--sub);margin-top:12px;max-width:72ch}
+  .modeline{font-size:12.5px;color:var(--sub);margin:4px 0 0}
+  .modeline b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){ .cell .g{transition:none} .cursor{box-shadow:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>iFont 出力サンプル</h1>
+  <p class="lead">かな漢字まじり文を入れると、各文字が「その文字の音が流れる区間」の中で、文字単位の視聴覚対応（変換g）に従って徐々に鮮明化します。</p>
+  <p class="lead">▶ を押すと、<b>東北きりたんの実際の声</b>と同期して文字が立ち上がります。「単純連結／流暢合成」で音のつながり方が変わります。</p>
+  <div class="note"><b>これは想定サンプルです。</b>視覚の鮮明化スケジュール（変換g）は、実験（frac・乙課題）が終わるまでは論文の想定結果版の擬似モデル（プレースホルダ）です。<b>音声は本物</b>——今回チューニングした東北きりたんの単音プール（連結）と、同じ話者の連続合成（流暢）を鳴らしています。</div>
+</header>
+
+<div id="panels"><p class="k" style="margin-top:24px">音源を読み込んでいます…</p></div>
+
+<div class="panel">
+  <h2>「単純連結でOK」と「NG（流暢合成が要る）」で何が変わるか</h2>
+  <p class="k">上のトグルで切り替わる2つは、次の点が違います。</p>
+  <table class="diff">
+    <thead><tr><th></th><th>単純連結でOKの場合</th><th>NG（＝流暢合成が要る）の場合</th></tr></thead>
+    <tbody>
+    <tr><th>意味</th>
+      <td>単音の認識曲線の足し合わせで、連続音声の聞こえ方をそのまま予測できる場合。2文字課題で干渉・促進が検出されない。</td>
+      <td>前後の音のつながり（わたり・調音結合）が効き、単音曲線だけでは予測がずれる場合。2文字課題が干渉・促進を検出する。</td></tr>
+    <tr><th>聴覚出力</th>
+      <td>測った<b>単音クリップをそのまま連結</b>（各モーラが独立・0.2秒ずつ粒だつ）。今回作った68音プールがそのまま製品の部品になる。</td>
+      <td class="ok"><b>流暢な連続合成</b>（前後がつながる・自然な速さと抑揚）。単音クリップの連結ではない。品質管理の処方（VOT等）は連続合成にも引き継ぐ。</td></tr>
+    <tr><th>視覚出力（g）</th>
+      <td>各文字の鮮明化は<b>その文字だけ</b>で決まる（単音曲線から直接）。同じ字なら文脈が違っても同じ立ち上がり方。</td>
+      <td class="ok">鮮明化を<b>文脈で微調整</b>する。連続音声で埋もれやすい音は視覚を早めに強めて補う（＝早く鮮明化）。同じ字でも前後で変わる。</td></tr>
+    <tr><th>聞き比べ</th>
+      <td>音は1つずつ粒だち、単調（すべてB3）。</td>
+      <td class="ok">音はつながり自然。<span style="color:var(--kin);font-weight:700">金色の音</span>（埋もれやすい音）が早めに鮮明化して視覚が補う。</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">補足: iFontの新規貢献である視覚出力（かなストリーム）は文字単位の提示なので、単音の曲線とgが直接効きます。連続音声を扱うのは主に聴覚出力側で、そこが「連結かフルエントか」の分かれ目です。どちらの案でも、入力の表記（<b>ゐ</b>はゐ、助詞の<b>は</b>はは、<b>づ</b>はづ）を原文どおり保ち、その字の<b>音</b>（ゐ↔イ、助詞は↔ワ、づ↔ズ）の区間に同期して鮮明化します。</p>
+</div>
+</div>
+
+<script>
+"use strict";
+const SRC = "sample_assets/content.json";
+let ctx = null;
+function actx(){ if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)(); return ctx; }
+const bufCache = {};
+async function loadBuf(url){
+  if(!bufCache[url]){ const r = await fetch(url); bufCache[url] = await actx().decodeAudioData(await r.arrayBuffer()); }
+  return bufCache[url];
+}
+function hira(s){ return (s||"").replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60)); }
+
+// smoothstep
+function ss(x){ x = Math.max(0, Math.min(1, x)); return x*x*(3-2*x); }
+// g: そのモーラの区間のうち鮮明化にかける割合 thr。明瞭な音ほど thr 大(音で分かる)、埋もれる音ほど thr 小(視覚が早く補う)
+function thrOf(m, mode){
+  let intel = 0.80 + (m.ctx || 0) * (mode === "fluent" ? 1 : 0);   // 単純連結は文脈補正なし
+  intel = Math.max(0.2, Math.min(1, intel));
+  return 0.34 + 0.42 * intel;
+}
+function opacity(m, localFrac, mode){
+  if(m.disp === "？") return ss(localFrac / 0.6);
+  return ss(localFrac / Math.max(thrOf(m, mode), 1e-3));
+}
+
+// 各表示モーラの [開始ms, 区間ms] をモードごとに求める(？や無音は前の音の直後に置く)
+function timeline(content, mode){
+  const on = mode === "fluent" ? content.fluent_onsets_ms : content.concat_onsets_ms;
+  const total = mode === "fluent" ? content.fluent_total_ms : content.concat_total_ms;
+  const n = content.morae.length;
+  const start = new Array(n);
+  let prev = 0;
+  for(let i=0;i<n;i++){ start[i] = (on[i]==null) ? prev + 120 : on[i]; prev = start[i]; }
+  const slot = new Array(n);
+  for(let i=0;i<n;i++){ slot[i] = ((i+1<n) ? start[i+1] : total) - start[i]; }
+  return { start, slot, total };
+}
+
+const state = {};
+function panelHTML(key, c){
+  return `
+    <h2>${c.title}</h2>
+    <p class="k">${c.sub}</p>
+    <div class="io"><b>入力（かな漢字まじり文）</b><span class="src">${c.src}</span></div>
+    <div class="io"><b>iFontのかな出力</b><span class="arrow">▶</span>
+      <span class="kana">${c.morae.map(m=>m.disp).join("")}</span></div>
+    <div class="controls">
+      <button class="play" data-play="${key}">▶ 再生</button>
+      <span class="seg" data-seg="${key}">
+        <button class="on" data-mode="concat">単純連結（粒だつ音）</button>
+        <button data-mode="fluent">流暢合成（つながる音）</button>
+      </span>
+    </div>
+    <p class="modeline" data-modeline="${key}"></p>
+    <div class="stage"><div class="row" data-row="${key}"></div><div class="cursor" data-cursor="${key}"></div></div>
+    <div class="nowplay" data-now="${key}">&nbsp;</div>
+    <div class="legend"><span>音の区間</span><span class="gold">見どころ（表記の保存・音との対応・文脈補正）</span></div>`;
+}
+function cellsHTML(c){
+  return c.morae.map((m,i)=>{
+    const differ = m.sound && hira(m.sound) !== m.disp;
+    const snd = m.disp === "？" ? "" : (differ ? "→"+m.sound : m.sound);
+    return `<div class="cell${m.badge?" badge":""}${differ?" diff":""}"${m.badge?` data-badge="${m.badge}"`:""}>`
+      + `<div class="g" data-g="${i}" style="opacity:0">${m.disp}</div>`
+      + `<div class="snd">${snd}</div><div class="bar"></div></div>`;
+  }).join("");
+}
+function setModeline(key){
+  const c = state[key].content, mode = state[key].mode;
+  const el = document.querySelector(`[data-modeline="${key}"]`);
+  el.innerHTML = mode === "fluent"
+    ? "いまは <b>流暢合成</b>：きりたんの自然な連続音声。埋もれやすい音（金色）は視覚が早めに補う。"
+    : "いまは <b>単純連結</b>：単音プールの音を0.2秒ずつ連結（すべてB3）。視覚は各文字だけで決まる。";
+}
+function setStatic(key){
+  const c = state[key].content;
+  const row = document.querySelector(`[data-row="${key}"]`);
+  c.morae.forEach((m,i)=>{ row.querySelector(`[data-g="${i}"]`).style.opacity = 1; });
+  document.querySelector(`[data-cursor="${key}"]`).style.opacity = 0;
+  document.querySelector(`[data-now="${key}"]`).innerHTML = "&nbsp;";
+  setModeline(key);
+}
+function stop(key){
+  const st = state[key]; st.playing = false;
+  if(st.raf) cancelAnimationFrame(st.raf);
+  try{ st.src && st.src.stop(); }catch(e){}
+  document.querySelector(`[data-play="${key}"]`).textContent = "▶ 再生";
+  setStatic(key);
+}
+async function play(key){
+  const st = state[key];
+  if(st.playing){ stop(key); return; }
+  const c = st.content, mode = st.mode;
+  const btn = document.querySelector(`[data-play="${key}"]`);
+  btn.disabled = true; btn.textContent = "読み込み中…";
+  const url = mode === "fluent" ? c.fluent_file : c.concat_file;
+  let buf; try{ buf = await loadBuf(url); }catch(e){ btn.disabled=false; btn.textContent="▶ 再生"; return; }
+  btn.disabled = false; btn.textContent = "■ 停止";
+  st.playing = true;
+  const cctx = actx(); await cctx.resume();
+  const tl = timeline(c, mode);
+  const row = document.querySelector(`[data-row="${key}"]`);
+  const cursor = document.querySelector(`[data-cursor="${key}"]`); cursor.style.opacity = 1;
+  const now = document.querySelector(`[data-now="${key}"]`);
+  const cellW = 38 + 2, pad = 12;
+  c.morae.forEach((m,i)=>row.querySelector(`[data-g="${i}"]`).style.opacity = 0);
+  const s = cctx.createBufferSource(); s.buffer = buf; s.connect(cctx.destination);
+  const t0 = cctx.currentTime + 0.06; s.start(t0); st.src = s;
+  function frame(){
+    if(!st.playing) return;
+    const tms = (cctx.currentTime - t0) * 1000;
+    if(tms >= tl.total + 60){ finish(); return; }
+    // 現在のモーラ
+    let gi = 0; for(let i=0;i<tl.start.length;i++){ if(tms >= tl.start[i]) gi = i; else break; }
+    for(let i=0;i<c.morae.length;i++){
+      const g = row.querySelector(`[data-g="${i}"]`);
+      if(tms >= tl.start[i] + tl.slot[i]) g.style.opacity = 1;
+      else if(tms >= tl.start[i]){ g.style.opacity = opacity(c.morae[i], (tms - tl.start[i]) / Math.max(tl.slot[i],1), mode).toFixed(3); }
+      else g.style.opacity = 0;
+    }
+    const localFrac = Math.max(0, Math.min(1, (tms - tl.start[gi]) / Math.max(tl.slot[gi],1)));
+    cursor.style.left = (pad + (gi + localFrac) * cellW) + "px";
+    const m = c.morae[gi];
+    if(!m.sound){ now.innerHTML = "（無音）"; }
+    else{
+      const differ = hira(m.sound) !== m.disp;
+      now.innerHTML = differ
+        ? `いま鳴っている音: <b>${m.sound}</b> — 表示は「${m.disp}」`
+        : `いま鳴っている音: <b>${m.sound}</b>`;
+    }
+    st.raf = requestAnimationFrame(frame);
+  }
+  function finish(){
+    c.morae.forEach((m,i)=>row.querySelector(`[data-g="${i}"]`).style.opacity = 1);
+    cursor.style.opacity = 0; now.innerHTML = "&nbsp;";
+    st.playing = false; btn.textContent = "▶ 再生";
+  }
+  st.raf = requestAnimationFrame(frame);
+}
+
+(async function init(){
+  let data;
+  try{ data = await (await fetch(SRC, {cache:"no-store"})).json(); }
+  catch(e){ document.getElementById("panels").innerHTML = `<div class="panel"><p class="k">音源(content.json)を読み込めませんでした。GitHub Pages上で開いてください。</p></div>`; return; }
+  const host = document.getElementById("panels"); host.innerHTML = "";
+  for(const [key, c] of Object.entries(data.contents)){
+    const el = document.createElement("div"); el.className = "panel";
+    el.innerHTML = panelHTML(key, c); host.appendChild(el);
+    el.querySelector(`[data-row="${key}"]`).innerHTML = cellsHTML(c);
+    state[key] = { content:c, mode:"concat", playing:false };
+    el.querySelector(`[data-play="${key}"]`).addEventListener("click", ()=>play(key));
+    el.querySelectorAll(`[data-seg="${key}"] button`).forEach(b=>b.addEventListener("click", ()=>{
+      stop(key); state[key].mode = b.getAttribute("data-mode");
+      el.querySelectorAll(`[data-seg="${key}"] button`).forEach(x=>x.classList.remove("on"));
+      b.classList.add("on"); setStatic(key);
+    }));
+    setStatic(key);
+  }
+})();
+</script>
+</body>
+</html>

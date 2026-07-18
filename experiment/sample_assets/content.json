@@ -1,0 +1,421 @@
+{
+ "speaker": 108,
+ "speaker_name": "東北きりたん/ノーマル",
+ "slot_ms": 200,
+ "contents": {
+  "waka": {
+   "title": "（1）百人一首・和歌を1首",
+   "sub": "在原業平「ちはやぶる…」（百人一首17番）。百人一首パックは手検証した読み表を用いる。",
+   "src": "ちはやぶる神代も聞かず竜田川からくれなゐに水くくるとは",
+   "morae": [
+    {
+     "disp": "ち",
+     "sound": "ち",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "は",
+     "sound": "は",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "や",
+     "sound": "や",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ぶ",
+     "sound": "ぶ",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "る",
+     "sound": "る",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "か",
+     "sound": "か",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "み",
+     "sound": "み",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "よ",
+     "sound": "よ",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "も",
+     "sound": "も",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "き",
+     "sound": "き",
+     "ctx": -0.1,
+     "badge": null
+    },
+    {
+     "disp": "か",
+     "sound": "か",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ず",
+     "sound": "ず",
+     "ctx": -0.06,
+     "badge": null
+    },
+    {
+     "disp": "た",
+     "sound": "た",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "つ",
+     "sound": "つ",
+     "ctx": -0.2,
+     "badge": "文脈で埋もれ→視覚が補う"
+    },
+    {
+     "disp": "た",
+     "sound": "た",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "が",
+     "sound": "が",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "は",
+     "sound": "わ",
+     "ctx": 0,
+     "badge": "川のは／音はワ"
+    },
+    {
+     "disp": "か",
+     "sound": "か",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ら",
+     "sound": "ら",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "く",
+     "sound": "く",
+     "ctx": -0.1,
+     "badge": null
+    },
+    {
+     "disp": "れ",
+     "sound": "れ",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "な",
+     "sound": "な",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ゐ",
+     "sound": "い",
+     "ctx": 0,
+     "badge": "古語ゐを保つ／音はイ"
+    },
+    {
+     "disp": "に",
+     "sound": "に",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "み",
+     "sound": "み",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "づ",
+     "sound": "ず",
+     "ctx": 0,
+     "badge": "表記づを保つ／音はズ"
+    },
+    {
+     "disp": "く",
+     "sound": "く",
+     "ctx": -0.18,
+     "badge": "文脈で埋もれ→視覚が補う"
+    },
+    {
+     "disp": "く",
+     "sound": "く",
+     "ctx": -0.08,
+     "badge": null
+    },
+    {
+     "disp": "る",
+     "sound": "る",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "と",
+     "sound": "と",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "は",
+     "sound": "わ",
+     "ctx": 0,
+     "badge": "助詞は／音はワ"
+    }
+   ],
+   "concat_file": "sample_assets/waka_concat.mp3",
+   "concat_onsets_ms": [
+    0,
+    200,
+    400,
+    600,
+    800,
+    1000,
+    1200,
+    1400,
+    1600,
+    1800,
+    2000,
+    2200,
+    2400,
+    2600,
+    2800,
+    3000,
+    3200,
+    3400,
+    3600,
+    3800,
+    4000,
+    4200,
+    4400,
+    4600,
+    4800,
+    5000,
+    5200,
+    5400,
+    5600,
+    5800,
+    6000
+   ],
+   "concat_total_ms": 6250,
+   "fluent_file": "sample_assets/waka_fluent.mp3",
+   "fluent_onsets_ms": [
+    50,
+    173,
+    322,
+    469,
+    568,
+    705,
+    792,
+    918,
+    1028,
+    1196,
+    1310,
+    1419,
+    1548,
+    1656,
+    1775,
+    1866,
+    1979,
+    2135,
+    2225,
+    2372,
+    2441,
+    2544,
+    2678,
+    2749,
+    2864,
+    2996,
+    3145,
+    3260,
+    3332,
+    3478,
+    3567
+   ],
+   "fluent_total_ms": 3989
+  },
+  "quiz": {
+   "title": "（2）クイズ問題的サンプル",
+   "sub": "「日本で一番高い山は何？」。現代文の直接入力を想定。",
+   "src": "日本で一番高い山は何？",
+   "morae": [
+    {
+     "disp": "に",
+     "sound": "に",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ほ",
+     "sound": "ほ",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ん",
+     "sound": "ん",
+     "ctx": 0.08,
+     "badge": null
+    },
+    {
+     "disp": "で",
+     "sound": "で",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "い",
+     "sound": "い",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ち",
+     "sound": "ち",
+     "ctx": -0.1,
+     "badge": "文脈で埋もれ→視覚が補う"
+    },
+    {
+     "disp": "ば",
+     "sound": "ば",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ん",
+     "sound": "ん",
+     "ctx": 0.1,
+     "badge": "文脈で読める→視覚は控えめ"
+    },
+    {
+     "disp": "た",
+     "sound": "た",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "か",
+     "sound": "か",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "い",
+     "sound": "い",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "や",
+     "sound": "や",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "ま",
+     "sound": "ま",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "は",
+     "sound": "わ",
+     "ctx": -0.06,
+     "badge": "助詞は／音はワ"
+    },
+    {
+     "disp": "な",
+     "sound": "な",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "に",
+     "sound": "に",
+     "ctx": 0.0,
+     "badge": null
+    },
+    {
+     "disp": "？",
+     "sound": "",
+     "ctx": 0,
+     "badge": null
+    }
+   ],
+   "concat_file": "sample_assets/quiz_concat.mp3",
+   "concat_onsets_ms": [
+    0,
+    200,
+    400,
+    600,
+    800,
+    1000,
+    1200,
+    1400,
+    1600,
+    1800,
+    2000,
+    2200,
+    2400,
+    2600,
+    2800,
+    3000,
+    null
+   ],
+   "concat_total_ms": 3450,
+   "fluent_file": "sample_assets/quiz_fluent.mp3",
+   "fluent_onsets_ms": [
+    50,
+    174,
+    337,
+    422,
+    502,
+    603,
+    726,
+    863,
+    953,
+    1088,
+    1190,
+    1259,
+    1374,
+    1505,
+    1618,
+    1754,
+    null
+   ],
+   "fluent_total_ms": 2122
+  }
+ }
+}
