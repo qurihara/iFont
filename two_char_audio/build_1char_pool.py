@@ -35,6 +35,79 @@ VOT_TARGET_MS = 25
 VOT_CMULS = [1.0, 2.0, 2.5, 3.0]                  # 子音長の倍率ラダー(順に試し、目標到達で打ち切り)
 VOICELESS_STOPS = {"p", "py", "t", "k", "ky"}     # 対象(ch・tsの破擦音は自然な音なので対象外)
 
+# --- ぱ行の字ごとの処方 (2026-07-18 PI試聴 ptuning.html 第1〜3ラウンドで確定) ---
+# 一律のVOT目標では ぱ行が か行の時間構造に寄る(VOTは場所の手がかい: p<t<k)ため、
+# 字ごとに耳で選んだ処方を適用する。操作はすべて音声学に根拠がある復元
+# (VOTの自然域・両唇音の拡散した低域寄りの音色・[ɸ]気息・促音後の明瞭な解放)。
+PRESCRIPTION_CMUL = {"ぱ": 1.0, "ぴ": 2.5, "ぷ": 1.75, "ぺ": 2.5}   # ぽは文脈合成(下記)
+PRESCRIPTION_DSP = {
+    # 破裂〜有声化の区間への処理: tilt=両唇傾斜(700Hz以上-10dB/oct,上限-18dB)
+    # boost_db=区間の増幅 / lowcut=250Hz未満-18dB(有声成分の漏れ除去)
+    "ぱ": dict(tilt=True, boost_db=0.0, lowcut=False),
+    "ぷ": dict(tilt=True, boost_db=9.0, lowcut=True),
+}
+OPPO_SPLICE = {"ぽ": "オッポ"}   # 促音の後の明瞭な解放を文脈合成から切り出す
+
+
+def wav_to_np(wav_bytes):
+    with wave.open(io.BytesIO(wav_bytes), "rb") as w:
+        fr = w.getframerate()
+        x = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2").astype(np.float64) / 32768
+    return x, fr
+
+
+def np_to_wav(x, fr):
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(fr)
+        w.writeframes((np.clip(x, -1, 1) * 32767).astype("<i2").tobytes())
+    return buf.getvalue()
+
+
+def _burst_and_voicing(seg, fr):
+    import parselmouth
+    ms = max(1, int(fr / 1000))
+    n = len(seg) // ms - 4
+    env = [20 * math.log10(max(float(np.sqrt(np.mean(seg[i*ms:(i+1)*ms]**2))), 1e-7)) for i in range(n)]
+    burst = max(range(n - 2), key=lambda i: env[i+2] - env[i])
+    try:
+        pp = parselmouth.Sound(seg, fr).to_pitch(0.002, 170, 400)
+        f = pp.selected_array["frequency"]; t = pp.xs()
+        voiced = [t[i] * 1000 for i in range(len(t)) if f[i] > 0]
+        v0 = voiced[0] if voiced else burst + 25
+    except Exception:
+        v0 = burst + 25
+    return burst, v0
+
+
+def apply_dsp(wav_bytes, char_onset_s, dsp):
+    """文字の破裂〜有声化の区間に処方(傾斜/増幅/低域除去)をかける。境界3msクロスフェード。"""
+    x, fr = wav_to_np(wav_bytes)
+    a0 = int(char_onset_s * fr)
+    b, v = _burst_and_voicing(x[a0:], fr)
+    a = max(0, a0 + int((b - 2) / 1000 * fr))
+    bnd = min(len(x), a0 + int((v + 2) / 1000 * fr))
+    if bnd - a < 32:
+        return wav_bytes
+    part = x[a:bnd].copy()
+    F = np.fft.rfft(part)
+    fq = np.fft.rfftfreq(len(part), 1.0 / fr)
+    g = np.full_like(fq, 10 ** (dsp.get("boost_db", 0.0) / 20.0))
+    if dsp.get("tilt"):
+        att = np.zeros_like(fq)
+        m = fq > 700
+        att[m] = np.maximum(-10.0 * np.log2(fq[m] / 700.0), -18.0)
+        g *= 10 ** (att / 20.0)
+    if dsp.get("lowcut"):
+        g *= np.where(fq < 250, 10 ** (-18.0 / 20.0), 1.0)
+    filt = np.fft.irfft(F * g, n=len(part))
+    xf = max(8, int(0.003 * fr))
+    w = 0.5 * (1 - np.cos(np.pi * np.arange(xf) / xf))
+    filt[:xf] = part[:xf] * (1 - w) + filt[:xf] * w
+    filt[-xf:] = filt[-xf:] * (1 - w) + part[-xf:] * w
+    x[a:bnd] = filt
+    return np_to_wav(x, fr)
+
 
 def measure_vot_ms(wav_bytes, start_s, span_s=0.25, f0_lo=170, f0_hi=400):
     """破裂(1ms包絡の最大立ち上がり)から有声化(F0検出開始)までのms。測れなければnan。"""
@@ -123,6 +196,37 @@ def main():
         if base_q is None:
             base_q = q
 
+    def synth_oppo(ch, pitch_ln, vol):
+        """「オッポ」等の文脈合成から促音後のモーラを切り出し、単音と同じ体裁
+        (前余白0.1s + 文字0.2s + 後余白0.1s)のWAVに再構成する。ぽ の処方I。"""
+        text = OPPO_SPLICE[ch]
+        q0 = json.loads(b2.post("/audio_query", {"text": b2.to_kata(text), "speaker": args.speaker}))
+        ms_all = []
+        for ap in q0["accent_phrases"]:
+            ms_all.extend(ap["moras"])
+        for m in ms_all:
+            if m.get("pitch", 0) > 0:
+                m["pitch"] = pitch_ln
+        q = dict(q0)
+        q["accent_phrases"] = [{"moras": ms_all, "accent": 1, "pause_mora": None, "is_interrogative": False}]
+        for kk, vv in dict(speedScale=1.0, pitchScale=0.0, intonationScale=1.0,
+                           volumeScale=vol, prePhonemeLength=0.1, postPhonemeLength=0.1).items():
+            q[kk] = vv
+        wav = b2.post("/synthesis", {"speaker": args.speaker}, q)
+        x, fr = wav_to_np(wav)
+        t = q["prePhonemeLength"]
+        for m in ms_all[:-1]:
+            t += (m.get("consonant_length") or 0) + (m.get("vowel_length") or 0)
+        a = int((t - 0.04) * fr)                       # 促音の閉鎖を40ms含める
+        seg = x[a: a + int(MORA_DUR * fr)].copy()
+        nf = int(0.008 * fr)
+        seg[-nf:] *= 0.5 * (1 + np.cos(np.pi * np.arange(nf) / nf))
+        pad = np.zeros(int(0.1 * fr))
+        out = np.concatenate([pad, seg, pad])
+        m_like = dict(consonant_length=0.06, vowel_length=MORA_DUR - 0.06, pitch=pitch_ln)
+        q_like = dict(prePhonemeLength=0.1, outputSamplingRate=fr)
+        return np_to_wav(out, fr), m_like, q_like
+
     def synth(ch, pitch_ln, vol, cmul=1.0):
         """1モーラを pitch_ln(対数F0)・volumeScale=vol・子音長cmul倍 で合成し、(wav, m, q) を返す。"""
         m0 = dict(moras[ch])
@@ -138,9 +242,16 @@ def main():
         return b2.post("/synthesis", {"speaker": args.speaker}, q), m, q
 
     # --- 第0パス: 無声破裂音のVOT自動修正(冒頭のVOT_TARGET_MS参照) ---
+    # ぱ行はPI試聴で確定した字ごとの処方(PRESCRIPTION_*)を優先し、ラダーは適用しない。
     votfix = {}   # ch -> dict(cmul, vot_ms)
     n_votfix = 0
     for ch in chars:
+        if ch in OPPO_SPLICE:
+            votfix[ch] = dict(cmul=None, vot_ms=None, method="oppo")
+            continue
+        if ch in PRESCRIPTION_CMUL:
+            votfix[ch] = dict(cmul=PRESCRIPTION_CMUL[ch], vot_ms=None, method="prescribed")
+            continue
         cons = moras[ch].get("consonant")
         if cons not in VOICELESS_STOPS:
             votfix[ch] = dict(cmul=1.0, vot_ms=None)
@@ -156,8 +267,22 @@ def main():
         if best["cmul"] > 1.0:
             n_votfix += 1
     print(f"VOT修正: 子音長を伸ばした音 {n_votfix} 字 "
-          + "(" + ", ".join(f"{c}=x{votfix[c]['cmul']}" for c in chars if votfix[c]['cmul'] > 1.0) + ")",
+          + "(" + ", ".join(f"{c}=x{votfix[c]['cmul']}" for c in chars
+                            if votfix[c].get("cmul") and votfix[c]["cmul"] > 1.0
+                            and not votfix[c].get("method")) + ")",
           file=sys.stderr)
+    print("ぱ行の処方: " + ", ".join(
+        [f"{c}=x{PRESCRIPTION_CMUL[c]}" + ("+DSP" if c in PRESCRIPTION_DSP else "") for c in PRESCRIPTION_CMUL]
+        + [f"{c}={t}切り出し" for c, t in OPPO_SPLICE.items()]), file=sys.stderr)
+
+    def produce(ch, pitch_ln, vol):
+        """処方込みで1文字を合成する(第1・第2パス共通)。(wav, m, q)を返す。"""
+        if ch in OPPO_SPLICE:
+            return synth_oppo(ch, pitch_ln, vol)
+        wav, m, q = synth(ch, pitch_ln, vol, cmul=votfix[ch]["cmul"] or 1.0)
+        if ch in PRESCRIPTION_DSP:
+            wav = apply_dsp(wav, q["prePhonemeLength"], PRESCRIPTION_DSP[ch])
+        return wav, m, q
 
     # --- 第1パス: 音高を確定し(必要なら1回補正)、素の聞こえの大きさ(A特性RMS)を測る ---
     # 目的: う・ん のように合成が病的に小さい音を、後段の過大増幅(=割れ)でなく
@@ -166,14 +291,15 @@ def main():
     n_corrected = 0
     for ch in chars:
         pln = p_base
-        wav, m, q = synth(ch, pln, 1.0, cmul=votfix[ch]["cmul"])
+        wav, m, q = produce(ch, pln, 1.0)
         onset = q["prePhonemeLength"] + (m.get("consonant_length") or 0)
         f0 = b2.med_f0(wav, onset + 0.03, onset + m["vowel_length"] - 0.02)
         e = b2.cents(f0, TARGET) if f0 and not math.isnan(f0) else float("nan")
         corrected = False
-        if not math.isnan(e) and abs(e) > b2.CORRECT_CENTS:
+        # ぽ(文脈切り出し)は音高補正のための単モーラ再合成ができないので、素の音高で使う
+        if ch not in OPPO_SPLICE and not math.isnan(e) and abs(e) > b2.CORRECT_CENTS:
             pln = p_base + (math.log(TARGET) - math.log(f0))
-            wav, m, q = synth(ch, pln, 1.0, cmul=votfix[ch]["cmul"])
+            wav, m, q = produce(ch, pln, 1.0)
             onset = q["prePhonemeLength"] + (m.get("consonant_length") or 0)
             f0 = b2.med_f0(wav, onset + 0.03, onset + m["vowel_length"] - 0.02)
             corrected = True
@@ -194,7 +320,7 @@ def main():
         vol = max(VOL_MIN, min(VOL_MAX, vol))
         if vol > 2.0:
             n_boosted += 1
-        wav, m, q = synth(ch, p["pitch_ln"], vol, cmul=votfix[ch]["cmul"])
+        wav, m, q = produce(ch, p["pitch_ln"], vol)
         char_onset = q["prePhonemeLength"]                       # 前余白の直後 = 文字の開始
         char_dur = (m.get("consonant_length") or 0) + m["vowel_length"]
         sid = hashlib.sha1(f"{salt}|{ch}|{label}-1char|{args.speaker}".encode()).hexdigest()[:20]
@@ -210,12 +336,14 @@ def main():
             char=ch, target=ch,
             f0_hz=(round(p["f0"], 1) if p["f0"] and not math.isnan(p["f0"]) else None),
             corrected=p["corrected"], vol_scale=round(vol, 3),
-            vot_cmul=votfix[ch]["cmul"], vot_ms=votfix[ch]["vot_ms"],
+            vot_cmul=votfix[ch].get("cmul"), vot_ms=votfix[ch].get("vot_ms"),
+            recipe=votfix[ch].get("method", "vot-ladder" if votfix[ch].get("cmul", 1) != 1 else "plain"),
         )
     print(f"音量均一化: 2倍超に持ち上げた音 {n_boosted} 字", file=sys.stderr)
     # 2文字プールのビルダーが同じ修正を使えるよう、字→子音長倍率の表を書き出す
     votfix_path = os.path.join(REPO, "experiment", f"audio1char_votfix_{label}_{args.speaker}.json")
-    json.dump({c: votfix[c]["cmul"] for c in chars if votfix[c]["cmul"] > 1.0},
+    json.dump({c: votfix[c]["cmul"] for c in chars
+               if votfix[c].get("cmul") and votfix[c]["cmul"] != 1.0},
               open(votfix_path, "w"), ensure_ascii=False, indent=1)
     print(f"  VOT修正表 -> {votfix_path}", file=sys.stderr)
 
