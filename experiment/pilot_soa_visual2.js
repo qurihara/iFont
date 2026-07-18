@@ -208,12 +208,14 @@ function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
     askOne(t, 2, (r2) => {
       if (!inPractice) {
-        results.push({
+        const rec = {
           c1: t.c1, c2: t.c2, c3: t.c3, S: t.S,
           actual_soa1: t._soa1, actual_soa2: t._soa2, actual_dur3: t._dur3,
           resp1: r1, resp2: r2,
           correct1: r1 === t.c1, correct2: r2 === t.c2,
-        });
+        };
+        results.push(rec);
+        if (window.PROD) PROD.saveTrial("soa_visual", { version:VERSION, charset:CHARSET }, rec, results.length-1);
         ti++; runTrial(); return;
       }
       // 練習: 3文字の内訳を提示して流れを覚えてもらう
@@ -276,6 +278,11 @@ function svgCurves(rows) {
 }
 function showResults() {
   const rows = byLevel();
+  if (window.PROD && PROD.enabled) {
+    PROD.saveDone("soa_visual", { version:VERSION, charset:CHARSET }, { byLevel: rows });
+    screen.innerHTML = PROD.completionHTML(Math.round((Date.now()-T0)/1000));
+    return;
+  }
   const pc=v=>v==null?"-":(v*100).toFixed(0)+"%";
   const tbl = `<table><tr><th>間隔(ms)</th>${rows.map(r=>`<td>${r.S}</td>`).join("")}</tr>
     <tr><th>1文字目</th>${rows.map(r=>`<td>${pc(r.acc1)}</td>`).join("")}</tr>
@@ -318,11 +325,18 @@ function intro() {
     <p style="background:#eef4f6;border-radius:8px;padding:10px 12px">まず <b>練習 ${N_PRACTICE}問</b>（正解を表示）→ そのあと <b>本番 ${SOA_LEVELS.length*PER_LEVEL}問</b>（各2文字回答・正解は非表示・記録あり）を行います。所要8〜12分。</p>
     <p class="muted">前の字は次の字に上書きされて見えにくくなります。分からなければ勘でOKです（外れも大切なデータ）。回答はこの端末の中だけで完結します。</p>
     <p><button class="primary" id="go">練習を始める（${N_PRACTICE}問）</button></p>
-    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
+    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">${(window.PROD&&PROD.enabled)?"津田塾大学 認知・知覚研究":"研究者向けパイロット版 v"+VERSION}</p>`;
   document.getElementById("go").onclick = start;
 }
 
+const T0 = Date.now();   // 所要時間の起点
+
 (async function(){
-  try { await preload(); intro(); }
+  try {
+    await preload();
+    // 本番モード(?prod=1)は同意画面を挟んでから教示へ。研究者パイロットは従来どおり直行。
+    if (window.PROD && PROD.enabled) PROD.consentScreen(screen, "かなの見分けの課題（画面表示・約10分）", 10, intro);
+    else intro();
+  }
   catch(e){ screen.innerHTML = `<h1>読み込みエラー</h1><p class="muted">${e.message}<br>このページは experiment/ 内でHTTP配信して開いてください。</p>`; }
 })();

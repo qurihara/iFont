@@ -262,8 +262,10 @@ function respond(t, inPractice) {
   askOne(t, 1, (r1) => {
     askOne(t, 2, (r2) => {
       if (!inPractice) {
-        results.push({ c1:t.c1, c2:t.c2, c3:t.c3, S:t.S, resp1:r1, resp2:r2,
-          correct1:r1===t.c1, correct2:r2===t.c2 });
+        const rec = { c1:t.c1, c2:t.c2, c3:t.c3, S:t.S, resp1:r1, resp2:r2,
+          correct1:r1===t.c1, correct2:r2===t.c2 };
+        results.push(rec);
+        if (window.PROD) PROD.saveTrial("soa_audio", prodMeta(), rec, results.length-1);
         ti++; runTrial(); return;
       }
       // 練習: 3音の内訳を提示して流れを覚えてもらう
@@ -326,6 +328,12 @@ function svgCurves(rows) {
 }
 function showResults() {
   const rows = byLevel();
+  // 本番モード: セッション完了を記録し、完了コードを表示して終わる(結果グラフは出さない)。
+  if (window.PROD && PROD.enabled) {
+    PROD.saveDone("soa_audio", prodMeta(), { byLevel: rows });
+    screen.innerHTML = PROD.completionHTML(Math.round((Date.now()-T0)/1000));
+    return;
+  }
   const pc=v=>v==null?"-":(v*100).toFixed(0)+"%";
   const tbl = `<table><tr><th>SOA(ms)</th>${rows.map(r=>`<td>${r.S}</td>`).join("")}</tr>
     <tr><th>char1</th>${rows.map(r=>`<td>${pc(r.acc1)}</td>`).join("")}</tr>
@@ -382,7 +390,7 @@ function intro() {
       <label style="cursor:pointer;display:inline-block;margin-top:8px"><input type="checkbox" id="hp"> <b>ヘッドホン／イヤホンを装着し、音量を確認しました</b></label>
       <span class="muted" style="display:block;margin-top:4px">${mobileNote}この課題はスピーカー再生では正しく測れません。</span></p>
     <p><button class="primary" id="go" disabled style="opacity:.5">練習を始める（${N_PRACTICE}問）</button></p>
-    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">研究者向けパイロット版 v${VERSION}</p>`;
+    <p class="muted" style="text-align:right;font-size:12px;margin-top:6px">${(window.PROD&&PROD.enabled)?"津田塾大学 認知・知覚研究":"研究者向けパイロット版 v"+VERSION}</p>`;
   const hp = document.getElementById("hp"), go = document.getElementById("go");
   // サンプル音: 各音を打ち切らずに(実音の全長で)0.5秒間隔で3つ鳴らす
   document.getElementById("sample").onclick = () => {
@@ -471,8 +479,18 @@ function showCheck(){
   });
 }
 
+const T0 = Date.now();   // 所要時間の起点
+function prodMeta(){ return { version:VERSION, speaker:poolMeta.speaker,
+  speaker_name:poolMeta.speaker_name, pitch:poolMeta.pitch_scheme }; }
+
 (async function(){
   // 候補プール指定時は点検モード専用(候補音源で本番課題は実施させない)
-  try { await preload(); if (POOL || P.has("check")) showCheck(); else intro(); }
+  try {
+    await preload();
+    if (POOL || P.has("check")) return showCheck();
+    // 本番モード(?prod=1)は同意画面を挟んでから教示へ。研究者パイロットは従来どおり直行。
+    if (window.PROD && PROD.enabled) PROD.consentScreen(screen, "かなの聞き取りの課題（音声・約10分）", 10, intro, true);
+    else intro();
+  }
   catch(e){ screen.innerHTML = `<h1>読み込みエラー</h1><p class="muted">${e.message}</p>`; }
 })();
