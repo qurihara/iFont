@@ -38,6 +38,12 @@ WAKA = dict(
         m("た","た"), m("つ","つ",-0.20,"文脈で埋もれ→視覚が補う"), m("た","た"), m("が","が"), m("は","わ",0,"川のは／音はワ"),
         m("か","か"), m("ら","ら"), m("く","く",-0.10), m("れ","れ"), m("な","な"), m("ゐ","い",0,"古語ゐを保つ／音はイ"), m("に","に"),
         m("み","み"), m("づ","ず",0,"表記づを保つ／音はズ"), m("く","く",-0.18,"文脈で埋もれ→視覚が補う"), m("く","く",-0.08), m("る","る"), m("と","と"), m("は","わ",0,"助詞は／音はワ")],
+    # かるた読み(流暢合成)の音高設計: 音のあるモーラの通し番号で、B3にする句頭を指定する。
+    # 5句「ちはやぶる／かみよもきかず／たつたがは／からくれなゐに／みづくくるとは」の
+    # 句頭は 0, 5, 12, 17, 24 番。栗原の指定(2026-07-21)により B3 は 1・2・4句の句頭のみ、
+    # 残りの句頭(3・5句)と句中はすべて E4 とする。全モーラ 0.2 秒に固定する。
+    karuta_phrase_starts=[0, 5, 12, 17, 24],
+    karuta_b3=[0, 5, 17],
 )
 
 QUIZ = dict(
@@ -114,6 +120,39 @@ def render_concat(morae, pool, fr=24000):
     return b2.wav_to_mp3(buf.getvalue()), onsets_ms, int(len(total) / fr * 1000)
 
 
+def synth_karuta(morae, b3_sound_indices):
+    """音のかな列を競技かるたの読みのルールで合成する。
+    全モーラを1モーラ SLOT(0.2秒)に固定し、b3_sound_indices(音のあるモーラの通し番号)で
+    指定した句頭のみ B3、それ以外の句頭と句中はすべて E4 とする。
+    自然な韻律ではなく、句頭の高さだけで抑揚を作る披講調の平坦な読みになる。"""
+    sounded = [x for x in morae if x["sound"]]
+    b3_set = set(b3_sound_indices)
+    base_q = None
+    out_moras = []
+    for i, x in enumerate(sounded):
+        q1 = json.loads(b2.post("/audio_query", {"text": b2.to_kata(x["sound"]), "speaker": SPK}))
+        if base_q is None:
+            base_q = q1
+        m0 = q1["accent_phrases"][0]["moras"][0]
+        pitch_ln = math.log(b2.B3 if i in b3_set else b2.E4)
+        out_moras.append(b2.set_mora(m0, pitch_ln, SLOT))
+    q = dict(base_q)
+    q["accent_phrases"] = [{"moras": out_moras, "accent": 1,
+                            "pause_mora": None, "is_interrogative": False}]
+    for kk, vv in dict(speedScale=1.0, pitchScale=0.0, intonationScale=1.0,
+                       volumeScale=1.0, prePhonemeLength=0.05, postPhonemeLength=0.15).items():
+        q[kk] = vv
+    wav = b2.post("/synthesis", {"speaker": SPK}, q)
+    onsets_s = []
+    t = q["prePhonemeLength"]
+    for mo in out_moras:
+        onsets_s.append(t)
+        t += (mo.get("consonant_length") or 0) + (mo.get("vowel_length") or 0)
+    with wave.open(io.BytesIO(wav), "rb") as w:
+        total_ms = int(w.getnframes() / w.getframerate() * 1000)
+    return wav, [int(round(s * 1000)) for s in onsets_s], total_ms
+
+
 def synth_fluent(morae):
     """音のかな列を東北きりたんの連続音声(自然な韻律)で合成し、mp3と各モーラの開始時刻(ms)を返す。"""
     sound_str = "".join(x["sound"] for x in morae if x["sound"])
@@ -150,8 +189,12 @@ def main():
         cc_mp3, cc_onsets, cc_total = render_concat(c["morae"], pool)
         with open(os.path.join(OUT, f"{c['key']}_concat.mp3"), "wb") as f:
             f.write(cc_mp3)
-        # 流暢合成(実声・自然な韻律)
-        wav, onsets_ms, total_ms = synth_fluent(c["morae"])
+        # 流暢合成: 百人一首はかるた読みのルール(句頭の高さ・0.2秒固定)、
+        # それ以外(現代文)はVOICEVOXの自然な韻律で合成する。
+        if c.get("karuta_b3") is not None:
+            wav, onsets_ms, total_ms = synth_karuta(c["morae"], c["karuta_b3"])
+        else:
+            wav, onsets_ms, total_ms = synth_fluent(c["morae"])
         if len(onsets_ms) != len(sounded):
             print(f"警告[{c['key']}]: 音モーラ{len(sounded)} と 合成モーラ{len(onsets_ms)} が不一致",
                   file=sys.stderr)
