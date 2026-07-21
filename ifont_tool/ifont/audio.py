@@ -70,20 +70,99 @@ def synth_tones(pitches_hz, char_dur: float, sr: int = 44100):
     return samples, sr
 
 
-def synth_voicevox(text: str, speaker: int = 2, host: str = "http://127.0.0.1:50021",
-                   speed: float = 1.0, sr: int = 44100):
-    """VOICEVOX エンジン(ローカル)で TTS 合成する。エンジン未起動なら例外。"""
-    q = urllib.parse.urlencode({"text": text, "speaker": speaker})
-    with urllib.request.urlopen(f"{host}/audio_query?{q}", timeout=5) as r:
-        query = json.load(r)
-    query["speedScale"] = speed
-    query["outputSamplingRate"] = sr
+def _hira_to_kata(s: str) -> str:
+    return "".join(chr(ord(c) + 0x60) if "ぁ" <= c <= "ゖ" else c for c in s)
+
+
+def _vv_query(text: str, speaker: int, host: str):
+    # VOICEVOX の /audio_query は POST(パラメータはクエリ文字列、本体は空)
+    q = urllib.parse.urlencode({"text": _hira_to_kata(text), "speaker": speaker})
+    req = urllib.request.Request(f"{host}/audio_query?{q}", data=b"", method="POST")
+    with urllib.request.urlopen(req, timeout=5) as r:
+        return json.load(r)
+
+
+def _vv_synth(query, speaker: int, host: str):
     data = json.dumps(query).encode("utf-8")
     req = urllib.request.Request(
         f"{host}/synthesis?speaker={speaker}", data=data,
         headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read()  # WAV バイト列
+
+
+def _wav_seconds(wav_bytes: bytes) -> float:
+    import io
+    with wave.open(io.BytesIO(wav_bytes), "rb") as w:
+        return w.getnframes() / w.getframerate()
+
+
+def _set_mora(m, pitch_ln, dur):
+    """1モーラの音高(対数F0)と長さ(秒)を固定する。子音は最大 dur-0.04 まで、残りを母音に充てる。"""
+    m = dict(m)
+    c = m.get("consonant_length") or 0.0
+    if c > dur - 0.04:
+        c = dur - 0.04
+        m["consonant_length"] = c
+    m["vowel_length"] = dur - c
+    m["pitch"] = pitch_ln
+    return m
+
+
+def synth_voicevox(text: str, speaker: int = 2, host: str = "http://127.0.0.1:50021",
+                   speed: float = 1.0, sr: int = 44100):
+    """VOICEVOX エンジン(ローカル)で TTS 合成する。エンジン未起動なら例外。"""
+    query = _vv_query(text, speaker, host)
+    query["speedScale"] = speed
+    query["outputSamplingRate"] = sr
+    return _vv_synth(query, speaker, host)
+
+
+def _flatten_moras(query):
+    """audio_query の全アクセント句のモーラを1列に平坦化して返す(pause は無視)。"""
+    ms = []
+    for ap in query["accent_phrases"]:
+        ms.extend(ap["moras"])
+    return ms
+
+
+def synth_voicevox_designed(reading: str, pitches_hz, char_dur: float, speaker: int = 108,
+                            host: str = "http://127.0.0.1:50021", sr: int = 44100):
+    """実声で「設計提示」を合成する。各モーラの音高を pitches_hz(モーラごとの周波数)で与え、
+    長さを char_dur 秒に固定する。競技かるたの読み(句頭B3・他E4・0.2秒)や実験の一定音高/旋律を、
+    実際の話者の声で作るための経路。返り値は (wavバイト列, 各モーラの開始秒[list], 総秒)。"""
+    import math
+    q = _vv_query(reading, speaker, host)
+    moras = _flatten_moras(q)
+    out = []
+    for i, m in enumerate(moras):
+        f = float(pitches_hz[min(i, len(pitches_hz) - 1)])
+        out.append(_set_mora(m, math.log(f), char_dur))
+    q["accent_phrases"] = [{"moras": out, "accent": 1, "pause_mora": None, "is_interrogative": False}]
+    q.update(dict(speedScale=1.0, pitchScale=0.0, intonationScale=1.0, volumeScale=1.0,
+                  prePhonemeLength=0.05, postPhonemeLength=0.15, outputSamplingRate=sr))
+    wav = _vv_synth(q, speaker, host)
+    pre = q["prePhonemeLength"]
+    onsets = [pre + i * char_dur for i in range(len(out))]   # 全モーラ等長なので等間隔
+    return wav, onsets, _wav_seconds(wav)
+
+
+def synth_voicevox_natural(reading: str, speaker: int = 108,
+                           host: str = "http://127.0.0.1:50021", sr: int = 44100):
+    """実声で「自然韻律」を合成する(現代文向け)。音高・長さは VOICEVOX の既定のまま。
+    返り値は (wavバイト列, 各モーラの開始秒[list], 総秒)。表示の同期に各モーラ開始時刻を使う。"""
+    q = _vv_query(reading, speaker, host)
+    q.update(dict(prePhonemeLength=0.05, postPhonemeLength=0.15, outputSamplingRate=sr))
+    wav = _vv_synth(q, speaker, host)
+    onsets = []
+    t = q["prePhonemeLength"]
+    for ap in q["accent_phrases"]:
+        for m in ap["moras"]:
+            onsets.append(t)
+            t += (m.get("consonant_length") or 0) + (m.get("vowel_length") or 0)
+        if ap.get("pause_mora"):
+            t += (ap["pause_mora"].get("vowel_length") or 0)
+    return wav, onsets, _wav_seconds(wav)
 
 
 def write_wav(samples, sr: int, path: str):

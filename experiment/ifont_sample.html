@@ -80,6 +80,10 @@
   .modeline{font-size:12.5px;color:var(--sub);margin:4px 0 0}
   .modeline b{color:var(--ink)}
   @media (prefers-reduced-motion:reduce){ .cell .g{transition:none} .cursor{box-shadow:none} }
+  .videos{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px}
+  .videos figure{margin:0;flex:1 1 380px;min-width:280px}
+  .videos video{width:100%;border-radius:10px;border:1px solid var(--line);background:#0d0f14;display:block}
+  .videos figcaption{font-size:12px;color:var(--sub);margin-top:7px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -90,6 +94,23 @@
   <p class="lead">▶ を押すと、<b>東北きりたんの実際の声</b>と同期して文字が立ち上がります。「単純連結／流暢合成」で音のつながり方が変わります。</p>
   <div class="note"><b>これは想定サンプルです。</b>視覚の鮮明化スケジュール（変換g）は、実験（frac・乙課題）が終わるまでは論文の想定結果版の擬似モデル（プレースホルダ）です。<b>音声は本物</b>——今回チューニングした東北きりたんの単音プール（連結）と、同じ話者の連続合成（流暢）を鳴らしています。</div>
 </header>
+
+<div class="panel">
+  <h2>動画（iFont動画生成CLIツールで生成）</h2>
+  <p class="k">論文に記した iFont の動画生成CLIツール（<code>ifont-render</code>）が出力した、字幕と実声が同期した動画です。
+  論文の実験と同じく、画面中央の固定領域に1文字ずつ提示し、その文字の音が流れる区間の中で徐々に鮮明化します（時間ゲート提示）。
+  表記（<b>は</b>・<b>ゐ</b>・<b>づ</b>）はそのまま示し、下に金色でその字の音（→ワ・→イ・→ズ）を添えます。声は東北きりたんの実声です。</p>
+  <div class="videos">
+    <figure>
+      <video src="sample_assets/waka_ifont.mp4" controls preload="metadata" playsinline></video>
+      <figcaption>（1）百人一首・在原業平「ちはやぶる…」。競技かるたの読み（句頭B3・ほかE4・1モーラ0.2秒の設計提示）。</figcaption>
+    </figure>
+    <figure>
+      <video src="sample_assets/quiz_ifont.mp4" controls preload="metadata" playsinline></video>
+      <figcaption>（2）クイズ「日本で一番高い山は何？」。現代文の直接入力を想定した自然な韻律。</figcaption>
+    </figure>
+  </div>
+</div>
 
 <div id="panels"><p class="k" style="margin-top:24px">音源を読み込んでいます…</p></div>
 

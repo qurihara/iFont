@@ -57,6 +57,69 @@ def render_frames(chars, char_dur, out_dir, font_path,
     return paths, total + tail
 
 
+def render_frames_gated(segments, out_dir, font_path, fps=30,
+                        width=1280, height=720, tail=0.6, label=None,
+                        font_hint_path=None):
+    """論文の実験と同じ「時間ゲート提示」の描画。
+
+    横に文字を並べていく方式ではなく、画面中央の固定領域に1文字ずつ提示する。
+    各文字は、その文字の音が流れる区間の中で g（gmodel）に従って 0→1 に鮮明化し、
+    その区間の間だけ表示され、次の文字に入れ替わる。読み(sound)が表示字(char)と
+    違うときは、下に小さく「→sound」を金色で添える(は→ワ 等の対応を示す)。
+
+    segments: [{char, start, dur, sound}] のリスト(start/dur は秒)。
+    """
+    os.makedirs(out_dir, exist_ok=True)
+    if not segments:
+        raise ValueError("segments が空です。")
+    total = max(s["start"] + s["dur"] for s in segments)
+    total_frames = int(round((total + tail) * fps))
+
+    font = ImageFont.truetype(font_path, int(height * 0.42))
+    f_hint = ImageFont.truetype(font_hint_path or font_path, int(height * 0.06))
+    f_label = ImageFont.truetype(font_hint_path or font_path, int(height * 0.045))
+    cx, cy = width // 2, int(height * 0.46)
+
+    def current(t):
+        cur = segments[0]
+        for s in segments:
+            if t >= s["start"]:
+                cur = s
+            else:
+                break
+        return cur
+
+    paths = []
+    for fi in range(total_frames):
+        t = fi / fps
+        img = Image.new("RGBA", (width, height), BG + (255,))
+        draw = ImageDraw.Draw(img)
+        if label:
+            draw.text((int(width * 0.03), int(height * 0.04)), label,
+                      font=f_label, fill=(150, 156, 170, 255))
+        s = current(t)
+        local = (t - s["start"]) / max(s["dur"], 1e-3)
+        if local >= 1:
+            op = 1.0
+        elif local <= 0:
+            op = 0.0
+        else:
+            op = gmodel.reveal_opacity(s["char"], local)
+        a = int(255 * op)
+        if a > 0:
+            bb = draw.textbbox((0, 0), s["char"], font=font)
+            draw.text((cx - (bb[2] - bb[0]) / 2 - bb[0], cy - (bb[3] - bb[1]) / 2 - bb[1]),
+                      s["char"], font=font, fill=FG + (a,))
+            snd = s.get("sound")
+            if snd and snd != s["char"]:
+                hb = draw.textbbox((0, 0), "→" + snd, font=f_hint)
+                draw.text((cx - (hb[2] - hb[0]) / 2, int(height * 0.80)),
+                          "→" + snd, font=f_hint, fill=(213, 179, 87, a))
+        img.convert("RGB").save(os.path.join(out_dir, f"f{fi:05d}.png"))
+        paths.append(os.path.join(out_dir, f"f{fi:05d}.png"))
+    return paths, total + tail
+
+
 def _char_w(font, c):
     box = font.getbbox(c)
     return max(box[2] - box[0], int(font.size * 0.4))
