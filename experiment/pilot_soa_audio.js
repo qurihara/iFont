@@ -51,6 +51,12 @@ const GRID_AUDIO = [
 ];
 const CHARS = GRID_AUDIO.flat().filter(Boolean);   // 68音
 
+// 同音のかなを1つのボタンに併記する。表示は併記、値(採点・記録)は代表音(左)。
+// 単音を聞いて綴りを確定できない同音字(お／を・じ／ぢ・ず／づ)を、音のクラスとして正直に名づける。
+// frac聴覚課題(audio1char.js)と統一(2026-07-22 PI決定)。
+const HOMOPHONE_LABEL = { "お": "お／を", "じ": "じ／ぢ", "ず": "ず／づ" };
+function kanaLabel(ch){ return HOMOPHONE_LABEL[ch] || ch; }
+
 const screen = document.getElementById("screen");
 let audioCtx = null, stimByChar = {}, bufByChar = {}, onsets = {}, poolMeta = {};
 let trials = [], results = [], ti = 0, mainStarted = false;
@@ -289,7 +295,7 @@ function askOne(t, pos, done) {
   const grid = document.createElement("div"); grid.id="grid";
   for (const row of GRID_AUDIO) for (const ch of row) {
     if (ch==="") { const s=document.createElement("div"); s.className="kana spacer"; grid.appendChild(s); continue; }
-    const b=document.createElement("button"); b.className="kana"; b.textContent=ch;
+    const b=document.createElement("button"); b.className="kana"; b.textContent=kanaLabel(ch);
     b.onclick = () => done(ch);
     grid.appendChild(b);
   }
@@ -379,6 +385,7 @@ function intro() {
       <li>すぐ <b>2つ目</b>、つづけて <b>3つ目</b> の音が鳴る</li>
       <li><b>1つ目 → 2つ目</b> の順に、かなの表から選ぶ（<b>3つ目は答えない</b>）</li>
     </ol>
+    <p class="muted">かなは<b>単独で読んだときの音</b>です（「は」はハ、「へ」はヘ）。「じ／ぢ」のように<b>同じ音のかなは1つのボタンにまとめて</b>あり、どちらの字かを選ぶ必要はありません。</p>
     <p style="background:#fff8ec;border:1px solid #eadfc8;border-radius:8px;padding:10px 12px">
     <b>必ず3つ鳴ります。</b>間隔が短い問題では、1つ目が聞こえなかったと感じることがあります。
     そのときも、<b>あとから聞こえた音を1つ目として答えず</b>、勘で選んでください。</p>

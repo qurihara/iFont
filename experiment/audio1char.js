@@ -3,7 +3,8 @@
 //   - 単一のかなを発話先頭の音高 B3・1文字0.2秒で合成した音声を、frac% まで
 //     再生して (truncation) 何の文字かを問う。frac=0 無音 / frac=100 完全 (catch)。
 //   - 時間ゲートは再生時に Web Audio でライブ切り出し (audio2char と同方式)。
-//   - 回答は固定50音グリッド(全72字)。manifest は公開(回答なし)、正解は answer_key。
+//   - 回答は固定50音グリッド(68字。を・ぢ・づ・ゔは同音のため除外、同音は併記ボタン)。
+//     manifest は公開(回答なし・68刺激)、正解は answer_key。
 // =========================================================================
 
 const SUBMIT_URL = "";              // EDIT BEFORE DEPLOY
@@ -20,19 +21,26 @@ const BEEP_LEAD_MS = 300;    // 開始の合図音から、文字の音声が始
 const END_GAP_MS = 500;      // 文字の音声が終わってから、終了の合図音までの間隔
 const END_BEEP_GAP_MS = 140; // 終了の合図音を2回鳴らすときの、1回目と2回目の間隔
 
-// 全72字の固定50音グリッド (audio.js の GRID_AUDIO と一致)
+// 68音の固定50音グリッド (pilot_soa_audio.js の GRID_AUDIO と一致=乙課題と統一)。
+// を・ぢ・づ は お・じ・ず と同音、ゔ は ぶ と区別されないため、出題・回答から外す。
+// 同音の別表記は「じ／ぢ」のように1ボタンに併記する(HOMOPHONE_LABEL。値は代表音)。
 const GRID_AUDIO = [
   ["あ","い","う","え","お"],["か","き","く","け","こ"],["さ","し","す","せ","そ"],
   ["た","ち","つ","て","と"],["な","に","ぬ","ね","の"],["は","ひ","ふ","へ","ほ"],
   ["ま","み","む","め","も"],["や","","ゆ","","よ"],["ら","り","る","れ","ろ"],
-  ["わ","","","","を"],["ん","","","",""],
-  ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","ぢ","づ","で","ど"],
-  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],["ゔ","","","",""],
+  ["わ","","","","ん"],
+  ["が","ぎ","ぐ","げ","ご"],["ざ","じ","ず","ぜ","ぞ"],["だ","","","で","ど"],
+  ["ば","び","ぶ","べ","ぼ"],["ぱ","ぴ","ぷ","ぺ","ぽ"],
 ];
 const GRID_FLAT = GRID_AUDIO.flat();
 const GRID_COLS = 5;
 const GRID_ROWS = GRID_AUDIO.length;
-const N_CHOICES = GRID_FLAT.filter(c => c !== "").length;   // 72
+const N_CHOICES = GRID_FLAT.filter(c => c !== "").length;   // 68
+
+// 同音のかなを1つのボタンに併記する。表示は併記、値(採点・記録)は代表音(左)。
+// 単音を聞いて綴りを確定できない同音字(お／を・じ／ぢ・ず／づ)を、音のクラスとして正直に名づける。
+const HOMOPHONE_LABEL = { "お": "お／を", "じ": "じ／ぢ", "ず": "ず／づ" };
+function kanaLabel(ch) { return HOMOPHONE_LABEL[ch] || ch; }
 
 const params = new URLSearchParams(window.location.search);
 const workerId = params.get("worker_id") || params.get("wid") || "";
@@ -124,7 +132,7 @@ async function loadManifest() {
 function sampleTrials(manifest, n) {
   const pool = manifest.stimuli || [];
   if (pool.length === 0) throw new Error("audio1char_manifest に刺激がありません");
-  // プールは72字なので、必要数だけ復元抽出して frac を割り当てる。
+  // プールは68刺激(を・ぢ・づ・ゔ除外)なので、必要数だけ復元抽出して frac を割り当てる。
   const out = [];
   for (let i = 0; i < n; i++) {
     const s = pool[Math.floor(Math.random() * pool.length)];
@@ -137,7 +145,7 @@ function sampleTrials(manifest, n) {
 
 function buttonHtml(choice) {
   if (choice === "") return '<button class="jspsych-btn grid-spacer" disabled tabindex="-1"></button>';
-  return `<button class="jspsych-btn grid-kana">${choice}</button>`;
+  return `<button class="jspsych-btn grid-kana">${kanaLabel(choice)}</button>`;
 }
 
 function makeTrial(stim, isPractice = false) {
@@ -234,8 +242,10 @@ async function run() {
        <p>読み上げは、発話のごく途中までしか流れず短くて分かりにくい場合もあれば、
        最後まではっきり聞こえる場合もあります。ほとんど何も聞こえない問もありますが、その場合も合図音は前後に鳴ります。</p>
        <p>「▶ 音をきく / もう一度」ボタンで <b>何度でも</b> 聞き直せます。
-       下の <b>50音表</b>(濁音・半濁音を含む 72 字)から、聞こえたと思う 1 文字を選んでください。
+       下の <b>50音表</b>(濁音・半濁音を含む 68 字)から、聞こえたと思う 1 文字を選んでください。
        表は毎回同じ並びです。</p>
+       <p>かなは<b>単独で読んだときの音</b>です（「は」はハ、「へ」はヘ）。
+       「じ／ぢ」のように<b>同じ音のかなは1つのボタンにまとめて</b>あり、どちらの字かを選ぶ必要はありません。</p>
        <p>確信が持てなくても、感覚で答えて構いません。考え込まずに次々と答えてください。</p>`,
       `<h2>練習</h2>
        <p>まず ${N_PRACTICE} 問の練習を行います。練習問題の答えは記録されません。

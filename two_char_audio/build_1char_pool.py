@@ -25,6 +25,8 @@ B3 = b2.B3
 MORA_DUR = b2.MORA_DUR
 REPO = b2.REPO
 VOL_MIN, VOL_MAX = 0.3, 15.0   # 音量均一化のvolumeScaleの下限・上限(暴走防止)
+# 出題(公開manifest)から外す同音字。お・じ・ず と同音、ゔ=ぶ。回答グリッドでも1ボタンに併記する。
+AUDIO_MANIFEST_EXCLUDE = set("をぢづゔ")
 
 # --- VOT自動修正 (2026-07-18) ---
 # VOICEVOXは話者によって無声破裂音のVOT(破裂から声が出るまでの間)を5〜10msで合成することがあり、
@@ -326,12 +328,16 @@ def main():
         sid = hashlib.sha1(f"{salt}|{ch}|{label}-1char|{args.speaker}".encode()).hexdigest()[:20]
         with open(os.path.join(args.out, sid + ".mp3"), "wb") as f:
             f.write(b2.wav_to_mp3(wav))
-        manifest.append(dict(
-            id=sid, file=sid + ".mp3",
-            char_onset_s=round(char_onset, 4), char_dur_s=round(char_dur, 4),
-            sr=q.get("outputSamplingRate", 24000),
-            q_set="all", modality="audio1char",
-        ))
+        # を・ぢ・づ は お・じ・ず と同音、ゔ は ぶ と区別されないため、出題(公開manifest)から外す。
+        # mp3と正解表(answer_key)は全字ぶん残す(害はなく、別用途で参照しうる)。
+        # 回答グリッドでも同音字は1ボタンに併記する(乙課題・frac聴覚で統一。2026-07-22 PI決定)。
+        if ch not in AUDIO_MANIFEST_EXCLUDE:
+            manifest.append(dict(
+                id=sid, file=sid + ".mp3",
+                char_onset_s=round(char_onset, 4), char_dur_s=round(char_dur, 4),
+                sr=q.get("outputSamplingRate", 24000),
+                q_set="all", modality="audio1char",
+            ))
         answer_key["audio1char|" + sid] = dict(
             char=ch, target=ch,
             f0_hz=(round(p["f0"], 1) if p["f0"] and not math.isnan(p["f0"]) else None),

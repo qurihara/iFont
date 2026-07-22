@@ -4,7 +4,7 @@
  "speaker": 108,
  "pitch_scheme": "B3",
  "mora_dur_s": 0.2,
- "count": 72,
+ "count": 68,
  "stimuli": [
   {
    "id": "7dc5771f7c4b2095d9e7",
@@ -403,15 +403,6 @@
    "modality": "audio1char"
   },
   {
-   "id": "0473374cbc08b39c7864",
-   "file": "0473374cbc08b39c7864.mp3",
-   "char_onset_s": 0.1,
-   "char_dur_s": 0.2,
-   "sr": 24000,
-   "q_set": "all",
-   "modality": "audio1char"
-  },
-  {
    "id": "2748cfded1433272b4bc",
    "file": "2748cfded1433272b4bc.mp3",
    "char_onset_s": 0.1,
@@ -520,24 +511,6 @@
    "modality": "audio1char"
   },
   {
-   "id": "89470670b76ff0ad0d47",
-   "file": "89470670b76ff0ad0d47.mp3",
-   "char_onset_s": 0.1,
-   "char_dur_s": 0.2,
-   "sr": 24000,
-   "q_set": "all",
-   "modality": "audio1char"
-  },
-  {
-   "id": "ad0b0edbbe1fdff97cf9",
-   "file": "ad0b0edbbe1fdff97cf9.mp3",
-   "char_onset_s": 0.1,
-   "char_dur_s": 0.2,
-   "sr": 24000,
-   "q_set": "all",
-   "modality": "audio1char"
-  },
-  {
    "id": "71b583d52f0a9acf2c54",
    "file": "71b583d52f0a9acf2c54.mp3",
    "char_onset_s": 0.1,
@@ -639,15 +612,6 @@
   {
    "id": "c1a3ec894dba84cac3e6",
    "file": "c1a3ec894dba84cac3e6.mp3",
-   "char_onset_s": 0.1,
-   "char_dur_s": 0.2,
-   "sr": 24000,
-   "q_set": "all",
-   "modality": "audio1char"
-  },
-  {
-   "id": "6e50ca1c6199087b86e2",
-   "file": "6e50ca1c6199087b86e2.mp3",
    "char_onset_s": 0.1,
    "char_dur_s": 0.2,
    "sr": 24000,
