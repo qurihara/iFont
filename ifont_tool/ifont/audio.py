@@ -126,25 +126,61 @@ def _flatten_moras(query):
     return ms
 
 
-def synth_voicevox_designed(reading: str, pitches_hz, char_dur: float, speaker: int = 108,
-                            host: str = "http://127.0.0.1:50021", sr: int = 44100):
+def synth_voicevox_designed(reading: str, pitches_hz, char_dur, speaker: int = 108,
+                            host: str = "http://127.0.0.1:50021", sr: int = 44100,
+                            durations=None):
     """実声で「設計提示」を合成する。各モーラの音高を pitches_hz(モーラごとの周波数)で与え、
-    長さを char_dur 秒に固定する。競技かるたの読み(句頭B3・他E4・0.2秒)や実験の一定音高/旋律を、
-    実際の話者の声で作るための経路。返り値は (wavバイト列, 各モーラの開始秒[list], 総秒)。"""
+    長さを固定する。char_dur は全モーラ一律の秒数。durations(モーラごとの秒数リスト)を渡すと、
+    そちらを優先して1モーラずつ長さを変えられる(競技かるたの伸ばし・余韻など)。
+    競技かるたの読み(句頭B3・他E4・0.2秒)や実験の一定音高/旋律を実声で作る経路。
+    返り値は (wavバイト列, 各モーラの開始秒[list], 総秒)。"""
     import math
     q = _vv_query(reading, speaker, host)
     moras = _flatten_moras(q)
+
+    def dur_at(i):
+        if durations is not None:
+            return float(durations[min(i, len(durations) - 1)])
+        return float(char_dur)
+
     out = []
     for i, m in enumerate(moras):
         f = float(pitches_hz[min(i, len(pitches_hz) - 1)])
-        out.append(_set_mora(m, math.log(f), char_dur))
+        out.append(_set_mora(m, math.log(f), dur_at(i)))
     q["accent_phrases"] = [{"moras": out, "accent": 1, "pause_mora": None, "is_interrogative": False}]
     q.update(dict(speedScale=1.0, pitchScale=0.0, intonationScale=1.0, volumeScale=1.0,
                   prePhonemeLength=0.05, postPhonemeLength=0.15, outputSamplingRate=sr))
     wav = _vv_synth(q, speaker, host)
     pre = q["prePhonemeLength"]
-    onsets = [pre + i * char_dur for i in range(len(out))]   # 全モーラ等長なので等間隔
+    onsets, t = [], pre
+    for i in range(len(out)):
+        onsets.append(t)
+        t += dur_at(i)
     return wav, onsets, _wav_seconds(wav)
+
+
+def insert_pauses(wav_bytes, pauses):
+    """WAV の指定時刻に無音を挿入する(競技かるたの間合いなど)。
+    pauses: (時刻秒, 長さ秒) のリスト(時刻は元の音声の時間軸)。
+    返り値は (新しいwavバイト列, 追加した合計秒)。"""
+    import io
+    import numpy as np
+    with wave.open(io.BytesIO(wav_bytes), "rb") as w:
+        fr = w.getframerate()
+        x = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2")
+    parts, prev = [], 0
+    for t, d in sorted(pauses):
+        s = max(prev, int(round(t * fr)))
+        parts.append(x[prev:s])
+        parts.append(np.zeros(int(round(d * fr)), dtype="<i2"))
+        prev = s
+    parts.append(x[prev:])
+    y = np.concatenate(parts) if parts else x
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(fr)
+        w.writeframes(y.tobytes())
+    return buf.getvalue(), sum(d for _, d in pauses)
 
 
 def synth_voicevox_natural(reading: str, speaker: int = 108,

@@ -42,6 +42,13 @@ ifont-render --engine voicevox --speaker 108 \
 ifont-render --engine voicevox --speaker 108 --natural \
   --text "にほんでいちばんたかいやまはなに？" \
   --reading "に,ほ,ん,で,い,ち,ば,ん,た,か,い,や,ま,わ,な,に," --out quiz.mp4
+
+# 競技かるた公式ルール(5・3・1・6方式)。1モーラずつ長さを変え(伸ばし・余韻)、
+# --pause-after で間合い(無音)を挟む。初句の5字は0.2秒・句頭B3
+ifont-render --engine voicevox --speaker 108 \
+  --text "はるすぎてなつきにけらししろたえの" \
+  --durations "0.2,0.2,0.2,0.2,0.55,0.32,0.32,0.32,0.32,0.32,0.32,0.6,0.32,0.32,0.32,0.5,0.7" \
+  --pitch "B3,E4,E4,E4,E4,B3,E4,E4,E4,E4,E4,E4,B3,E4,E4,E4,E4" --out kamiku.mp4
 ```
 
 字幕の表示は**論文の実験と同じ時間ゲート提示**である。画面中央の固定領域に1文字ずつ提示し、
@@ -60,6 +67,8 @@ ifont-render --engine voicevox --speaker 108 --natural \
 | `--speaker` | VOICEVOX の話者ID（実声のとき。四国めたん=2、東北きりたん=108） | 2 |
 | `--natural` | 実声を自然韻律で読む（現代文向け）。既定は設計提示（音高=`--pitch`・長さ=`1/speed` に固定） | オフ |
 | `--rise` | 1→2文字目で音高を上げる（完全4度・競技かるた風プリセット） | オフ |
+| `--durations` | 1モーラごとの長さ[秒]をカンマ区切りで（音のあるモーラ数と同数）。競技かるたの伸ばし・余韻に使う | 1/speed で一律 |
+| `--pause-after` | 指定モーラの直後に無音（間合い）を挟む。`表示字index:秒` をカンマ区切り（例 `13:1.0`） | なし |
 | `--label` | 画面左上に出す小さな見出し（任意） | なし |
 | `--out` | 出力mp4 | out.mp4 |
 

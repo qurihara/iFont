@@ -98,7 +98,9 @@ def render_frames_gated(segments, out_dir, font_path, fps=30,
             draw.text((int(width * 0.03), int(height * 0.04)), label,
                       font=f_label, fill=(150, 156, 170, 255))
         s = current(t)
-        local = (t - s["start"]) / max(s["dur"], 1e-3)
+        # reveal=鮮明化にかける時間。dur(表示し続ける時間)と分けることで、
+        # 長く伸ばす音(余韻)でも鮮明化はゆっくりになりすぎず、その後は保持できる。
+        local = (t - s["start"]) / max(s.get("reveal", s["dur"]), 1e-3)
         if local >= 1:
             op = 1.0
         elif local <= 0:

@@ -36,13 +36,15 @@ def _tokens_for(text_chars, reading):
 
 def build(text, reading=None, pitch="E4", speed=5.0, out="out.mp4", engine="tones",
           rise=False, natural=False, speaker=2, fps=30, font=None, hint_font=None,
-          label=None, keep_frames=False):
+          label=None, durations=None, pause_after=None, keep_frames=False):
     """動画を生成して out のパスを返す。
 
     表示は「時間ゲート提示」(固定領域に1文字ずつ、その音の区間で鮮明化)。
     engine=voicevox で実声。natural=True は自然韻律(現代文向け)、False は設計提示
     (各モーラの音高=pitch・長さ=1/speed 秒に固定。競技かるたの句頭B3・他E4 などに使う)。
     reading で表示字と読み(音)を分けられる(は→ワ 等)。
+    durations で1モーラずつ長さを変えられる(競技かるたの伸ばし・余韻。音のあるモーラ数と同数)。
+    pause_after で指定モーラの直後に無音を挟める(競技かるたの間合い。(表示字index, 秒) のリスト)。
     """
     disp_chars = [c for c in text if not c.isspace()]
     if not disp_chars:
@@ -58,6 +60,9 @@ def build(text, reading=None, pitch="E4", speed=5.0, out="out.mp4", engine="tone
     if not os.path.exists(font):
         raise FileNotFoundError(f"フォントが見つからない: {font}")
     char_dur = 1.0 / float(speed)
+    if durations is not None and len(durations) != n_sound:
+        raise ValueError(f"--durations の数({len(durations)})が音のあるモーラ数({n_sound})と一致しません。")
+    durs_eff = [float(durations[j]) if durations is not None else char_dur for j in range(n_sound)]
     pitches_hz = audio.build_pitch_list(pitch, n_sound, rise=rise)   # 音のあるモーラごとの音高
 
     work = tempfile.mkdtemp(prefix="ifont_")
@@ -66,7 +71,7 @@ def build(text, reading=None, pitch="E4", speed=5.0, out="out.mp4", engine="tone
 
     # --- 音声と、音のある各モーラの開始秒 onsets ---
     used_engine = engine
-    onsets = total = None
+    onsets = total = wav_bytes = None
     if engine == "voicevox":
         try:
             if natural:
@@ -74,10 +79,9 @@ def build(text, reading=None, pitch="E4", speed=5.0, out="out.mp4", engine="tone
                 used_engine = "voicevox(自然韻律)"
             else:
                 wav_bytes, onsets, total = audio.synth_voicevox_designed(
-                    reading_text, pitches_hz, char_dur, speaker=speaker)
+                    reading_text, pitches_hz, char_dur, speaker=speaker,
+                    durations=(durs_eff if durations is not None else None))
                 used_engine = "voicevox(設計提示)"
-            with open(wav_path, "wb") as f:
-                f.write(wav_bytes)
             if len(onsets) != n_sound:
                 print(f"[warn] 合成モーラ数({len(onsets)})が読み数({n_sound})と不一致。表示同期がずれる可能性。")
         except Exception as e:
@@ -86,21 +90,51 @@ def build(text, reading=None, pitch="E4", speed=5.0, out="out.mp4", engine="tone
     if used_engine == "tones":
         samples, sr = audio.synth_tones(pitches_hz, char_dur)
         audio.write_wav(samples, sr, wav_path)
+        with open(wav_path, "rb") as f:
+            wav_bytes = f.read()
         onsets = [i * char_dur for i in range(n_sound)]
         total = n_sound * char_dur
 
-    # --- 表示字ごとの提示区間(start,dur)を作る。音のある字はモーラ開始に合わせる ---
+    # --- 間合い(無音)の挿入。指定モーラの直後に無音を挟み、以降の時間軸をずらす ---
+    pos_of = {sound_pos[j]: j for j in range(n_sound)}
+    pauses = []                                   # (挿入時刻[元の時間軸], 秒)
+    for k, sec in (pause_after or []):
+        if k not in pos_of:
+            raise ValueError(f"--pause-after の位置 {k} は音のあるモーラではありません。")
+        j = pos_of[k]
+        pauses.append((onsets[j] + durs_eff[j], float(sec)))
+    if pauses:
+        wav_bytes, _added = audio.insert_pauses(wav_bytes, pauses)
+
+    def shift(t):                                 # 元の時刻 → 無音挿入後の時刻
+        return t + sum(sec for (ti, sec) in pauses if ti <= t + 1e-6)
+    onsets = [shift(o) for o in onsets]
+    total = shift(total)
+    with open(wav_path, "wb") as f:
+        f.write(wav_bytes)
+
+    # --- 表示字ごとの提示区間。start=モーラ開始、dur=そのモーラの長さ、reveal=鮮明化にかける時間 ---
     starts = [None] * len(disp_chars)
-    for k, i in enumerate(sound_pos):
-        starts[i] = onsets[k]
-    for i in range(len(disp_chars) - 1, -1, -1):     # 無音字は次の字の開始(なければ総尺)に置く
+    dur_by = {}
+    for j, i in enumerate(sound_pos):
+        starts[i] = onsets[j]
+        dur_by[i] = durs_eff[j]
+    for i in range(len(disp_chars) - 1, -1, -1):     # 無音の表示字は次の字の開始(なければ総尺)に置く
         if starts[i] is None:
             starts[i] = starts[i + 1] if (i + 1 < len(disp_chars) and starts[i + 1] is not None) else total
     segments = []
     for i, ch in enumerate(disp_chars):
-        end = starts[i + 1] if i + 1 < len(disp_chars) else total
-        segments.append({"char": ch, "start": starts[i], "dur": max(end - starts[i], 0.12),
-                         "sound": tokens[i] or None})
+        d = dur_by.get(i)
+        if d is None:
+            nxt = starts[i + 1] if i + 1 < len(disp_chars) else total
+            d = max(nxt - starts[i], 0.3)
+        segments.append({"char": ch, "start": starts[i], "dur": d,
+                         "reveal": min(d, 0.5), "sound": tokens[i] or None})
+    # 間合いは空白セグメント(無音・ブランク表示)として重ねる
+    for (ti, sec) in pauses:
+        blank_start = ti + sum(s2 for (t2, s2) in pauses if t2 < ti - 1e-6)
+        segments.append({"char": "", "start": blank_start, "dur": sec, "reveal": sec, "sound": None})
+    segments.sort(key=lambda s: s["start"])
 
     # --- 字幕フレーム(時間ゲート提示) ---
     frames, dur = render.render_frames_gated(
@@ -141,14 +175,28 @@ def main(argv=None):
     ap.add_argument("--font", default=None, help="表示字の TrueType フォント(既定 BIZ UDGothic)")
     ap.add_argument("--hint-font", default=None, help="読みの添え字(→ワ 等)のフォント(既定は本文と同じ)")
     ap.add_argument("--label", default=None, help="画面左上に出す小さな見出し(任意)")
+    ap.add_argument("--durations", default=None,
+                    help="1モーラごとの長さ[秒]をカンマ区切りで指定(音のあるモーラ数と同数)。"
+                         "競技かるたの伸ばし・余韻に使う。省略時は 1/speed 秒で一律")
+    ap.add_argument("--pause-after", default=None,
+                    help="指定モーラの直後に無音(間合い)を挟む。'表示字index:秒' をカンマ区切り"
+                         "(例 '13:1.0')。競技かるたの間合いに使う")
     ap.add_argument("--keep-frames", action="store_true")
     args = ap.parse_args(argv)
+
+    durations = None
+    if args.durations:
+        durations = [float(x) for x in args.durations.split(",") if x.strip()]
+    pause_after = None
+    if args.pause_after:
+        pause_after = [(int(p.split(":")[0]), float(p.split(":")[1]))
+                       for p in args.pause_after.split(",") if p.strip()]
 
     out, used_engine, dur = build(
         args.text, reading=args.reading, pitch=args.pitch, speed=args.speed, out=args.out,
         engine=args.engine, rise=args.rise, natural=args.natural, speaker=args.speaker,
         fps=args.fps, font=args.font, hint_font=args.hint_font, label=args.label,
-        keep_frames=args.keep_frames)
+        durations=durations, pause_after=pause_after, keep_frames=args.keep_frames)
     print(f"出力: {out}  ({dur:.1f}s, 音声={used_engine})")
     print(CREDITS)
     return 0
