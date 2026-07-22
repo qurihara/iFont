@@ -3,6 +3,7 @@
 //   - 単一のかなを発話先頭の音高 B3・1文字0.2秒で合成した音声を、frac% まで
 //     再生して (truncation) 何の文字かを問う。frac=0 無音 / frac=100 完全 (catch)。
 //   - 時間ゲートは再生時に Web Audio でライブ切り出し (audio2char と同方式)。
+//   - 時間ゲートは実測の音響的開始(gate_onset_ms)を起点に、量子化済みゲイン(gate_gain)を適用する(2026-07-23修正)。
 //   - 回答は固定50音グリッド(68字。を・ぢ・づ・ゔは同音のため除外、同音は併記ボタン)。
 //     manifest は公開(回答なし・68刺激)、正解は answer_key。
 // =========================================================================
@@ -72,17 +73,23 @@ async function decodeStim(stim) {
   _bufCache[stim.id] = buf;
   return buf;
 }
-// 文字の開始から frac% まで = [char_onset, char_onset + char_dur*frac/100] を再生。
-function gatedBuffer(buf, onset, dur, frac) {
+// 実測の音響的開始から、スロット末までの残りの frac% を再生。
+function gatedBuffer(buf, stim) {
   const sr = buf.sampleRate;
-  const start = Math.round(onset * sr);
-  const len = Math.max(0, Math.round(dur * frac / 100 * sr));
+  const onsetMs = (typeof stim.gate_onset_ms === "number") ? stim.gate_onset_ms : 0;
+  const gain = (typeof stim.gate_gain === "number") ? stim.gate_gain : 1.0;
+  const start = Math.round((stim.char_onset_s + onsetMs / 1000) * sr);
+  const avail = Math.max(0.01, stim.char_dur_s - onsetMs / 1000);
+  const len = Math.max(0, Math.round(avail * stim.frac / 100 * sr));
   const src = buf.getChannelData(0);
   const ab = ctx.createBuffer(1, Math.max(1, len), sr);
   const out = ab.getChannelData(0);
-  for (let i = 0; i < len; i++) out[i] = src[start + i] || 0;
-  const fade = Math.min(Math.round(sr * FADE_MS / 1000), len);
-  for (let i = 0; i < fade; i++) out[len - fade + i] *= (1 - i / fade);
+  for (let i = 0; i < len; i++) out[i] = (src[start + i] || 0) * gain;
+  const fade = Math.min(Math.round(sr * FADE_MS / 1000), len >> 1);
+  for (let i = 0; i < fade; i++) {
+    out[i] *= i / fade;
+    out[len - 1 - i] *= i / fade;
+  }
   return ab;
 }
 // 予約済みの音声ノードをまとめて止める(再生し直し・次の問への移行時)。
@@ -111,10 +118,11 @@ function playGated(buf, stim) {
   const t0 = ctx.currentTime + 0.02;
   playBeep(t0);                                     // 開始の合図音(1回)
   const stimStart = t0 + BEEP_LEAD_MS / 1000;
-  const stimDur = stim.char_dur_s * stim.frac / 100; // 実際に鳴る音声の長さ(frac=0なら0)
+  const onsetMs = (typeof stim.gate_onset_ms === "number") ? stim.gate_onset_ms : 0;
+  const stimDur = Math.max(0, (stim.char_dur_s - onsetMs / 1000)) * stim.frac / 100; // 実際に鳴る音声の長さ(frac=0なら0)
   if (stim.frac > 0) {                              // 無音の問でも合図音は前後に鳴る
     const s = ctx.createBufferSource();
-    s.buffer = gatedBuffer(buf, stim.char_onset_s, stim.char_dur_s, stim.frac);
+    s.buffer = gatedBuffer(buf, stim);
     s.connect(ctx.destination);
     s.start(stimStart);
     _nodes.push(s);
