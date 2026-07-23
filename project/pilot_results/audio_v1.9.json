@@ -1,0 +1,499 @@
+{
+  "config": {
+    "VERSION": "1.9",
+    "SOA_LEVELS": [
+      50,
+      83,
+      133,
+      200,
+      300,
+      450,
+      700
+    ],
+    "PER_LEVEL": 6,
+    "pitch": "B3",
+    "mora_dur_s": 0.2,
+    "ONSET_ANCHORED": true,
+    "LOUDNESS_NORMALIZED": true,
+    "START_MODE": "click"
+  },
+  "env": {
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "dpr": 1,
+    "screen": "2560x1080",
+    "touch": false
+  },
+  "byLevel": [
+    {
+      "S": 50,
+      "n": 6,
+      "acc1": 0.16666666666666666,
+      "acc2": 0.16666666666666666,
+      "accBoth": 0
+    },
+    {
+      "S": 83,
+      "n": 6,
+      "acc1": 0.5,
+      "acc2": 0.16666666666666666,
+      "accBoth": 0
+    },
+    {
+      "S": 133,
+      "n": 6,
+      "acc1": 1,
+      "acc2": 0.6666666666666666,
+      "accBoth": 0.6666666666666666
+    },
+    {
+      "S": 200,
+      "n": 6,
+      "acc1": 0.6666666666666666,
+      "acc2": 0.3333333333333333,
+      "accBoth": 0.16666666666666666
+    },
+    {
+      "S": 300,
+      "n": 6,
+      "acc1": 0.6666666666666666,
+      "acc2": 1,
+      "accBoth": 0.6666666666666666
+    },
+    {
+      "S": 450,
+      "n": 6,
+      "acc1": 0.8333333333333334,
+      "acc2": 0.6666666666666666,
+      "accBoth": 0.5
+    },
+    {
+      "S": 700,
+      "n": 6,
+      "acc1": 0.8333333333333334,
+      "acc2": 0.6666666666666666,
+      "accBoth": 0.5
+    }
+  ],
+  "trials": [
+    {
+      "c1": "か",
+      "c2": "ほ",
+      "c3": "や",
+      "S": 133,
+      "resp1": "か",
+      "resp2": "ご",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "ぺ",
+      "c2": "は",
+      "c3": "べ",
+      "S": 300,
+      "resp1": "て",
+      "resp2": "は",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "て",
+      "c2": "は",
+      "c3": "ぜ",
+      "S": 50,
+      "resp1": "て",
+      "resp2": "か",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "ご",
+      "c2": "ら",
+      "c3": "て",
+      "S": 450,
+      "resp1": "ご",
+      "resp2": "ら",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "つ",
+      "c2": "ご",
+      "c3": "あ",
+      "S": 300,
+      "resp1": "す",
+      "resp2": "ご",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "て",
+      "c2": "ろ",
+      "c3": "わ",
+      "S": 700,
+      "resp1": "て",
+      "resp2": "ろ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "ず",
+      "c2": "せ",
+      "c3": "ど",
+      "S": 133,
+      "resp1": "ず",
+      "resp2": "ぜ",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "む",
+      "c2": "え",
+      "c3": "せ",
+      "S": 700,
+      "resp1": "む",
+      "resp2": "え",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "か",
+      "c2": "ご",
+      "c3": "よ",
+      "S": 133,
+      "resp1": "か",
+      "resp2": "ご",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "す",
+      "c2": "つ",
+      "c3": "い",
+      "S": 200,
+      "resp1": "す",
+      "resp2": "す",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "あ",
+      "c2": "し",
+      "c3": "ん",
+      "S": 300,
+      "resp1": "あ",
+      "resp2": "し",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "ぜ",
+      "c2": "ち",
+      "c3": "お",
+      "S": 450,
+      "resp1": "ぜ",
+      "resp2": "し",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "な",
+      "c2": "ぽ",
+      "c3": "ら",
+      "S": 83,
+      "resp1": "な",
+      "resp2": "ご",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "み",
+      "c2": "こ",
+      "c3": "る",
+      "S": 700,
+      "resp1": "み",
+      "resp2": "こ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "つ",
+      "c2": "ら",
+      "c3": "か",
+      "S": 83,
+      "resp1": "す",
+      "resp2": "ら",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "さ",
+      "c2": "ど",
+      "c3": "な",
+      "S": 200,
+      "resp1": "か",
+      "resp2": "ど",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "ど",
+      "c2": "つ",
+      "c3": "ね",
+      "S": 200,
+      "resp1": "ど",
+      "resp2": "す",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "い",
+      "c2": "す",
+      "c3": "ほ",
+      "S": 300,
+      "resp1": "い",
+      "resp2": "す",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "に",
+      "c2": "じ",
+      "c3": "し",
+      "S": 700,
+      "resp1": "み",
+      "resp2": "じ",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "ね",
+      "c2": "る",
+      "c3": "よ",
+      "S": 700,
+      "resp1": "ね",
+      "resp2": "う",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "な",
+      "c2": "せ",
+      "c3": "れ",
+      "S": 450,
+      "resp1": "な",
+      "resp2": "せ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "ぞ",
+      "c2": "む",
+      "c3": "ざ",
+      "S": 300,
+      "resp1": "ぞ",
+      "resp2": "む",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "も",
+      "c2": "が",
+      "c3": "ぺ",
+      "S": 200,
+      "resp1": "も",
+      "resp2": "が",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "の",
+      "c2": "ぎ",
+      "c3": "ぬ",
+      "S": 450,
+      "resp1": "の",
+      "resp2": "ぎ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "み",
+      "c2": "ま",
+      "c3": "る",
+      "S": 83,
+      "resp1": "み",
+      "resp2": "ぐ",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "わ",
+      "c2": "き",
+      "c3": "げ",
+      "S": 50,
+      "resp1": "あ",
+      "resp2": "き",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "は",
+      "c2": "ぐ",
+      "c3": "じ",
+      "S": 300,
+      "resp1": "は",
+      "resp2": "ぐ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "ね",
+      "c2": "す",
+      "c3": "る",
+      "S": 133,
+      "resp1": "ね",
+      "resp2": "す",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "し",
+      "c2": "て",
+      "c3": "ぬ",
+      "S": 200,
+      "resp1": "し",
+      "resp2": "で",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "ぽ",
+      "c2": "ね",
+      "c3": "ぶ",
+      "S": 450,
+      "resp1": "お",
+      "resp2": "ね",
+      "correct1": false,
+      "correct2": true
+    },
+    {
+      "c1": "ぜ",
+      "c2": "け",
+      "c3": "つ",
+      "S": 50,
+      "resp1": "せ",
+      "resp2": "し",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "み",
+      "c2": "に",
+      "c3": "そ",
+      "S": 133,
+      "resp1": "み",
+      "resp2": "に",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "ば",
+      "c2": "ざ",
+      "c3": "き",
+      "S": 83,
+      "resp1": "あ",
+      "resp2": "さ",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "げ",
+      "c2": "は",
+      "c3": "ふ",
+      "S": 700,
+      "resp1": "げ",
+      "resp2": "か",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "さ",
+      "c2": "ざ",
+      "c3": "ご",
+      "S": 50,
+      "resp1": "す",
+      "resp2": "す",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "ぽ",
+      "c2": "う",
+      "c3": "ぎ",
+      "S": 83,
+      "resp1": "お",
+      "resp2": "ぶ",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "む",
+      "c2": "ぴ",
+      "c3": "ま",
+      "S": 450,
+      "resp1": "む",
+      "resp2": "い",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "り",
+      "c2": "け",
+      "c3": "よ",
+      "S": 200,
+      "resp1": "い",
+      "resp2": "て",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "ず",
+      "c2": "ふ",
+      "c3": "べ",
+      "S": 133,
+      "resp1": "ず",
+      "resp2": "ふ",
+      "correct1": true,
+      "correct2": true
+    },
+    {
+      "c1": "な",
+      "c2": "ふ",
+      "c3": "え",
+      "S": 83,
+      "resp1": "な",
+      "resp2": "う",
+      "correct1": true,
+      "correct2": false
+    },
+    {
+      "c1": "す",
+      "c2": "ぞ",
+      "c3": "わ",
+      "S": 50,
+      "resp1": "ず",
+      "resp2": "つ",
+      "correct1": false,
+      "correct2": false
+    },
+    {
+      "c1": "ぼ",
+      "c2": "ん",
+      "c3": "ひ",
+      "S": 50,
+      "resp1": "お",
+      "resp2": "ぶ",
+      "correct1": false,
+      "correct2": false
+    }
+  ]
+}
