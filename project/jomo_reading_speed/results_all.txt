@@ -1,0 +1,484 @@
+##### announcer_ver1
+file=features_announcer_ver1.json frame_dt=12.0ms 範囲=10.0〜913.3s floor=-90.5dB peak=-13.2dB thr=-45.2dB 役割判定=string
+区間数=88 本読み=43 空読み=43 同一クリップの対=34
+[本読み]
+  発話時間(全体) [s]        : 6.13±0.57s (n=43, 4.77〜6.95, 中央値 6.22)
+  本体(語尾の伸ばしを除く)[s]: 3.34±0.38s (n=43, 2.29〜3.97, 中央値 3.40)  語尾 2.79±0.51s (n=43, 1.75〜3.89, 中央値 2.75)
+  モーラ速度(全体) [mora/s]  : 2.31±0.23 (n=43, 2.02〜2.94, 中央値 2.25)
+  モーラ速度(本体) [mora/s]  : 3.95±0.50 (n=43, 3.28〜5.69, 中央値 3.83)
+  上の句の速度 [mora/s]      : 3.92±0.74 (n=43, 3.06〜6.39, 中央値 3.67)  上の句の長さ 1.97±0.29s (n=43, 1.17〜2.45, 中央値 2.04)
+  下の句の速度(本体)[mora/s] : 4.72±1.20 (n=43, 3.03〜8.21, 中央値 4.40)  句間の切れ目 0.13±0.07s (n=43, 0.01〜0.37, 中央値 0.14)
+  第一音 [s]                 : 0.184±0.089s (n=42, 0.023〜0.337, 中央値 0.174)  判別できず 1
+  平均音量 [dB]              : -19.3±1.1dB (n=43, -22.1〜-17.4, 中央値 -19.0)  最大 -11.3±0.8dB (n=43, -12.6〜-9.4, 中央値 -11.4)
+  上の句−下の句 [dB]          : -1.7±1.9dB (n=43, -8.4〜3.2, 中央値 -1.5)
+  句片の数                    : 9.3±2.1 (n=43, 6.0〜16.0, 中央値 9.0)
+[空読み]
+  発話時間(全体) [s]        : 6.17±0.54s (n=43, 4.76〜6.94, 中央値 6.29)
+  本体(語尾の伸ばしを除く)[s]: 3.37±0.38s (n=43, 2.28〜3.97, 中央値 3.51)  語尾 2.79±0.49s (n=43, 1.86〜3.89, 中央値 2.75)
+  モーラ速度(全体) [mora/s]  : 2.29±0.22 (n=43, 2.02〜2.95, 中央値 2.23)
+  モーラ速度(本体) [mora/s]  : 3.92±0.51 (n=43, 3.28〜5.72, 中央値 3.71)
+  上の句の速度 [mora/s]      : 3.84±0.70 (n=43, 3.03〜6.39, 中央値 3.65)  上の句の長さ 2.00±0.28s (n=43, 1.17〜2.47, 中央値 2.06)
+  下の句の速度(本体)[mora/s] : 4.74±1.19 (n=43, 3.03〜8.06, 中央値 4.43)  句間の切れ目 0.14±0.07s (n=43, 0.00〜0.37, 中央値 0.14)
+  第一音 [s]                 : 0.190±0.094s (n=42, 0.011〜0.337, 中央値 0.173)  判別できず 1
+  平均音量 [dB]              : -19.2±1.1dB (n=43, -22.1〜-17.5, 中央値 -19.2)  最大 -11.3±0.8dB (n=43, -12.6〜-9.5, 中央値 -11.3)
+  上の句−下の句 [dB]          : -1.7±1.8dB (n=43, -8.2〜2.2, 中央値 -1.6)
+  句片の数                    : 9.1±1.9 (n=43, 6.0〜15.0, 中央値 9.0)
+本読み→空読み 間隔 [s]  : 4.11±0.14s (n=43, 3.51〜4.57, 中央値 4.10)
+空読み→本読み 間隔 [s]  : 4.09±0.22s (n=42, 3.95〜4.88, 中央値 4.01)
+本読み周期 [s]          : 20.55±0.96s (n=42, 18.31〜22.00, 中央値 20.76)
+本読み−空読み 音量 [dB] : -0.0±0.2dB (n=43, -0.7〜0.8, 中央値 -0.0)
+  0 other      11.87-  18.42 dur=6.55 core=3.03 tail=3.52 up=1.9 phr=8 db=-18.5 fm=0.174 dup=1 next_gap=4.04
+  1 other      22.46-  28.99 dur=6.54 core=3.02 tail=3.52 up=1.9 phr=8 db=-18.5 fm=0.162 dup=0 next_gap=3.96
+  2 hon        32.95-  38.68 dur=5.72 core=3.12 tail=2.60 up=1.34 phr=6 db=-20.5 fm=0.174 dup=0 next_gap=4.29
+  3 kara       42.97-  48.37 dur=5.40 core=3.14 tail=2.26 up=2.22 phr=7 db=-20.6 fm=0.163 dup=0 next_gap=4.60
+  4 hon        52.97-  59.25 dur=6.28 core=3.53 tail=2.75 up=2.16 phr=12 db=-22.1 fm=0.023 dup=1 next_gap=4.57
+  5 kara       63.82-  70.10 dur=6.28 core=3.53 tail=2.75 up=2.15 phr=12 db=-22.1 fm=0.024 dup=0 next_gap=4.47
+  6 hon        74.57-  80.93 dur=6.36 core=2.47 tail=3.89 up=1.36 phr=9 db=-18.8 fm=0.116 dup=1 next_gap=4.08
+  7 kara       85.01-  91.37 dur=6.36 core=2.47 tail=3.89 up=1.36 phr=10 db=-18.8 fm=0.116 dup=0 next_gap=3.98
+  8 hon        95.35- 102.26 dur=6.91 core=3.80 tail=3.11 up=2.03 phr=10 db=-19.7 fm=0.104 dup=1 next_gap=4.13
+  9 kara      106.39- 113.30 dur=6.91 core=3.80 tail=3.11 up=2.03 phr=11 db=-19.7 fm=0.093 dup=0 next_gap=4.05
+ 10 hon       117.35- 122.12 dur=4.77 core=2.81 tail=1.96 up=1.36 phr=9 db=-19.9 fm=0.046 dup=1 next_gap=4.46
+ 11 kara      126.58- 131.34 dur=4.76 core=2.80 tail=1.96 up=1.35 phr=8 db=-19.8 fm=0.325 dup=0 next_gap=4.32
+ 12 hon       135.66- 141.72 dur=6.06 core=3.09 tail=2.97 up=2.3 phr=6 db=-18.0 fm=0.174 dup=1 next_gap=4.08
+ 13 kara      145.80- 151.86 dur=6.06 core=3.09 tail=2.97 up=2.3 phr=6 db=-18.0 fm=0.173 dup=0 next_gap=3.99
+ 14 hon       155.85- 162.58 dur=6.73 core=3.97 tail=2.76 up=2.1 phr=10 db=-19.4 fm=0.162 dup=1 next_gap=4.10
+ 15 kara      166.68- 173.41 dur=6.73 core=3.97 tail=2.76 up=2.1 phr=10 db=-19.5 fm=0.162 dup=0 next_gap=3.99
+ 16 hon       177.41- 183.93 dur=6.53 core=3.86 tail=2.67 up=2.4 phr=11 db=-21.9 fm=0.128 dup=1 next_gap=4.06
+ 17 kara      188.00- 194.52 dur=6.52 core=3.84 tail=2.68 up=2.4 phr=11 db=-21.9 fm=0.127 dup=0 next_gap=3.95
+ 18 hon       198.47- 204.81 dur=6.34 core=3.09 tail=3.25 up=2.0 phr=9 db=-19.9 fm=0.209 dup=1 next_gap=4.09
+ 19 kara      208.90- 215.24 dur=6.34 core=3.09 tail=3.25 up=1.98 phr=9 db=-19.9 fm=0.197 dup=0 next_gap=3.99
+ 20 hon       219.23- 225.30 dur=6.07 core=3.63 tail=2.44 up=2.06 phr=9 db=-18.8 fm=0.337 dup=1 next_gap=4.16
+ 21 kara      229.46- 235.52 dur=6.06 core=3.62 tail=2.44 up=2.06 phr=9 db=-18.8 fm=0.325 dup=0 next_gap=4.05
+ 22 hon       239.57- 245.32 dur=5.75 core=3.00 tail=2.75 up=1.8 phr=7 db=-18.2 fm=0.337 dup=1 next_gap=4.07
+ 23 kara      249.39- 255.14 dur=5.75 core=3.00 tail=2.75 up=1.8 phr=7 db=-18.2 fm=0.337 dup=0 next_gap=3.98
+ 24 hon       259.12- 265.16 dur=6.04 core=3.55 tail=2.48 up=2.18 phr=9 db=-17.9 fm=0.105 dup=1 next_gap=4.16
+ 25 kara      269.31- 275.34 dur=6.02 core=3.55 tail=2.47 up=2.18 phr=9 db=-17.9 fm=0.093 dup=0 next_gap=4.02
+ 26 hon       279.36- 285.13 dur=5.77 core=3.52 tail=2.25 up=2.45 phr=9 db=-18.7 fm=0.15 dup=0 next_gap=4.06
+ 27 kara      289.19- 295.00 dur=5.81 core=3.54 tail=2.26 up=2.47 phr=8 db=-18.7 fm=0.139 dup=0 next_gap=3.98
+ 28 hon       298.98- 304.40 dur=5.42 core=3.67 tail=1.75 up=2.03 phr=7 db=-19.0 fm=None dup=0 next_gap=3.51
+ 29 kara      307.91- 313.85 dur=5.94 core=3.80 tail=2.15 up=2.1 phr=8 db=-19.2 fm=None dup=0 next_gap=4.33
+ 30 hon       318.18- 324.76 dur=6.58 core=3.33 tail=3.25 up=2.04 phr=8 db=-17.8 fm=0.325 dup=1 next_gap=4.10
+ 31 kara      328.86- 335.43 dur=6.57 core=3.55 tail=3.02 up=2.04 phr=9 db=-17.8 fm=0.324 dup=0 next_gap=4.07
+ 32 hon       339.51- 345.58 dur=6.07 core=3.49 tail=2.58 up=2.21 phr=10 db=-20.7 fm=0.151 dup=0 next_gap=4.28
+ 33 kara      349.86- 356.16 dur=6.29 core=3.65 tail=2.65 up=2.24 phr=8 db=-20.2 fm=0.313 dup=0 next_gap=4.10
+ 34 hon       360.25- 366.48 dur=6.22 core=3.13 tail=3.09 up=1.73 phr=16 db=-19.9 fm=0.058 dup=1 next_gap=4.10
+ 35 kara      370.58- 376.79 dur=6.21 core=3.13 tail=3.08 up=1.87 phr=15 db=-19.9 fm=0.116 dup=0 next_gap=4.04
+ 36 hon       380.83- 386.59 dur=5.76 core=3.40 tail=2.36 up=2.18 phr=8 db=-20.4 fm=0.197 dup=0 next_gap=4.16
+ 37 kara      390.74- 397.12 dur=6.37 core=3.66 tail=2.72 up=2.32 phr=8 db=-19.8 fm=0.174 dup=0 next_gap=4.02
+ 38 hon       401.13- 406.06 dur=4.92 core=2.97 tail=1.95 up=1.49 phr=9 db=-21.1 fm=0.29 dup=0 next_gap=4.13
+ 39 kara      410.19- 415.65 dur=5.46 core=3.36 tail=2.10 up=1.53 phr=9 db=-20.4 fm=0.291 dup=0 next_gap=3.95
+ 40 hon       419.59- 426.11 dur=6.51 core=3.55 tail=2.96 up=2.02 phr=14 db=-19.5 fm=0.175 dup=1 next_gap=4.07
+ 41 kara      430.18- 436.69 dur=6.51 core=3.55 tail=2.96 up=2.03 phr=13 db=-19.5 fm=0.186 dup=0 next_gap=3.98
+ 42 hon       440.67- 447.07 dur=6.40 core=3.58 tail=2.82 up=2.17 phr=11 db=-18.2 fm=0.105 dup=1 next_gap=4.10
+ 43 kara      451.17- 457.56 dur=6.39 core=3.57 tail=2.82 up=2.17 phr=11 db=-18.2 fm=0.011 dup=0 next_gap=4.00
+ 44 hon       461.56- 467.60 dur=6.04 core=2.29 tail=3.75 up=1.17 phr=6 db=-18.4 fm=0.117 dup=1 next_gap=4.10
+ 45 kara      471.70- 477.73 dur=6.03 core=2.28 tail=3.75 up=1.17 phr=6 db=-18.3 fm=0.105 dup=0 next_gap=4.00
+ 46 hon       481.73- 488.49 dur=6.76 core=3.54 tail=3.22 up=1.99 phr=10 db=-18.5 fm=0.302 dup=1 next_gap=4.05
+ 47 kara      492.54- 499.30 dur=6.76 core=3.54 tail=3.22 up=1.98 phr=10 db=-18.5 fm=0.314 dup=0 next_gap=3.97
+ 48 hon       503.27- 509.16 dur=5.90 core=3.39 tail=2.51 up=1.89 phr=11 db=-20.0 fm=0.267 dup=1 next_gap=4.10
+ 49 kara      513.26- 519.15 dur=5.89 core=3.39 tail=2.50 up=1.88 phr=11 db=-19.9 fm=0.267 dup=0 next_gap=3.99
+ 50 hon       523.14- 529.64 dur=6.50 core=3.28 tail=3.22 up=1.43 phr=7 db=-17.6 fm=0.337 dup=1 next_gap=4.04
+ 51 kara      533.68- 540.19 dur=6.50 core=3.29 tail=3.22 up=1.43 phr=7 db=-17.6 fm=0.336 dup=0 next_gap=3.95
+ 52 hon       544.13- 550.87 dur=6.73 core=3.82 tail=2.91 up=2.18 phr=9 db=-20.1 fm=0.151 dup=1 next_gap=4.08
+ 53 kara      554.94- 561.68 dur=6.73 core=3.83 tail=2.90 up=2.18 phr=9 db=-20.0 fm=0.162 dup=0 next_gap=4.06
+ 54 hon       565.74- 571.74 dur=6.00 core=3.47 tail=2.53 up=2.17 phr=10 db=-19.5 fm=0.139 dup=0 next_gap=4.08
+ 55 kara      575.82- 581.94 dur=6.12 core=3.51 tail=2.61 up=2.17 phr=8 db=-19.7 fm=0.151 dup=0 next_gap=4.23
+ 56 hon       586.16- 592.56 dur=6.40 core=3.74 tail=2.66 up=2.14 phr=15 db=-18.7 fm=0.139 dup=1 next_gap=4.13
+ 57 kara      596.69- 603.08 dur=6.39 core=3.74 tail=2.65 up=2.14 phr=14 db=-18.6 fm=0.139 dup=0 next_gap=4.03
+ 58 hon       607.11- 612.96 dur=5.85 core=3.23 tail=2.62 up=1.94 phr=9 db=-18.8 fm=0.186 dup=0 next_gap=3.88
+ 59 kara      616.84- 622.47 dur=5.63 core=3.37 tail=2.26 up=2.01 phr=8 db=-18.6 fm=0.175 dup=0 next_gap=4.88
+ 60 hon       627.34- 633.89 dur=6.55 core=3.01 tail=3.54 up=2.1 phr=8 db=-17.4 fm=0.337 dup=1 next_gap=4.10
+ 61 kara      637.99- 644.55 dur=6.56 core=3.02 tail=3.54 up=2.11 phr=8 db=-17.5 fm=0.336 dup=0 next_gap=4.02
+ 62 hon       648.57- 653.70 dur=5.13 core=2.89 tail=2.24 up=2.06 phr=9 db=-17.9 fm=0.174 dup=1 next_gap=4.17
+ 63 kara      657.87- 663.00 dur=5.13 core=2.89 tail=2.24 up=2.06 phr=9 db=-17.9 fm=0.174 dup=0 next_gap=4.05
+ 64 hon       667.05- 673.60 dur=6.55 core=3.03 tail=3.52 up=1.9 phr=8 db=-18.5 fm=0.174 dup=1 next_gap=4.04
+ 65 kara      677.64- 684.18 dur=6.55 core=3.02 tail=3.53 up=1.9 phr=8 db=-18.5 fm=0.162 dup=0 next_gap=3.95
+ 66 hon       688.13- 694.77 dur=6.64 core=3.80 tail=2.84 up=2.07 phr=10 db=-19.5 fm=0.105 dup=1 next_gap=4.10
+ 67 kara      698.87- 705.51 dur=6.64 core=3.80 tail=2.84 up=2.08 phr=9 db=-19.5 fm=0.105 dup=0 next_gap=3.98
+ 68 hon       709.50- 716.45 dur=6.95 core=3.85 tail=3.10 up=2.14 phr=9 db=-19.4 fm=0.301 dup=1 next_gap=4.08
+ 69 kara      720.52- 727.47 dur=6.94 core=3.86 tail=3.09 up=2.14 phr=9 db=-19.4 fm=0.29 dup=0 next_gap=4.00
+ 70 hon       731.47- 737.09 dur=5.62 core=3.44 tail=2.18 up=2.04 phr=6 db=-18.9 fm=0.221 dup=1 next_gap=4.10
+ 71 kara      741.19- 746.82 dur=5.63 core=3.44 tail=2.19 up=2.04 phr=6 db=-18.9 fm=0.209 dup=0 next_gap=3.97
+ 72 hon       750.79- 757.73 dur=6.94 core=3.05 tail=3.89 up=1.88 phr=8 db=-18.5 fm=0.128 dup=1 next_gap=4.05
+ 73 kara      761.79- 768.72 dur=6.93 core=3.04 tail=3.89 up=1.88 phr=8 db=-18.4 fm=0.116 dup=0 next_gap=3.96
+ 74 hon       772.68- 778.42 dur=5.75 core=3.32 tail=2.43 up=2.1 phr=9 db=-18.2 fm=0.14 dup=0 next_gap=4.10
+ 75 kara      782.52- 788.62 dur=6.10 core=3.40 tail=2.69 up=2.26 phr=8 db=-18.1 fm=0.082 dup=0 next_gap=4.83
+ 76 hon       793.45- 799.91 dur=6.47 core=3.56 tail=2.90 up=2.23 phr=8 db=-18.0 fm=0.29 dup=1 next_gap=4.14
+ 77 kara      804.06- 810.52 dur=6.47 core=3.56 tail=2.90 up=2.23 phr=8 db=-18.0 fm=0.29 dup=0 next_gap=4.05
+ 78 hon       814.58- 821.44 dur=6.86 core=3.70 tail=3.16 up=2.18 phr=9 db=-19.9 fm=0.175 dup=1 next_gap=4.04
+ 79 kara      825.48- 832.34 dur=6.86 core=3.72 tail=3.15 up=2.19 phr=9 db=-19.8 fm=0.174 dup=0 next_gap=3.95
+ 80 hon       836.29- 842.89 dur=6.61 core=3.54 tail=3.07 up=2.06 phr=11 db=-20.1 fm=0.023 dup=1 next_gap=4.06
+ 81 kara      846.96- 853.56 dur=6.61 core=3.55 tail=3.05 up=2.06 phr=11 db=-20.1 fm=0.023 dup=0 next_gap=4.03
+ 82 hon       857.59- 863.22 dur=5.63 core=3.38 tail=2.25 up=2.01 phr=10 db=-20.6 fm=0.139 dup=0 next_gap=4.28
+ 83 kara      867.51- 873.06 dur=5.55 core=3.47 tail=2.08 up=2.01 phr=10 db=-21.4 fm=0.14 dup=0 next_gap=3.98
+ 84 hon       877.04- 882.55 dur=5.51 core=2.76 tail=2.75 up=1.58 phr=10 db=-18.8 fm=0.325 dup=1 next_gap=4.11
+ 85 kara      886.66- 892.19 dur=5.53 core=2.77 tail=2.75 up=1.58 phr=10 db=-18.9 fm=0.336 dup=0 next_gap=4.01
+ 86 hon       896.20- 901.01 dur=4.82 core=2.96 tail=1.86 up=1.98 phr=9 db=-20.6 fm=0.197 dup=1 next_gap=4.12
+ 87 kara      905.13- 909.94 dur=4.81 core=2.95 tail=1.86 up=1.99 phr=9 db=-20.7 fm=0.186 dup=0 next_gap=nan
+
+##### gungun_random1
+file=features_gungun_random1.json frame_dt=12.0ms 範囲=0.0〜676.7s floor=-59.0dB peak=-8.7dB thr=-40.7dB 役割判定=string
+区間数=91 本読み=44 空読み=45 同一クリップの対=2
+[本読み]
+  発話時間(全体) [s]        : 5.90±0.27s (n=44, 5.33〜6.54, 中央値 5.88)
+  本体(語尾の伸ばしを除く)[s]: 3.67±0.29s (n=44, 2.78〜4.37, 中央値 3.70)  語尾 2.22±0.26s (n=44, 1.58〜2.88, 中央値 2.22)
+  モーラ速度(全体) [mora/s]  : 2.38±0.11 (n=44, 2.15〜2.63, 中央値 2.38)
+  モーラ速度(本体) [mora/s]  : 3.57±0.30 (n=44, 2.98〜4.69, 中央値 3.52)
+  上の句の速度 [mora/s]      : 3.42±0.45 (n=44, 2.95〜5.21, 中央値 3.35)  上の句の長さ 2.22±0.22s (n=44, 1.44〜2.54, 中央値 2.24)
+  下の句の速度(本体)[mora/s] : 4.47±1.01 (n=44, 3.09〜7.67, 中央値 4.35)  句間の切れ目 0.16±0.10s (n=44, 0.00〜0.46, 中央値 0.16)
+  第一音 [s]                 : 0.203±0.079s (n=42, 0.070〜0.336, 中央値 0.221)  判別できず 2
+  平均音量 [dB]              : -19.8±1.8dB (n=44, -23.5〜-15.0, 中央値 -20.1)  最大 -8.1±1.3dB (n=44, -10.5〜-5.8, 中央値 -8.3)
+  上の句−下の句 [dB]          : 2.0±2.9dB (n=44, -5.6〜6.6, 中央値 2.4)
+  句片の数                    : 10.2±2.0 (n=44, 6.0〜17.0, 中央値 10.0)
+[空読み]
+  発話時間(全体) [s]        : 6.15±0.28s (n=45, 5.65〜6.81, 中央値 6.12)
+  本体(語尾の伸ばしを除く)[s]: 3.79±0.28s (n=40, 3.34〜4.50, 中央値 3.77)  語尾 2.33±0.22s (n=40, 1.86〜2.95, 中央値 2.27)
+  モーラ速度(全体) [mora/s]  : 2.28±0.10 (n=45, 2.06〜2.48, 中央値 2.29)
+  モーラ速度(本体) [mora/s]  : 3.45±0.25 (n=40, 2.89〜3.90, 中央値 3.46)
+  上の句の速度 [mora/s]      : 3.22±0.26 (n=45, 2.64〜4.52, 中央値 3.20)  上の句の長さ 2.34±0.16s (n=45, 1.66〜2.84, 中央値 2.35)
+  下の句の速度(本体)[mora/s] : 4.62±1.17 (n=40, 3.07〜8.19, 中央値 4.29)  句間の切れ目 0.17±0.11s (n=45, 0.00〜0.50, 中央値 0.21)
+  第一音 [s]                 : 0.198±0.080s (n=45, 0.023〜0.349, 中央値 0.198)  判別できず 0
+  平均音量 [dB]              : -20.2±1.8dB (n=45, -23.7〜-15.2, 中央値 -20.5)  最大 -8.4±1.2dB (n=45, -11.2〜-6.1, 中央値 -8.3)
+  上の句−下の句 [dB]          : 2.8±3.4dB (n=45, -4.9〜11.2, 中央値 3.6)
+  句片の数                    : 10.3±2.0 (n=45, 6.0〜16.0, 中央値 10.0)
+本読み→空読み 間隔 [s]  : 1.24±0.15s (n=44, 0.94〜1.52, 中央値 1.24)
+空読み→本読み 間隔 [s]  : 1.49±0.31s (n=43, 0.84〜1.98, 中央値 1.51)
+本読み周期 [s]          : 15.03±1.70s (n=43, 13.79〜25.70, 中央値 14.77)
+本読み−空読み 音量 [dB] : 0.4±0.8dB (n=44, -1.7〜2.9, 中央値 0.3)
+  0 other       0.78-   6.82 dur=6.05 core=3.85 tail=2.19 up=2.25 phr=11 db=-21.3 fm=0.197 dup=0 next_gap=1.00
+  1 other       7.82-  13.93 dur=6.11 core=3.87 tail=2.24 up=2.28 phr=9 db=-19.6 fm=0.105 dup=0 next_gap=1.73
+  2 hon        15.66-  21.52 dur=5.86 core=3.71 tail=2.15 up=2.21 phr=11 db=-18.0 fm=0.07 dup=0 next_gap=1.18
+  3 kara       22.71-  28.74 dur=6.04 core=3.91 tail=2.12 up=2.39 phr=10 db=-18.0 fm=0.093 dup=0 next_gap=1.53
+  4 hon        30.28-  35.60 dur=5.33 core=3.75 tail=1.58 up=2.15 phr=11 db=-21.2 fm=0.314 dup=0 next_gap=1.27
+  5 kara       36.87-  42.57 dur=5.70 core=3.84 tail=1.86 up=2.25 phr=10 db=-21.5 fm=0.221 dup=0 next_gap=1.50
+  6 hon        44.07-  50.05 dur=5.98 core=3.84 tail=2.14 up=2.12 phr=9 db=-22.8 fm=0.081 dup=0 next_gap=1.21
+  7 kara       51.26-  57.35 dur=6.09 core=3.95 tail=2.15 up=2.3 phr=10 db=-22.0 fm=0.105 dup=0 next_gap=1.80
+  8 hon        59.15-  64.85 dur=5.70 core=3.41 tail=2.29 up=2.31 phr=12 db=-23.5 fm=0.255 dup=0 next_gap=1.40
+  9 kara       66.25-  72.33 dur=6.07 core=3.43 tail=2.65 up=2.35 phr=11 db=-23.0 fm=0.198 dup=0 next_gap=1.70
+ 10 hon        74.02-  79.59 dur=5.57 core=3.41 tail=2.16 up=2.08 phr=10 db=-21.7 fm=0.244 dup=0 next_gap=1.20
+ 11 kara       80.79-  86.77 dur=5.98 core=3.50 tail=2.48 up=2.1 phr=10 db=-21.9 fm=0.255 dup=0 next_gap=1.57
+ 12 hon        88.34-  94.03 dur=5.69 core=3.68 tail=2.01 up=2.22 phr=9 db=-20.1 fm=0.127 dup=0 next_gap=1.41
+ 13 kara       95.43- 101.35 dur=5.92 core=3.84 tail=2.08 up=2.32 phr=9 db=-20.9 fm=0.116 dup=0 next_gap=1.95
+ 14 hon       103.30- 109.21 dur=5.91 core=3.56 tail=2.34 up=2.24 phr=10 db=-19.4 fm=0.336 dup=0 next_gap=1.13
+ 15 kara      110.34- 116.34 dur=6.00 core=3.65 tail=2.36 up=2.4 phr=10 db=-20.0 fm=0.349 dup=0 next_gap=1.98
+ 16 hon       118.33- 124.15 dur=5.83 core=3.47 tail=2.36 up=2.21 phr=12 db=-19.9 fm=0.151 dup=0 next_gap=1.27
+ 17 kara      125.42- 131.26 dur=5.84 core=3.61 tail=2.23 up=2.35 phr=13 db=-18.6 fm=0.162 dup=0 next_gap=1.83
+ 18 hon       133.09- 138.44 dur=5.34 core=3.34 tail=2.00 up=2.14 phr=9 db=-21.1 fm=0.105 dup=0 next_gap=1.30
+ 19 kara      139.74- 145.39 dur=5.65 core=3.54 tail=2.11 up=2.25 phr=9 db=-21.3 fm=0.139 dup=0 next_gap=1.97
+ 20 hon       147.36- 153.34 dur=5.98 core=3.96 tail=2.02 up=2.31 phr=11 db=-20.4 fm=0.255 dup=0 next_gap=1.13
+ 21 kara      154.47- 160.54 dur=6.07 core=3.98 tail=2.09 up=2.37 phr=11 db=-20.0 fm=0.244 dup=0 next_gap=1.51
+ 22 hon       162.05- 167.67 dur=5.62 core=3.31 tail=2.31 up=1.44 phr=8 db=-17.4 fm=0.174 dup=0 next_gap=1.24
+ 23 kara      168.91- 174.88 dur=5.97 core=3.48 tail=2.48 up=2.32 phr=8 db=-17.7 fm=0.139 dup=0 next_gap=1.51
+ 24 hon       176.39- 182.37 dur=5.98 core=3.76 tail=2.22 up=2.23 phr=10 db=-19.1 fm=0.244 dup=0 next_gap=1.15
+ 25 kara      183.52- 189.65 dur=6.13 core=3.87 tail=2.26 up=2.25 phr=10 db=-19.1 fm=0.244 dup=0 next_gap=1.46
+ 26 hon       191.11- 197.35 dur=6.25 core=4.11 tail=2.14 up=2.36 phr=13 db=-19.2 fm=0.256 dup=0 next_gap=1.30
+ 27 kara      198.66- 205.01 dur=6.35 core=4.12 tail=2.23 up=2.38 phr=13 db=-19.6 fm=0.255 dup=0 next_gap=1.15
+ 28 hon       206.16- 211.81 dur=5.65 core=3.31 tail=2.35 up=2.14 phr=9 db=-18.8 fm=0.127 dup=0 next_gap=1.22
+ 29 kara      213.03- 218.90 dur=5.88 core=3.38 tail=2.50 up=2.18 phr=9 db=-19.0 fm=0.127 dup=0 next_gap=1.46
+ 30 hon       220.37- 226.09 dur=5.72 core=3.74 tail=1.99 up=2.18 phr=8 db=-20.9 fm=0.267 dup=0 next_gap=1.10
+ 31 kara      227.19- 233.45 dur=6.26 core=3.99 tail=2.26 up=2.35 phr=9 db=-21.4 fm=0.139 dup=0 next_gap=1.78
+ 32 hon       235.23- 240.87 dur=5.64 core=3.77 tail=1.87 up=2.29 phr=12 db=-16.9 fm=0.279 dup=0 next_gap=1.32
+ 33 kara      242.19- 248.44 dur=6.25 core=4.00 tail=2.24 up=2.4 phr=12 db=-17.1 fm=0.279 dup=0 next_gap=1.27
+ 34 hon       249.71- 255.74 dur=6.04 core=3.89 tail=2.15 up=2.33 phr=13 db=-21.8 fm=0.127 dup=0 next_gap=1.15
+ 35 kara      256.89- 263.30 dur=6.41 core=4.19 tail=2.22 up=2.52 phr=13 db=-22.6 fm=0.128 dup=0 next_gap=1.14
+ 36 hon       264.44- 270.17 dur=5.74 core=3.48 tail=2.25 up=1.9 phr=17 db=-19.4 fm=0.185 dup=0 next_gap=1.52
+ 37 kara      271.69- 277.66 dur=5.97 core=3.58 tail=2.39 up=1.96 phr=16 db=-20.5 fm=0.22 dup=0 next_gap=1.32
+ 38 hon       278.98- 284.85 dur=5.88 core=3.17 tail=2.70 up=2.17 phr=8 db=-17.7 fm=0.081 dup=0 next_gap=1.45
+ 39 kara      286.31- 292.49 dur=6.19 core=3.47 tail=2.72 up=2.45 phr=7 db=-18.3 fm=0.128 dup=0 next_gap=1.68
+ 40 hon       294.18- 300.23 dur=6.05 core=3.85 tail=2.19 up=2.25 phr=10 db=-21.3 fm=0.209 dup=0 next_gap=0.99
+ 41 kara      301.21- 307.33 dur=6.12 core=3.87 tail=2.25 up=2.28 phr=9 db=-19.6 fm=0.116 dup=0 next_gap=1.29
+ 42 hon       308.62- 314.44 dur=5.82 core=3.39 tail=2.43 up=2.28 phr=8 db=-21.0 fm=0.197 dup=0 next_gap=1.42
+ 43 kara      315.86- 321.87 dur=6.01 core=3.54 tail=2.47 up=2.36 phr=8 db=-21.0 fm=0.209 dup=0 next_gap=1.28
+ 44 hon       323.15- 329.14 dur=5.99 core=3.83 tail=2.16 up=2.22 phr=10 db=-19.8 fm=0.325 dup=0 next_gap=1.28
+ 45 kara      330.42- 336.71 dur=6.29 core=4.05 tail=2.24 up=2.36 phr=10 db=-19.8 fm=0.348 dup=0 next_gap=1.31
+ 46 hon       338.02- 343.86 dur=5.84 core=4.10 tail=1.74 up=2.31 phr=11 db=-20.8 fm=0.244 dup=0 next_gap=1.37
+ 47 kara      345.23- 351.85 dur=6.62 core=0.00 tail=0.00 up=2.32 phr=12 db=-22.3 fm=0.244 dup=0 next_gap=0.84
+ 48 hon       352.69- 358.27 dur=5.58 core=3.26 tail=2.32 up=2.25 phr=6 db=-15.1 fm=0.093 dup=0 next_gap=1.51
+ 49 kara      359.78- 365.67 dur=5.89 core=3.34 tail=2.54 up=2.35 phr=6 db=-15.2 fm=0.081 dup=0 next_gap=1.72
+ 50 hon       367.38- 373.04 dur=5.66 core=2.78 tail=2.88 up=1.44 phr=10 db=-15.0 fm=0.151 dup=0 next_gap=1.51
+ 51 kara      374.55- 380.28 dur=5.73 core=3.55 tail=2.18 up=2.38 phr=9 db=-15.3 fm=0.139 dup=0 next_gap=1.95
+ 52 hon       382.23- 388.55 dur=6.32 core=3.88 tail=2.44 up=2.38 phr=12 db=-17.8 fm=None dup=0 next_gap=1.19
+ 53 kara      389.73- 396.55 dur=6.81 core=4.39 tail=2.43 up=2.84 phr=13 db=-20.7 fm=0.023 dup=0 next_gap=1.94
+ 54 hon       398.49- 404.54 dur=6.05 core=3.61 tail=2.44 up=2.3 phr=9 db=-20.1 fm=0.117 dup=0 next_gap=1.20
+ 55 kara      405.73- 411.98 dur=6.25 core=3.77 tail=2.47 up=2.48 phr=11 db=-20.3 fm=0.105 dup=0 next_gap=1.09
+ 56 hon       413.07- 418.47 dur=5.40 core=3.43 tail=1.97 up=2.17 phr=9 db=-20.9 fm=0.29 dup=0 next_gap=1.37
+ 57 kara      419.84- 425.68 dur=5.84 core=3.65 tail=2.19 up=2.37 phr=9 db=-21.2 fm=0.291 dup=0 next_gap=1.52
+ 58 hon       427.20- 432.90 dur=5.70 core=3.55 tail=2.15 up=2.47 phr=10 db=-17.9 fm=0.255 dup=0 next_gap=1.36
+ 59 kara      434.26- 439.95 dur=5.69 core=0.00 tail=0.00 up=1.66 phr=9 db=-18.4 fm=0.197 dup=0 next_gap=1.91
+ 60 hon       441.86- 447.75 dur=5.89 core=3.56 tail=2.32 up=2.17 phr=12 db=-20.8 fm=0.256 dup=0 next_gap=1.21
+ 61 kara      448.95- 455.06 dur=6.11 core=3.66 tail=2.45 up=2.29 phr=9 db=-22.0 fm=0.29 dup=0 next_gap=1.75
+ 62 hon       456.81- 462.68 dur=5.86 core=3.51 tail=2.36 up=2.24 phr=9 db=-20.9 fm=0.232 dup=0 next_gap=1.33
+ 63 kara      464.01- 469.87 dur=5.85 core=3.58 tail=2.28 up=2.28 phr=9 db=-21.5 fm=0.244 dup=0 next_gap=1.90
+ 64 hon       471.77- 477.91 dur=6.14 core=3.55 tail=2.59 up=2.35 phr=9 db=-20.7 fm=0.325 dup=0 next_gap=1.40
+ 65 kara      479.31- 485.83 dur=6.51 core=3.56 tail=2.95 up=2.38 phr=9 db=-21.9 fm=0.325 dup=0 next_gap=1.50
+ 66 hon       487.33- 493.20 dur=5.88 core=3.63 tail=2.24 up=2.18 phr=8 db=-21.3 fm=0.104 dup=0 next_gap=1.23
+ 67 kara      494.43- 500.27 dur=5.84 core=3.61 tail=2.23 up=2.22 phr=9 db=-21.5 fm=0.128 dup=0 next_gap=1.67
+ 68 hon       501.94- 507.63 dur=5.69 core=4.00 tail=1.68 up=2.24 phr=9 db=-21.5 fm=None dup=0 next_gap=1.36
+ 69 kara      508.99- 515.59 dur=6.60 core=0.00 tail=0.00 up=2.38 phr=11 db=-23.7 fm=0.291 dup=0 next_gap=1.31
+ 70 hon       516.90- 523.43 dur=6.54 core=3.97 tail=2.57 up=2.42 phr=10 db=-18.1 fm=0.278 dup=1 next_gap=1.27
+ 71 kara      524.70- 531.21 dur=6.51 core=3.96 tail=2.55 up=2.38 phr=10 db=-18.4 fm=0.267 dup=0 next_gap=1.59
+ 72 hon       532.80- 539.06 dur=6.26 core=4.12 tail=2.14 up=2.37 phr=11 db=-19.6 fm=0.291 dup=0 next_gap=1.30
+ 73 kara      540.36- 546.82 dur=6.46 core=4.13 tail=2.32 up=2.39 phr=9 db=-20.4 fm=0.326 dup=0 next_gap=1.00
+ 74 hon       547.81- 554.22 dur=6.41 core=3.92 tail=2.48 up=2.45 phr=9 db=-19.0 fm=0.267 dup=0 next_gap=1.22
+ 75 kara      555.44- 561.84 dur=6.40 core=0.00 tail=0.00 up=2.31 phr=13 db=-19.8 fm=0.29 dup=0 next_gap=1.20
+ 76 hon       563.03- 569.12 dur=6.09 core=3.87 tail=2.22 up=2.54 phr=9 db=-20.8 fm=0.116 dup=0 next_gap=1.02
+ 77 kara      570.15- 576.24 dur=6.10 core=3.76 tail=2.33 up=2.45 phr=10 db=-21.1 fm=0.139 dup=0 next_gap=1.61
+ 78 hon       577.86- 584.26 dur=6.41 core=3.75 tail=2.66 up=2.5 phr=9 db=-19.1 fm=0.197 dup=0 next_gap=1.06
+ 79 kara      585.32- 591.52 dur=6.20 core=3.61 tail=2.59 up=2.48 phr=9 db=-19.3 fm=0.197 dup=0 next_gap=1.28
+ 80 hon       592.80- 598.97 dur=6.18 core=4.37 tail=1.81 up=2.44 phr=12 db=-20.9 fm=0.151 dup=0 next_gap=0.95
+ 81 kara      599.92- 606.46 dur=6.54 core=4.50 tail=2.03 up=2.47 phr=10 db=-21.5 fm=0.151 dup=0 next_gap=1.18
+ 82 hon       607.65- 613.54 dur=5.90 core=3.55 tail=2.35 up=2.22 phr=8 db=-18.2 fm=0.07 dup=0 next_gap=0.94
+ 83 kara      614.48- 620.85 dur=6.36 core=3.61 tail=2.75 up=2.28 phr=7 db=-19.0 fm=0.082 dup=0 next_gap=1.06
+ 84 hon       621.90- 628.00 dur=6.10 core=3.99 tail=2.10 up=2.3 phr=14 db=-21.2 fm=0.244 dup=0 next_gap=1.23
+ 85 kara      629.23- 635.44 dur=6.21 core=4.09 tail=2.12 up=2.33 phr=13 db=-20.7 fm=0.244 dup=1 next_gap=4.78
+ 86 kara      640.22- 646.45 dur=6.22 core=4.10 tail=2.12 up=2.35 phr=13 db=-20.7 fm=0.255 dup=0 next_gap=1.16
+ 87 hon       647.61- 653.59 dur=5.98 core=3.80 tail=2.18 up=2.48 phr=12 db=-18.2 fm=0.174 dup=0 next_gap=1.00
+ 88 kara      654.59- 660.96 dur=6.37 core=4.03 tail=2.34 up=2.57 phr=11 db=-18.9 fm=0.198 dup=0 next_gap=1.01
+ 89 hon       661.97- 668.03 dur=6.06 core=3.60 tail=2.46 up=1.76 phr=12 db=-20.3 fm=0.279 dup=0 next_gap=1.10
+ 90 kara      669.13- 675.73 dur=6.59 core=0.00 tail=0.00 up=2.48 phr=14 db=-22.9 fm=0.185 dup=0 next_gap=nan
+
+##### gungun_random5
+file=features_gungun_random5.json frame_dt=12.0ms 範囲=0.0〜668.1s floor=-58.6dB peak=-8.7dB thr=-40.7dB 役割判定=string
+区間数=91 本読み=44 空読み=45 同一クリップの対=1
+[本読み]
+  発話時間(全体) [s]        : 5.90±0.27s (n=44, 5.32〜6.52, 中央値 5.89)
+  本体(語尾の伸ばしを除く)[s]: 3.67±0.30s (n=44, 2.76〜4.37, 中央値 3.70)  語尾 2.22±0.26s (n=44, 1.58〜2.89, 中央値 2.22)
+  モーラ速度(全体) [mora/s]  : 2.38±0.11 (n=44, 2.15〜2.64, 中央値 2.38)
+  モーラ速度(本体) [mora/s]  : 3.57±0.31 (n=44, 2.98〜4.71, 中央値 3.52)
+  上の句の速度 [mora/s]      : 3.45±0.48 (n=44, 2.96〜5.25, 中央値 3.35)  上の句の長さ 2.21±0.24s (n=44, 1.43〜2.53, 中央値 2.24)
+  下の句の速度(本体)[mora/s] : 4.43±1.01 (n=44, 3.09〜7.68, 中央値 4.34)  句間の切れ目 0.16±0.10s (n=44, 0.00〜0.46, 中央値 0.16)
+  第一音 [s]                 : 0.203±0.079s (n=42, 0.070〜0.337, 中央値 0.226)  判別できず 2
+  平均音量 [dB]              : -19.8±1.8dB (n=44, -23.5〜-15.0, 中央値 -20.1)  最大 -8.1±1.2dB (n=44, -10.5〜-5.8, 中央値 -8.1)
+  上の句−下の句 [dB]          : 1.9±2.9dB (n=44, -5.5〜6.6, 中央値 2.4)
+  句片の数                    : 10.2±2.0 (n=44, 6.0〜17.0, 中央値 10.0)
+[空読み]
+  発話時間(全体) [s]        : 6.13±0.27s (n=45, 5.65〜6.83, 中央値 6.09)
+  本体(語尾の伸ばしを除く)[s]: 3.78±0.31s (n=41, 2.93〜4.50, 中央値 3.75)  語尾 2.34±0.25s (n=41, 1.63〜2.95, 中央値 2.28)
+  モーラ速度(全体) [mora/s]  : 2.29±0.10 (n=45, 2.05〜2.48, 中央値 2.30)
+  モーラ速度(本体) [mora/s]  : 3.47±0.29 (n=41, 2.89〜4.45, 中央値 3.47)
+  上の句の速度 [mora/s]      : 3.30±0.41 (n=45, 2.64〜4.97, 中央値 3.20)  上の句の長さ 2.30±0.22s (n=45, 1.51〜2.85, 中央値 2.35)
+  下の句の速度(本体)[mora/s] : 4.56±1.18 (n=41, 2.92〜8.34, 中央値 4.32)  句間の切れ目 0.18±0.10s (n=45, 0.02〜0.50, 中央値 0.21)
+  第一音 [s]                 : 0.199±0.084s (n=45, 0.023〜0.349, 中央値 0.209)  判別できず 0
+  平均音量 [dB]              : -20.2±1.8dB (n=45, -23.8〜-15.2, 中央値 -20.3)  最大 -8.2±1.3dB (n=45, -11.1〜-6.0, 中央値 -8.4)
+  上の句−下の句 [dB]          : 2.5±3.6dB (n=45, -4.8〜11.2, 中央値 3.4)
+  句片の数                    : 10.3±2.2 (n=45, 6.0〜16.0, 中央値 10.0)
+本読み→空読み 間隔 [s]  : 1.24±0.14s (n=44, 0.95〜1.52, 中央値 1.24)
+空読み→本読み 間隔 [s]  : 1.29±0.23s (n=43, 0.75〜1.81, 中央値 1.29)
+本読み周期 [s]          : 14.83±1.61s (n=43, 13.79〜24.88, 中央値 14.54)
+本読み−空読み 音量 [dB] : 0.4±0.8dB (n=44, -1.7〜2.8, 中央値 0.4)
+  0 other       0.82-   6.59 dur=5.77 core=3.85 tail=1.92 up=2.25 phr=10 db=-19.7 fm=0.197 dup=0 next_gap=1.27
+  1 other       7.86-  13.98 dur=6.12 core=3.85 tail=2.26 up=2.28 phr=9 db=-19.6 fm=0.105 dup=0 next_gap=1.38
+  2 hon        15.36-  21.52 dur=6.16 core=4.37 tail=1.80 up=2.44 phr=12 db=-20.9 fm=0.151 dup=0 next_gap=0.96
+  3 kara       22.49-  29.01 dur=6.52 core=4.50 tail=2.02 up=2.47 phr=10 db=-21.4 fm=0.151 dup=0 next_gap=1.17
+  4 hon        30.18-  36.05 dur=5.86 core=3.16 tail=2.70 up=2.16 phr=8 db=-17.6 fm=0.073 dup=0 next_gap=1.46
+  5 kara       37.51-  43.69 dur=6.18 core=3.46 tail=2.72 up=2.45 phr=7 db=-18.2 fm=0.128 dup=0 next_gap=1.70
+  6 hon        45.38-  51.79 dur=6.41 core=3.92 tail=2.48 up=2.38 phr=9 db=-18.9 fm=0.255 dup=0 next_gap=1.22
+  7 kara       53.01-  59.39 dur=6.39 core=0.00 tail=0.00 up=2.3 phr=12 db=-19.8 fm=0.291 dup=0 next_gap=1.24
+  8 hon        60.64-  66.87 dur=6.23 core=4.10 tail=2.14 up=2.35 phr=13 db=-19.2 fm=0.256 dup=0 next_gap=1.30
+  9 kara       68.17-  74.53 dur=6.36 core=4.13 tail=2.23 up=2.38 phr=14 db=-19.7 fm=0.267 dup=0 next_gap=1.15
+ 10 hon        75.68-  81.41 dur=5.72 core=3.75 tail=1.97 up=2.19 phr=8 db=-20.9 fm=0.278 dup=0 next_gap=1.11
+ 11 kara       82.52-  88.77 dur=6.25 core=3.99 tail=2.25 up=2.31 phr=9 db=-21.3 fm=0.139 dup=0 next_gap=1.36
+ 12 hon        90.12-  96.37 dur=6.25 core=4.13 tail=2.11 up=2.37 phr=11 db=-19.6 fm=0.291 dup=0 next_gap=1.31
+ 13 kara       97.68- 104.09 dur=6.41 core=4.13 tail=2.28 up=2.39 phr=9 db=-20.3 fm=0.325 dup=0 next_gap=1.28
+ 14 hon       105.37- 111.26 dur=5.89 core=3.55 tail=2.33 up=2.22 phr=8 db=-18.2 fm=0.07 dup=0 next_gap=0.95
+ 15 kara      112.21- 118.57 dur=6.36 core=3.60 tail=2.76 up=2.28 phr=7 db=-19.1 fm=0.081 dup=0 next_gap=1.05
+ 16 hon       119.61- 125.51 dur=5.90 core=3.58 tail=2.32 up=2.17 phr=12 db=-20.9 fm=0.255 dup=0 next_gap=1.20
+ 17 kara      126.71- 132.82 dur=6.11 core=3.67 tail=2.44 up=2.29 phr=8 db=-22.1 fm=0.29 dup=0 next_gap=1.02
+ 18 hon       133.84- 139.92 dur=6.08 core=3.87 tail=2.22 up=2.53 phr=9 db=-20.8 fm=0.116 dup=0 next_gap=1.03
+ 19 kara      140.95- 147.03 dur=6.07 core=3.75 tail=2.32 up=2.51 phr=9 db=-21.1 fm=0.128 dup=0 next_gap=1.03
+ 20 hon       148.06- 153.88 dur=5.82 core=3.39 tail=2.43 up=2.28 phr=8 db=-21.1 fm=0.198 dup=0 next_gap=1.42
+ 21 kara      155.29- 161.32 dur=6.03 core=3.55 tail=2.47 up=2.37 phr=8 db=-21.0 fm=0.209 dup=0 next_gap=1.32
+ 22 hon       162.64- 168.63 dur=5.99 core=3.96 tail=2.03 up=2.31 phr=11 db=-20.4 fm=0.256 dup=0 next_gap=1.12
+ 23 kara      169.75- 175.82 dur=6.07 core=3.98 tail=2.09 up=2.36 phr=12 db=-20.0 fm=0.244 dup=0 next_gap=1.41
+ 24 hon       177.22- 182.91 dur=5.69 core=4.01 tail=1.68 up=2.24 phr=9 db=-21.5 fm=None dup=0 next_gap=1.36
+ 25 kara      184.27- 190.87 dur=6.59 core=0.00 tail=0.00 up=2.38 phr=12 db=-23.8 fm=0.29 dup=0 next_gap=1.04
+ 26 hon       191.91- 197.89 dur=5.98 core=3.92 tail=2.06 up=2.24 phr=11 db=-22.8 fm=0.081 dup=0 next_gap=1.21
+ 27 kara      199.10- 205.19 dur=6.09 core=3.95 tail=2.15 up=2.3 phr=10 db=-22.0 fm=0.104 dup=0 next_gap=1.69
+ 28 hon       206.89- 212.47 dur=5.58 core=3.26 tail=2.32 up=2.25 phr=6 db=-15.1 fm=0.093 dup=0 next_gap=1.50
+ 29 kara      213.97- 219.87 dur=5.90 core=3.36 tail=2.54 up=2.36 phr=6 db=-15.3 fm=0.093 dup=0 next_gap=1.24
+ 30 hon       221.11- 226.76 dur=5.65 core=2.76 tail=2.89 up=1.44 phr=10 db=-15.0 fm=0.139 dup=0 next_gap=1.51
+ 31 kara      228.27- 234.01 dur=5.74 core=2.93 tail=2.81 up=1.51 phr=8 db=-15.2 fm=0.139 dup=0 next_gap=1.81
+ 32 hon       235.82- 241.93 dur=6.11 core=4.01 tail=2.10 up=2.3 phr=14 db=-21.2 fm=0.256 dup=0 next_gap=1.22
+ 33 kara      243.15- 249.37 dur=6.22 core=4.10 tail=2.12 up=2.35 phr=15 db=-20.7 fm=0.255 dup=0 next_gap=1.54
+ 34 hon       250.91- 256.94 dur=6.03 core=3.89 tail=2.14 up=2.32 phr=13 db=-21.7 fm=0.128 dup=0 next_gap=1.15
+ 35 kara      258.09- 264.51 dur=6.42 core=4.19 tail=2.23 up=2.31 phr=13 db=-22.6 fm=0.139 dup=0 next_gap=0.84
+ 36 hon       265.34- 271.87 dur=6.52 core=3.96 tail=2.57 up=2.42 phr=10 db=-18.0 fm=0.279 dup=0 next_gap=1.27
+ 37 kara      273.13- 279.66 dur=6.52 core=3.96 tail=2.56 up=2.38 phr=10 db=-18.4 fm=0.278 dup=0 next_gap=1.36
+ 38 hon       281.02- 287.16 dur=6.14 core=3.55 tail=2.59 up=2.33 phr=9 db=-20.7 fm=0.313 dup=0 next_gap=1.39
+ 39 kara      288.55- 295.06 dur=6.51 core=3.56 tail=2.95 up=2.38 phr=8 db=-21.9 fm=0.325 dup=0 next_gap=1.06
+ 40 hon       296.12- 302.10 dur=5.98 core=3.80 tail=2.18 up=2.49 phr=12 db=-18.2 fm=0.174 dup=0 next_gap=1.01
+ 41 kara      303.11- 309.48 dur=6.37 core=4.03 tail=2.34 up=2.56 phr=11 db=-18.9 fm=0.197 dup=0 next_gap=1.30
+ 42 hon       310.79- 316.50 dur=5.71 core=3.42 tail=2.29 up=1.65 phr=13 db=-23.5 fm=0.255 dup=0 next_gap=1.39
+ 43 kara      317.89- 323.97 dur=6.08 core=3.44 tail=2.65 up=2.35 phr=12 db=-23.1 fm=0.209 dup=0 next_gap=1.52
+ 44 hon       325.50- 331.36 dur=5.86 core=3.51 tail=2.36 up=2.24 phr=9 db=-20.9 fm=0.232 dup=0 next_gap=1.33
+ 45 kara      332.69- 338.54 dur=5.85 core=3.58 tail=2.27 up=2.28 phr=9 db=-21.5 fm=0.244 dup=0 next_gap=1.37
+ 46 hon       339.91- 345.57 dur=5.65 core=3.32 tail=2.33 up=2.14 phr=9 db=-18.8 fm=0.128 dup=0 next_gap=1.23
+ 47 kara      346.79- 352.66 dur=5.87 core=3.37 tail=2.50 up=2.18 phr=10 db=-19.0 fm=0.121 dup=0 next_gap=1.24
+ 48 hon       353.90- 359.48 dur=5.57 core=3.41 tail=2.16 up=2.08 phr=10 db=-21.7 fm=0.244 dup=0 next_gap=1.20
+ 49 kara      360.67- 366.65 dur=5.98 core=3.49 tail=2.49 up=2.1 phr=10 db=-22.0 fm=0.255 dup=0 next_gap=1.42
+ 50 hon       368.07- 373.78 dur=5.71 core=3.56 tail=2.15 up=2.48 phr=10 db=-18.0 fm=0.256 dup=0 next_gap=1.36
+ 51 kara      375.14- 380.83 dur=5.69 core=0.00 tail=0.00 up=1.66 phr=9 db=-18.4 fm=0.197 dup=0 next_gap=1.21
+ 52 hon       382.04- 387.92 dur=5.89 core=3.63 tail=2.25 up=2.19 phr=8 db=-21.4 fm=0.116 dup=0 next_gap=1.23
+ 53 kara      389.15- 394.99 dur=5.84 core=3.61 tail=2.23 up=2.22 phr=9 db=-21.5 fm=0.128 dup=0 next_gap=1.36
+ 54 hon       396.35- 401.75 dur=5.40 core=3.41 tail=1.99 up=2.17 phr=10 db=-20.9 fm=0.291 dup=0 next_gap=1.37
+ 55 kara      403.12- 408.96 dur=5.84 core=3.65 tail=2.19 up=2.36 phr=10 db=-21.2 fm=0.279 dup=0 next_gap=1.51
+ 56 hon       410.47- 416.11 dur=5.64 core=3.77 tail=1.87 up=2.29 phr=12 db=-16.9 fm=0.279 dup=0 next_gap=1.32
+ 57 kara      417.43- 423.68 dur=6.25 core=4.00 tail=2.24 up=2.4 phr=12 db=-17.1 fm=0.279 dup=0 next_gap=1.06
+ 58 hon       424.74- 430.60 dur=5.86 core=3.71 tail=2.15 up=2.22 phr=11 db=-18.0 fm=0.081 dup=0 next_gap=1.18
+ 59 kara      431.78- 437.82 dur=6.04 core=3.91 tail=2.12 up=2.39 phr=10 db=-18.0 fm=0.093 dup=0 next_gap=1.43
+ 60 hon       439.25- 445.31 dur=6.06 core=3.60 tail=2.46 up=1.76 phr=12 db=-20.3 fm=0.279 dup=0 next_gap=1.10
+ 61 kara      446.41- 453.01 dur=6.59 core=0.00 tail=0.00 up=2.48 phr=15 db=-22.9 fm=0.185 dup=0 next_gap=0.94
+ 62 hon       453.95- 459.94 dur=5.99 core=3.83 tail=2.16 up=2.23 phr=10 db=-19.8 fm=0.325 dup=0 next_gap=1.28
+ 63 kara      461.21- 467.51 dur=6.29 core=4.05 tail=2.24 up=2.36 phr=11 db=-19.8 fm=0.348 dup=0 next_gap=1.18
+ 64 hon       468.69- 474.51 dur=5.82 core=3.47 tail=2.35 up=2.19 phr=12 db=-19.8 fm=0.151 dup=0 next_gap=1.28
+ 65 kara      475.79- 481.63 dur=5.84 core=3.61 tail=2.23 up=2.33 phr=12 db=-18.6 fm=0.151 dup=0 next_gap=1.51
+ 66 hon       483.13- 488.74 dur=5.61 core=3.30 tail=2.31 up=1.43 phr=8 db=-17.4 fm=0.162 dup=0 next_gap=1.24
+ 67 kara      489.99- 495.96 dur=5.98 core=3.49 tail=2.49 up=2.33 phr=9 db=-17.8 fm=0.093 dup=0 next_gap=1.11
+ 68 hon       497.08- 502.81 dur=5.74 core=3.48 tail=2.25 up=1.9 phr=17 db=-19.4 fm=0.186 dup=0 next_gap=1.52
+ 69 kara      504.33- 510.30 dur=5.97 core=3.58 tail=2.38 up=1.96 phr=16 db=-20.5 fm=0.22 dup=0 next_gap=1.31
+ 70 hon       511.61- 517.66 dur=6.05 core=3.86 tail=2.19 up=2.25 phr=9 db=-21.3 fm=0.221 dup=0 next_gap=1.00
+ 71 kara      518.66- 524.77 dur=6.11 core=3.84 tail=2.26 up=2.28 phr=9 db=-19.6 fm=0.111 dup=0 next_gap=1.29
+ 72 hon       526.06- 531.75 dur=5.69 core=3.68 tail=2.01 up=2.22 phr=9 db=-20.0 fm=0.128 dup=0 next_gap=1.40
+ 73 kara      533.15- 539.07 dur=5.92 core=3.84 tail=2.08 up=2.32 phr=9 db=-20.9 fm=0.116 dup=0 next_gap=1.37
+ 74 hon       540.44- 545.76 dur=5.32 core=3.74 tail=1.58 up=2.15 phr=11 db=-21.2 fm=0.313 dup=0 next_gap=1.27
+ 75 kara      547.02- 552.74 dur=5.71 core=3.84 tail=1.87 up=2.25 phr=11 db=-21.6 fm=0.22 dup=0 next_gap=1.72
+ 76 hon       554.46- 560.31 dur=5.85 core=4.11 tail=1.74 up=2.32 phr=11 db=-20.9 fm=0.244 dup=0 next_gap=1.37
+ 77 kara      561.68- 567.49 dur=5.82 core=4.19 tail=1.63 up=2.32 phr=11 db=-20.2 fm=0.244 dup=0 next_gap=0.75
+ 78 hon       568.25- 574.67 dur=6.42 core=3.76 tail=2.66 up=2.5 phr=8 db=-19.2 fm=0.197 dup=0 next_gap=1.04
+ 79 kara      575.71- 581.92 dur=6.21 core=3.61 tail=2.60 up=1.67 phr=9 db=-19.4 fm=0.209 dup=0 next_gap=1.27
+ 80 hon       583.19- 589.17 dur=5.98 core=3.76 tail=2.22 up=2.23 phr=10 db=-19.1 fm=0.232 dup=0 next_gap=1.15
+ 81 kara      590.32- 596.44 dur=6.12 core=3.86 tail=2.26 up=2.24 phr=10 db=-19.1 fm=0.244 dup=0 next_gap=1.50
+ 82 hon       597.93- 603.97 dur=6.04 core=3.60 tail=2.44 up=2.29 phr=8 db=-20.1 fm=0.105 dup=0 next_gap=1.20
+ 83 kara      605.17- 611.42 dur=6.26 core=3.77 tail=2.48 up=2.48 phr=11 db=-20.4 fm=0.105 dup=0 next_gap=1.05
+ 84 hon       612.47- 618.37 dur=5.90 core=3.56 tail=2.33 up=2.24 phr=11 db=-19.4 fm=0.337 dup=0 next_gap=1.09
+ 85 kara      619.46- 625.45 dur=5.99 core=3.65 tail=2.35 up=2.4 phr=9 db=-20.0 fm=0.348 dup=1 next_gap=4.72
+ 86 kara      630.17- 636.18 dur=6.00 core=3.66 tail=2.35 up=2.42 phr=9 db=-20.0 fm=0.349 dup=0 next_gap=1.17
+ 87 hon       637.35- 643.68 dur=6.33 core=3.88 tail=2.45 up=2.38 phr=11 db=-17.9 fm=None dup=0 next_gap=1.17
+ 88 kara      644.85- 651.68 dur=6.83 core=4.39 tail=2.44 up=2.84 phr=13 db=-20.7 fm=0.023 dup=0 next_gap=1.42
+ 89 hon       653.09- 658.43 dur=5.34 core=3.34 tail=2.00 up=2.14 phr=9 db=-21.2 fm=0.105 dup=0 next_gap=1.30
+ 90 kara      659.73- 665.39 dur=5.65 core=3.54 tail=2.11 up=2.25 phr=9 db=-21.3 fm=0.128 dup=0 next_gap=nan
+
+##### marudai_all44 (か・さ・ま・や行の18札のみ)
+file=features_marudai_all44.json frame_dt=11.0ms 範囲=90.0〜535.0s floor=-51.1dB peak=-11.5dB thr=-39.1dB 役割判定=pair
+区間数=95 本読み=18 空読み=18 同一クリップの対=2
+[本読み]
+  発話時間(全体) [s]        : 2.86±0.43s (n=18, 2.33〜4.24, 中央値 2.74)
+  本体(語尾の伸ばしを除く)[s]: 2.07±0.26s (n=2, 1.81〜2.32, 中央値 2.07)  語尾 0.59±0.08s (n=2, 0.51〜0.66, 中央値 0.59)
+  モーラ速度(全体) [mora/s]  : 4.91±0.48 (n=18, 4.01〜6.00, 中央値 4.83)
+  モーラ速度(本体) [mora/s]  : 6.17±1.01 (n=2, 5.17〜7.18, 中央値 6.17)
+  上の句の速度 [mora/s]      : 7.69±1.17 (n=18, 5.86〜9.81, 中央値 7.72)  上の句の長さ 1.01±0.15s (n=18, 0.76〜1.37, 中央値 0.98)
+  下の句の速度(本体)[mora/s] : 6.15±0.00 (n=1, 6.15〜6.15, 中央値 6.15)  句間の切れ目 0.33±0.30s (n=18, 0.00〜0.94, 中央値 0.29)
+  第一音 [s]                 : 0.235±0.081s (n=16, 0.115〜0.349, 中央値 0.250)  判別できず 2
+  平均音量 [dB]              : -31.0±2.2dB (n=18, -35.3〜-27.5, 中央値 -30.7)  最大 -10.0±1.8dB (n=18, -14.0〜-6.9, 中央値 -9.8)
+  上の句−下の句 [dB]          : 8.5±4.9dB (n=18, -4.7〜14.9, 中央値 9.2)
+  句片の数                    : 8.9±2.0 (n=18, 6.0〜13.0, 中央値 8.5)
+[空読み]
+  発話時間(全体) [s]        : 2.92±0.37s (n=18, 2.58〜4.09, 中央値 2.80)
+  本体(語尾の伸ばしを除く)[s]: —  語尾 —
+  モーラ速度(全体) [mora/s]  : 4.79±0.40 (n=18, 4.16〜5.47, 中央値 4.67)
+  モーラ速度(本体) [mora/s]  : —
+  上の句の速度 [mora/s]      : 7.36±1.00 (n=18, 5.74〜8.81, 中央値 7.23)  上の句の長さ 1.05±0.12s (n=18, 0.89〜1.34, 中央値 1.01)
+  下の句の速度(本体)[mora/s] : —  句間の切れ目 0.28±0.16s (n=18, 0.03〜0.51, 中央値 0.30)
+  第一音 [s]                 : 0.213±0.088s (n=17, 0.070〜0.347, 中央値 0.208)  判別できず 1
+  平均音量 [dB]              : -30.9±2.6dB (n=18, -38.9〜-27.2, 中央値 -30.5)  最大 -10.0±1.0dB (n=18, -12.0〜-8.9, 中央値 -9.7)
+  上の句−下の句 [dB]          : 8.8±4.3dB (n=18, -4.8〜13.9, 中央値 9.6)
+  句片の数                    : 9.7±1.7 (n=18, 7.0〜13.0, 中央値 9.0)
+本読み→空読み 間隔 [s]  : 1.82±0.62s (n=47, 0.93〜3.83, 中央値 1.70)
+空読み→本読み 間隔 [s]  : 2.35±0.62s (n=47, 0.97〜4.26, 中央値 2.44)
+本読み周期 [s]          : 18.60±34.37s (n=17, 9.24〜156.05, 中央値 9.94)
+本読み−空読み 音量 [dB] : 0.1±2.9dB (n=47, -7.2〜7.4, 中央値 -0.2)
+  0 kara       90.00-  93.15 dur=3.15 core=0.00 tail=0.00 up=0.96 phr=6 db=-29.1 fm=0.013 dup=0 next_gap=2.18
+  1 hon        95.33-  96.63 dur=1.30 core=0.00 tail=0.00 up=None phr=4 db=-25.2 fm=0.184 dup=0 next_gap=0.93
+  2 kara       97.56-  98.83 dur=1.26 core=0.00 tail=0.00 up=0.52 phr=3 db=-27.0 fm=None dup=0 next_gap=1.82
+  3 hon       100.65- 101.92 dur=1.26 core=0.00 tail=0.00 up=0.47 phr=7 db=-24.5 fm=0.034 dup=0 next_gap=1.09
+  4 kara      103.00- 104.25 dur=1.24 core=0.00 tail=0.00 up=0.45 phr=5 db=-27.6 fm=0.083 dup=0 next_gap=2.74
+  5 hon       106.99- 110.32 dur=3.33 core=0.00 tail=0.00 up=0.72 phr=9 db=-31.1 fm=0.256 dup=0 next_gap=1.12
+  6 kara      111.44- 114.95 dur=3.52 core=0.00 tail=0.00 up=1.02 phr=11 db=-30.8 fm=0.069 dup=0 next_gap=2.25
+  7 hon       117.20- 120.17 dur=2.96 core=0.00 tail=0.00 up=1.05 phr=8 db=-33.0 fm=0.128 dup=0 next_gap=1.80
+  8 kara      121.97- 125.02 dur=3.05 core=0.00 tail=0.00 up=1.03 phr=10 db=-31.2 fm=0.152 dup=0 next_gap=2.24
+  9 hon       127.26- 129.86 dur=2.60 core=0.00 tail=0.00 up=0.94 phr=5 db=-28.9 fm=0.338 dup=0 next_gap=1.69
+ 10 kara      131.56- 134.13 dur=2.58 core=0.00 tail=0.00 up=0.75 phr=7 db=-29.3 fm=0.256 dup=0 next_gap=2.75
+ 11 hon       136.88- 139.98 dur=3.10 core=0.00 tail=0.00 up=1.03 phr=12 db=-32.5 fm=0.198 dup=0 next_gap=1.56
+ 12 kara      141.54- 144.70 dur=3.16 core=0.00 tail=0.00 up=1.08 phr=10 db=-31.0 fm=0.219 dup=0 next_gap=2.44
+ 13 hon   か   147.14- 151.37 dur=4.24 core=0.00 tail=0.00 up=1.37 phr=12 db=-35.0 fm=0.267 dup=0 next_gap=1.41
+ 14 kara  か   152.78- 156.86 dur=4.09 core=0.00 tail=0.00 up=1.34 phr=13 db=-34.5 fm=0.277 dup=0 next_gap=2.09
+ 15 hon   き   158.96- 161.29 dur=2.33 core=0.00 tail=0.00 up=0.92 phr=7 db=-30.6 fm=0.21 dup=0 next_gap=1.73
+ 16 kara  き   163.02- 165.60 dur=2.58 core=0.00 tail=0.00 up=1.02 phr=9 db=-30.5 fm=0.187 dup=0 next_gap=2.60
+ 17 hon   く   168.20- 171.00 dur=2.80 core=0.00 tail=0.00 up=1.09 phr=9 db=-32.0 fm=0.267 dup=0 next_gap=1.76
+ 18 kara  く   172.76- 175.74 dur=2.98 core=0.00 tail=0.00 up=0.99 phr=10 db=-31.7 fm=0.267 dup=0 next_gap=2.44
+ 19 hon   け   178.18- 180.90 dur=2.72 core=0.00 tail=0.00 up=0.91 phr=8 db=-35.3 fm=0.222 dup=0 next_gap=1.54
+ 20 kara  け   182.44- 185.16 dur=2.72 core=0.00 tail=0.00 up=0.89 phr=10 db=-38.9 fm=0.208 dup=0 next_gap=2.38
+ 21 hon   こ   187.54- 190.79 dur=3.25 core=0.00 tail=0.00 up=0.95 phr=11 db=-30.6 fm=0.117 dup=0 next_gap=1.29
+ 22 kara  こ   192.08- 195.54 dur=3.46 core=0.00 tail=0.00 up=1.0 phr=11 db=-30.2 fm=0.094 dup=0 next_gap=2.75
+ 23 hon   さ   198.29- 201.72 dur=3.42 core=0.00 tail=0.00 up=0.96 phr=10 db=-33.9 fm=0.336 dup=0 next_gap=1.70
+ 24 kara  さ   203.41- 206.81 dur=3.40 core=0.00 tail=0.00 up=1.1 phr=13 db=-33.3 fm=0.253 dup=0 next_gap=3.00
+ 25 hon   し   209.81- 212.20 dur=2.39 core=0.00 tail=0.00 up=0.76 phr=8 db=-30.1 fm=0.302 dup=0 next_gap=1.81
+ 26 kara  し   214.01- 216.70 dur=2.69 core=0.00 tail=0.00 up=1.17 phr=7 db=-31.6 fm=0.325 dup=0 next_gap=2.65
+ 27 hon   す   219.35- 222.07 dur=2.72 core=0.00 tail=0.00 up=0.91 phr=7 db=-28.5 fm=None dup=0 next_gap=1.73
+ 28 kara  す   223.80- 226.55 dur=2.75 core=0.00 tail=0.00 up=1.21 phr=9 db=-28.6 fm=0.07 dup=0 next_gap=2.07
+ 29 hon   せ   228.62- 231.09 dur=2.47 core=1.81 tail=0.66 up=1.23 phr=7 db=-27.9 fm=0.139 dup=0 next_gap=1.86
+ 30 kara  せ   232.95- 235.53 dur=2.59 core=0.00 tail=0.00 up=1.02 phr=8 db=-28.5 fm=0.163 dup=0 next_gap=2.49
+ 31 hon   そ   238.02- 240.83 dur=2.81 core=0.00 tail=0.00 up=0.91 phr=10 db=-27.5 fm=None dup=0 next_gap=1.53
+ 32 kara  そ   242.36- 245.26 dur=2.90 core=0.00 tail=0.00 up=0.95 phr=10 db=-27.2 fm=None dup=0 next_gap=3.04
+ 33 hon       248.31- 249.33 dur=1.02 core=0.00 tail=0.00 up=0.43 phr=3 db=-25.0 fm=0.09 dup=0 next_gap=1.07
+ 34 kara      250.40- 251.54 dur=1.15 core=0.00 tail=0.00 up=0.44 phr=5 db=-30.7 fm=0.117 dup=0 next_gap=1.49
+ 35 hon       253.03- 255.94 dur=2.91 core=0.00 tail=0.00 up=0.96 phr=9 db=-32.5 fm=0.115 dup=0 next_gap=2.31
+ 36 kara      258.26- 260.59 dur=2.33 core=0.00 tail=0.00 up=0.74 phr=9 db=-31.5 fm=0.104 dup=0 next_gap=1.41
+ 37 hon       262.00- 264.37 dur=2.37 core=0.00 tail=0.00 up=0.83 phr=8 db=-31.8 fm=0.394 dup=0 next_gap=2.68
+ 38 kara      267.05- 269.58 dur=2.53 core=1.89 tail=0.64 up=1.17 phr=6 db=-32.2 fm=0.417 dup=0 next_gap=1.45
+ 39 hon       271.03- 273.63 dur=2.60 core=0.00 tail=0.00 up=0.82 phr=8 db=-31.9 fm=0.429 dup=0 next_gap=2.12
+ 40 kara      275.75- 278.27 dur=2.52 core=2.00 tail=0.52 up=0.98 phr=8 db=-30.6 fm=0.197 dup=0 next_gap=1.48
+ 41 hon       279.75- 282.35 dur=2.60 core=2.05 tail=0.55 up=0.99 phr=9 db=-32.0 fm=0.184 dup=0 next_gap=2.15
+ 42 kara      284.49- 286.94 dur=2.45 core=1.94 tail=0.51 up=1.07 phr=6 db=-31.6 fm=0.267 dup=0 next_gap=1.71
+ 43 hon       288.65- 290.92 dur=2.27 core=1.73 tail=0.54 up=1.06 phr=6 db=-30.3 fm=0.267 dup=0 next_gap=2.36
+ 44 kara      293.28- 296.94 dur=3.66 core=3.06 tail=0.59 up=2.09 phr=11 db=-31.6 fm=0.128 dup=0 next_gap=1.81
+ 45 hon       298.75- 300.12 dur=1.37 core=0.00 tail=0.00 up=0.44 phr=5 db=-29.4 fm=0.115 dup=0 next_gap=1.00
+ 46 kara      301.12- 302.45 dur=1.33 core=0.76 tail=0.57 up=0.51 phr=3 db=-25.6 fm=0.347 dup=0 next_gap=2.28
+ 47 hon       304.73- 307.78 dur=3.05 core=0.00 tail=0.00 up=1.07 phr=13 db=-30.2 fm=0.163 dup=0 next_gap=1.56
+ 48 kara      309.34- 312.54 dur=3.20 core=0.00 tail=0.00 up=1.1 phr=10 db=-30.6 fm=0.173 dup=0 next_gap=2.43
+ 49 hon       314.97- 317.96 dur=2.99 core=0.00 tail=0.00 up=0.81 phr=8 db=-31.6 fm=0.325 dup=1 next_gap=1.68
+ 50 kara      319.65- 322.67 dur=3.02 core=0.00 tail=0.00 up=1.14 phr=9 db=-31.6 fm=0.187 dup=0 next_gap=2.36
+ 51 hon       325.02- 328.22 dur=3.19 core=0.00 tail=0.00 up=1.01 phr=11 db=-29.3 fm=0.208 dup=0 next_gap=1.44
+ 52 kara      329.66- 332.86 dur=3.21 core=0.00 tail=0.00 up=1.15 phr=11 db=-28.8 fm=0.187 dup=0 next_gap=2.58
+ 53 hon       335.44- 336.63 dur=1.20 core=0.00 tail=0.00 up=0.49 phr=4 db=-20.8 fm=0.186 dup=0 next_gap=3.19
+ 54 kara      339.83- 340.97 dur=1.14 core=0.63 tail=0.51 up=0.21 phr=3 db=-19.7 fm=0.208 dup=0 next_gap=3.91
+ 55 hon       344.88- 345.95 dur=1.07 core=0.00 tail=0.00 up=None phr=2 db=-21.2 fm=None dup=0 next_gap=3.83
+ 56 kara      349.78- 352.69 dur=2.91 core=2.15 tail=0.76 up=0.88 phr=7 db=-28.6 fm=0.104 dup=0 next_gap=2.74
+ 57 hon       355.43- 357.88 dur=2.45 core=0.00 tail=0.00 up=0.77 phr=6 db=-32.2 fm=0.139 dup=0 next_gap=1.83
+ 58 kara      359.71- 362.27 dur=2.55 core=0.00 tail=0.00 up=0.78 phr=7 db=-38.1 fm=0.139 dup=0 next_gap=2.72
+ 59 hon       364.99- 367.71 dur=2.73 core=2.17 tail=0.56 up=1.24 phr=7 db=-29.4 fm=0.173 dup=0 next_gap=1.67
+ 60 kara      369.39- 372.01 dur=2.62 core=1.98 tail=0.64 up=1.19 phr=8 db=-30.5 fm=0.256 dup=0 next_gap=2.58
+ 61 hon       374.59- 377.36 dur=2.78 core=0.00 tail=0.00 up=0.94 phr=8 db=-30.1 fm=0.245 dup=0 next_gap=1.94
+ 62 kara      379.30- 380.45 dur=1.15 core=0.00 tail=0.00 up=0.42 phr=4 db=-24.3 fm=0.163 dup=0 next_gap=4.26
+ 63 hon       384.71- 387.22 dur=2.51 core=0.00 tail=0.00 up=1.06 phr=7 db=-29.8 fm=0.08 dup=0 next_gap=1.70
+ 64 kara      388.92- 391.49 dur=2.58 core=0.00 tail=0.00 up=1.08 phr=9 db=-31.5 fm=0.093 dup=0 next_gap=2.58
+ 65 hon   ま   394.07- 396.79 dur=2.72 core=0.00 tail=0.00 up=1.11 phr=11 db=-32.1 fm=0.312 dup=0 next_gap=1.49
+ 66 kara  ま   398.27- 400.93 dur=2.66 core=0.00 tail=0.00 up=1.16 phr=8 db=-30.7 fm=0.336 dup=0 next_gap=2.63
+ 67 hon   み   403.56- 406.31 dur=2.74 core=0.00 tail=0.00 up=0.93 phr=7 db=-29.9 fm=0.291 dup=0 next_gap=1.53
+ 68 kara  み   407.84- 410.58 dur=2.74 core=0.00 tail=0.00 up=0.92 phr=8 db=-28.5 fm=0.304 dup=0 next_gap=2.93
+ 69 hon   む   413.50- 416.20 dur=2.69 core=0.00 tail=0.00 up=1.15 phr=8 db=-29.7 fm=0.115 dup=0 next_gap=1.78
+ 70 kara  む   417.97- 420.68 dur=2.71 core=0.00 tail=0.00 up=0.99 phr=9 db=-30.1 fm=0.128 dup=0 next_gap=2.80
+ 71 hon   め   423.48- 426.20 dur=2.73 core=0.00 tail=0.00 up=1.02 phr=9 db=-32.1 fm=0.232 dup=0 next_gap=1.50
+ 72 kara  め   427.70- 430.55 dur=2.84 core=0.00 tail=0.00 up=1.1 phr=11 db=-32.2 fm=0.277 dup=0 next_gap=2.76
+ 73 hon   も   433.31- 435.89 dur=2.58 core=0.00 tail=0.00 up=0.99 phr=6 db=-30.8 fm=0.326 dup=1 next_gap=1.90
+ 74 kara  も   437.79- 440.37 dur=2.58 core=0.00 tail=0.00 up=1.0 phr=8 db=-30.5 fm=0.152 dup=0 next_gap=2.88
+ 75 hon   や   443.25- 446.20 dur=2.95 core=0.00 tail=0.00 up=1.01 phr=11 db=-31.0 fm=0.163 dup=0 next_gap=1.59
+ 76 kara  や   447.79- 450.74 dur=2.95 core=0.00 tail=0.00 up=0.97 phr=9 db=-30.5 fm=0.126 dup=0 next_gap=2.72
+ 77 hon   ゆ   453.45- 456.53 dur=3.08 core=0.00 tail=0.00 up=0.85 phr=13 db=-32.0 fm=0.118 dup=0 next_gap=1.37
+ 78 kara  ゆ   457.90- 460.87 dur=2.97 core=0.00 tail=0.00 up=0.9 phr=12 db=-29.3 fm=0.115 dup=0 next_gap=2.52
+ 79 hon   よ   463.39- 466.22 dur=2.83 core=2.32 tail=0.51 up=1.2 phr=7 db=-28.7 fm=0.349 dup=0 next_gap=1.36
+ 80 kara  よ   467.58- 470.53 dur=2.95 core=0.00 tail=0.00 up=1.22 phr=9 db=-29.9 fm=0.347 dup=0 next_gap=2.15
+ 81 hon       472.68- 475.54 dur=2.86 core=2.33 tail=0.52 up=1.28 phr=10 db=-30.6 fm=0.045 dup=0 next_gap=1.36
+ 82 kara      476.89- 479.64 dur=2.75 core=0.00 tail=0.00 up=1.14 phr=8 db=-30.6 fm=0.246 dup=0 next_gap=2.13
+ 83 hon       481.77- 485.01 dur=3.24 core=0.00 tail=0.00 up=1.01 phr=10 db=-28.8 fm=0.186 dup=0 next_gap=1.42
+ 84 kara      486.43- 489.57 dur=3.15 core=0.00 tail=0.00 up=1.16 phr=9 db=-28.2 fm=0.197 dup=0 next_gap=2.01
+ 85 hon       491.58- 494.55 dur=2.97 core=0.00 tail=0.00 up=0.92 phr=11 db=-30.8 fm=0.243 dup=0 next_gap=1.75
+ 86 kara      496.31- 497.55 dur=1.24 core=0.00 tail=0.00 up=0.44 phr=5 db=-24.0 fm=0.232 dup=0 next_gap=0.97
+ 87 hon       498.52- 499.74 dur=1.22 core=0.65 tail=0.57 up=0.38 phr=3 db=-23.4 fm=0.384 dup=0 next_gap=2.46
+ 88 kara      502.21- 505.46 dur=3.25 core=0.00 tail=0.00 up=0.97 phr=13 db=-30.8 fm=0.197 dup=0 next_gap=1.42
+ 89 hon       506.87- 510.19 dur=3.32 core=0.00 tail=0.00 up=1.17 phr=11 db=-31.2 fm=0.173 dup=0 next_gap=2.80
+ 90 kara      512.99- 515.48 dur=2.49 core=0.00 tail=0.00 up=0.7 phr=5 db=-28.4 fm=None dup=0 next_gap=1.61
+ 91 hon       517.09- 519.77 dur=2.68 core=0.00 tail=0.00 up=1.14 phr=5 db=-29.8 fm=None dup=0 next_gap=2.82
+ 92 kara      522.59- 525.32 dur=2.73 core=0.00 tail=0.00 up=0.93 phr=8 db=-33.8 fm=0.149 dup=0 next_gap=1.45
+ 93 hon       526.77- 529.59 dur=2.82 core=0.00 tail=0.00 up=0.94 phr=7 db=-34.0 fm=0.128 dup=0 next_gap=3.57
+ 94 kara      533.16- 534.99 dur=1.83 core=0.00 tail=0.00 up=0.64 phr=5 db=-26.8 fm=0.382 dup=0 next_gap=nan
