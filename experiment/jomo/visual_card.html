@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 本番デプロイ前は検索インデックスを禁止 (他ページと同様)。 -->
+<meta name="robots" content="noindex,nofollow">
+<title>上毛かるた 文字の現れ方の課題</title>
+<script src="https://unpkg.com/jspsych@8.0.3"></script>
+<script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.0.1"></script>
+<script src="https://unpkg.com/@jspsych/plugin-instructions@2.0.1"></script>
+<link rel="stylesheet" href="https://unpkg.com/jspsych@8.0.3/css/jspsych.css">
+<link rel="stylesheet" href="jomo.css">
+<style>
+  /* 字形は較正実験と同じ BIZ UDGothic(リポジトリ同梱・OFL)。canvas の fillText で描く。 */
+  @font-face { font-family: "BIZ UDGothic Jomo"; src: url("../../fonts/BIZUDGothic-Regular.ttf") format("truetype"); font-display: block; }
+</style>
+</head>
+<body>
+<!-- 本番化の共通配管(同意画面・参加者ID・GAS送信・完了コード)。課題スクリプトより先に読む。 -->
+<script src="../prod_common.js"></script>
+<script src="jomo_common.js"></script>
+<script src="visual_card.js"></script>
+</body>
+</html>

@@ -89,6 +89,14 @@
     sentTrials++;
     post(trial);
   }
+  // 上毛かるたの札当て課題(experiment/jomo/audio_card / visual_card)の1試行を送る。
+  // 正解は端末側で分かる(札=刺激)ので、answer_key を使わず client が正誤も送る。
+  // GAS 側は kind="jomo_trial" を見て "jomo_trials" シートに1行追記する。
+  function saveJomoTrial(trial) {
+    if (!enabled) return;
+    sentTrials++;
+    post(Object.assign({ kind: "jomo_trial" }, trial));
+  }
 
   // 同意画面(本番モードのみ冒頭に出す)。opts = {taskLabel, minutes, headphone, onOk}
   function consentScreen(el, taskLabel, minutes, onOk, headphone) {
@@ -125,7 +133,7 @@
 
   global.PROD = {
     enabled, workerId, participantId, completionCode,
-    setEnv, saveTrial, saveDone, saveFracTrial, consentScreen, completionHTML,
+    setEnv, saveTrial, saveDone, saveFracTrial, saveJomoTrial, consentScreen, completionHTML,
     hasEndpoint: !!SUBMIT_URL,
   };
 })(window);

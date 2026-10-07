@@ -94,6 +94,10 @@ function doPost(e) {
     if (body.kind === "soa_trial" || body.kind === "soa_done") {
       return handleSoa(sheetId, body);
     }
+    // 上毛かるたの札当て課題(experiment/jomo/)。正誤は client が送るので answer_key を使わない。
+    if (body.kind === "jomo_trial") {
+      return handleJomo(sheetId, body);
+    }
 
     const answerKeyJson = props.getProperty("ANSWER_KEY");
     if (!answerKeyJson) throw new Error("ANSWER_KEY property not set");
@@ -244,6 +248,33 @@ function handleSoa(sheetId, body) {
     blank(body.ua), blank(body.dpr), blank(body.screen),
     (body.touch === undefined ? "" : !!body.touch), blank(body.refresh_hz)]);
   return out({status: "ok", correct1: !!body.correct1, correct2: !!body.correct2});
+}
+
+// 上毛かるたの札当て課題(audio_card / visual_card)。jomo_trials シートに1試行1行。
+// 列: 共通(ts, participant_id, worker_id, completion_code) + 課題(task, set_id, version, trial_index,
+//     stimulus_id=札, cut_ms=打ち切り, is_catch, response_char, correct_char, correct, rt_ms, replays, n_choices)
+//     + 文字課題だけが持つ列(speed_idx, fade_ms, actual_ms, actual_frames) + 音声課題だけの列(first_mora_ms)
+//     + 端末環境(ua, dpr, screen, touch, refresh_hz)。
+function handleJomo(sheetId, body) {
+  const ss = SpreadsheetApp.openById(sheetId);
+  let s = ss.getSheetByName("jomo_trials");
+  if (!s) {
+    s = ss.insertSheet("jomo_trials");
+    s.appendRow(["ts", "participant_id", "worker_id", "completion_code",
+      "task", "set_id", "version", "trial_index", "stimulus_id", "cut_ms", "is_catch",
+      "response_char", "correct_char", "correct", "rt_ms", "replays", "n_choices",
+      "speed_idx", "fade_ms", "actual_ms", "actual_frames", "first_mora_ms",
+      "ua", "dpr", "screen", "touch", "refresh_hz"]);
+  }
+  s.appendRow([new Date(body.ts || Date.now()), body.participant_id || "", body.worker_id || "",
+    body.completion_code || "", body.task || "", body.set_id || "", body.version || "",
+    blank(body.trial_index), body.stimulus_id, blank(body.cut_ms), !!body.is_catch,
+    body.response_char, body.correct_char, !!body.correct, blank(body.rt_ms), blank(body.replays),
+    blank(body.n_choices), blank(body.speed_idx), blank(body.fade_ms), blank(body.actual_ms),
+    blank(body.actual_frames), blank(body.first_mora_ms),
+    blank(body.ua), blank(body.dpr), blank(body.screen),
+    (body.touch === undefined ? "" : !!body.touch), blank(body.refresh_hz)]);
+  return out({status: "ok", correct: !!body.correct});
 }
 
 function doGet(e) {

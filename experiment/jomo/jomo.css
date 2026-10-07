@@ -1,0 +1,44 @@
+/* 上毛かるた測定ページ(audio_card / visual_card)の共通の見た目 */
+body { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; background: #f6f6f6;
+       touch-action: manipulation; }
+.jspsych-content { max-width: 600px; }
+.stim-controls { margin: 20px 0 8px; }
+.replay-btn { font-size: 18px; padding: 12px 24px; min-height: 48px;
+              border: 1px solid #355aa3; background: #4a76d6; color: #fff;
+              border-radius: 6px; cursor: pointer; }
+.replay-btn:hover { background: #355aa3; }
+.trial-prompt { font-size: 15px; margin: 10px 0; color: #333; }
+.jspsych-html-button-response-btngroup { gap: 4px; justify-content: center; }
+.grid-card { min-width: 60px; min-height: 52px; width: 100%; padding: 4px 0 3px; line-height: 1.1;
+             display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.grid-card .k { font-size: 22px; font-weight: 700; }
+.grid-card .r { font-size: 10px; color: #555; margin-top: 2px; letter-spacing: -0.02em; }
+.grid-spacer { visibility: hidden; min-width: 60px; min-height: 52px; pointer-events: none; }
+@media (max-width: 480px) {
+  .grid-card, .grid-spacer { min-width: 56px; min-height: 48px; }
+  .grid-card .k { font-size: 19px; }
+  .grid-card .r { font-size: 9px; }
+}
+.card-list { border-collapse: collapse; font-size: 13px; margin: 8px auto; }
+.card-list th, .card-list td { border-bottom: 1px solid #ddd; padding: 2px 8px; text-align: left; }
+.card-list td.k { font-weight: 700; font-size: 15px; }
+.card-list td.r { color: #666; }
+.feedback-ok { color: #1a7f37; font-weight: 700; }
+.feedback-ng { color: #b42318; font-weight: 700; }
+.completion-code { font-family: monospace; font-size: 24px; background: #ffe; padding: 12px;
+                   border: 1px solid #cc9; display: inline-block; letter-spacing: 0.1em; }
+.check-badge { position: fixed; top: 6px; right: 8px; font-size: 12px; background: #fde68a; color: #333;
+               padding: 3px 8px; border-radius: 4px; opacity: .9; pointer-events: none; z-index: 9; }
+.loading { padding: 40px; text-align: center; color: #333; }
+.loading .bar { width: 320px; height: 10px; background: #ddd; border-radius: 5px; margin: 12px auto; overflow: hidden; }
+.loading .bar > div { height: 100%; background: #4a76d6; width: 0; }
+/* 文字課題の提示面 */
+#stim-wrap { margin: 12px auto 4px; }
+#stim { display: block; margin: 0 auto; background: #fff; border: 1px solid #ddd; }
+/* 本番モード(?prod=1)で prod_common.js が描く同意画面・完了画面 */
+.prod-consent { max-width: 620px; margin: 24px auto; background: #fff; border: 1px solid #e3e6ee;
+                border-radius: 10px; padding: 18px 22px; line-height: 1.8; text-align: left; }
+.prod-consent h1 { font-size: 20px; }
+button.primary { font-size: 16px; padding: 10px 20px; border-radius: 8px; border: 0;
+                 background: #355aa3; color: #fff; cursor: pointer; }
+.muted { color: #6b7280; font-size: 13px; }
