@@ -177,8 +177,8 @@ def fig6_4():
 
 def fig7_1():
     conds = ['補正なし', '紙の形', 'アプリ']
-    means = [18.4, 1.8, -0.8]
-    sds = [7.5, 6.2, 6.4]
+    means = [18.4, 1.2, -0.8]
+    sds = [7.5, 5.7, 5.9]
     fig, ax = plt.subplots(figsize=(5.0, 3.2))
     for i, (c, m, s) in enumerate(zip(conds, means, sds)):
         d = rng.normal(0, s, 20)
@@ -281,7 +281,7 @@ def fig_timeline_schematic():
     ax.annotate('', xy=(3.35, y + 0.38), xytext=(3.5, y + 0.38), arrowprops=dict(arrowstyle='->', lw=1))
     ax.text(3.3, y + 0.5, 'Δ（札ごと）', fontsize=7, ha='right')
     y = 0.6
-    ax.text(3.6, y, '札に手が伸びる。先に触れた側の取り。第一音より前は早取り。', fontsize=8, va='center')
+    ax.text(3.6, y, '札に手が伸びる。先に触れた側の取り。聞く役は第一音、見る役は 1 文字目の現れ始めより前が早取り。', fontsize=8, va='center')
     ax.set_xticks(range(0, 9))
     ax.set_xticklabels([f'{i} s' for i in range(0, 9)], fontsize=7)
     ax.set_yticks([])
