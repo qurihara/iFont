@@ -14,7 +14,9 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent / 'figs'
+import os
+PLAIN = os.environ.get('FD_PLAIN') == '1'   # 1 なら「仮想データ」の描き込みを省き figs_plain/ に出す
+OUT = Path(__file__).resolve().parent / ('figs_plain' if PLAIN else 'figs')
 OUT.mkdir(exist_ok=True)
 rng = np.random.default_rng(20261008)
 
@@ -32,6 +34,8 @@ C_GRAY = '#7A8493'
 
 
 def synthetic_mark(ax):
+    if PLAIN:
+        return
     ax.text(0.99, 0.02, '仮想データ', transform=ax.transAxes, ha='right', va='bottom',
             fontsize=9, color='#c00000', alpha=0.85)
 

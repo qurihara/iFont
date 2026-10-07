@@ -1,5 +1,5 @@
 % timeFont 論文誌原稿（未来日記方式）。
-% 組み立ては ./build.sh draft（下書き版）と ./build.sh final（投稿版）。
+% 組み立ては ./build.sh draft（下書き版）、./build.sh plain（印を一切見せない版。tex の印は残る）、./build.sh final（投稿版）。
 % 未来日記の印: \begin{fd}{id}{status}{owner}{desc} ... \end{fd} と \fdcaption{id}{status}{owner}{desc}{caption}。
 % 印の付いた記述は、まだ事実になっていない。事実台帳は facts_ledger.md、数値の設計は future_diary_plan.md にある。
 \documentclass[submit]{ipsj}
@@ -9,16 +9,18 @@
 
 %%%%% 未来日記の仕組み %%%%%
 \newif\ifFDfinal
-\IfFileExists{fdmode.tex}{\input{fdmode}}{\FDfinalfalse}
+\newif\ifFDplain
+\providecommand{\figsdir}{figs}
+\IfFileExists{fdmode.tex}{\input{fdmode}}{\FDfinalfalse\FDplainfalse}
 \definecolor{fdblue}{rgb}{0.10,0.25,0.55}
 \definecolor{fdred}{rgb}{0.75,0.10,0.10}
 \newcommand{\fdtag}[2]{\textcolor{fdred}{\textbf{\footnotesize ［未来日記 #1・#2］}}}
 \def\fdDone{done}
 \newcommand{\fdcheck}[2]{\ifFDfinal\def\fdStatus{#2}\ifx\fdDone\fdStatus\else
   \ClassError{ipsj}{Future diary #1 is not done}{Resolve it or build in draft mode.}\fi\fi}
-\newenvironment{fd}[4]{\fdcheck{#1}{#2}\ifFDfinal\else\par\begingroup\color{fdblue}\fdtag{#1}{#2}\fi}%
-  {\ifFDfinal\else\endgroup\par\fi}
-\newcommand{\fdcaption}[5]{\fdcheck{#1}{#2}\ifFDfinal\caption{#5}\else\caption{\fdtag{#1}{#2}#5}\fi}
+\newenvironment{fd}[4]{\fdcheck{#1}{#2}\ifFDfinal\else\ifFDplain\else\par\begingroup\color{fdblue}\fdtag{#1}{#2}\fi\fi}%
+  {\ifFDfinal\else\ifFDplain\else\endgroup\par\fi\fi}
+\newcommand{\fdcaption}[5]{\fdcheck{#1}{#2}\ifFDfinal\caption{#5}\else\ifFDplain\caption{#5}\else\caption{\fdtag{#1}{#2}#5}\fi\fi}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \setcounter{巻数}{68}
@@ -219,7 +221,7 @@ s_i(t) = \hat{V}_i^{-1}\bigl(\hat{A}_i(t)\bigr)
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig_wiss_system.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig_wiss_system.png}
 \caption{timeFont の生成の仕組み（先行する報告\cite{maruyama2026wiss}より再掲．図中の iFont は timeFont の旧称）．文字列と，音声および各字の曲線を入力し，各時刻で音声と同じ認識率になる進行度まで文字を進める．下段は 1 音目だけを対象にした場合である．}
 \ecaption{Generation pipeline of timeFont (reprinted from the authors' prior report; iFont in the figure is the former name). The bottom row shows the mode that transfers only the first syllable.}
 \label{fig:wiss_system}
@@ -289,7 +291,7 @@ s_i(t) = \hat{V}_i^{-1}\bigl(\hat{A}_i(t)\bigr)
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig_wiss_results.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig_wiss_results.png}
 \caption{かな 1 文字の測定の結果（先行する報告\cite{maruyama2026wiss}より再掲）．(a) 音声の正答率は字によって大きく異なる．(b) 方式によって読める進行度が異なる．(c) 提示時間を延ばすと部分表示だけ正答率が上がる．(d) ワイプでは濁点の出現位置で正答率が跳ね上がる．}
 \ecaption{Results of the single-letter measurements (reprinted). (a) Auditory accuracy differs greatly among syllables. (b) Legible progress differs among methods. (c) Longer exposure raises accuracy only for partial display. (d) In wipe, accuracy jumps where the voicing mark appears.}
 \label{fig:wiss_results}
@@ -316,7 +318,7 @@ $\lambda$ は自由に推定し，95\% 区間はプロファイル尤度で求�
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=0.92\columnwidth]{figs/fig_beta1_forest.png}
+\includegraphics[width=0.92\columnwidth]{\figsdir/fig_beta1_forest.png}
 \caption{上毛かるたの先頭音 44 音（参考として び・ぶ）の $\beta_1$ を傾きの順に配置した図．横線は 95\% プロファイル尤度区間，四角は階層モデルで縮約した値．点推定が探索の上限 1.0/ms に達した音は，打ち切りの分解能（5〜10 ms）では区別できない階段状の音である．}
 \ecaption{$\beta_1$ of the 44 initial syllables of Jomo Karuta (plus bi and bu for reference), sorted by slope. Bars are 95\% profile-likelihood intervals; squares are shrinkage estimates.}
 \label{fig:beta1_forest}
@@ -394,7 +396,7 @@ $R \backslash K$ & 3 & 4 & 5 & 6 & 8 \\
 
 \begin{figure*}[tb]
 \centering
-\includegraphics[width=0.95\textwidth]{figs/fig_dir4_schematic.png}
+\includegraphics[width=0.95\textwidth]{\figsdir/fig_dir4_schematic.png}
 \caption{方向 4（候補版）の仕組みの模式図．(1) 札ごとの音声の曲線と，(2) 速さを $K$ 段階に変えて測定した文字の曲線を用意し，(3) 傾き $\beta_1$ が最も近い段階を選択して開始を $\Delta$ だけずらすと，音声の曲線に重なる．見せるアニメーションは (2) で測定したものそのものである．}
 \ecaption{Schematic of direction 4 (candidate version). (1) Measure the speech curve of each card, (2) measure letter curves at $K$ speeds, and (3) choose the speed closest in $\beta_1$ and shift the onset by $\Delta$ to align $x_0$. The displayed animation is exactly a measured stimulus.}
 \label{fig:dir4}
@@ -551,7 +553,7 @@ $N = 2$ では，更新した版をもう一度測定するので，補正後の
 
 \begin{figure*}[tb]
 \centering
-\includegraphics[width=0.95\textwidth]{figs/fig_timeline_schematic.png}
+\includegraphics[width=0.95\textwidth]{\figsdir/fig_timeline_schematic.png}
 \caption{プレイ中の時間の流れ（模式図）．空読みのあと約 1.5 秒で第一音が鳴る．聞く役には読み上げがそのまま提示され，見る役の画面には，選択した速さの 1 文字目が第一音から $\Delta$ だけずれて現れ，2 文字目以降は読まれた時刻に現れる．紙の形では札は紙で，取りの判定は審判が行う．}
 \ecaption{Timeline during play (schematic). The first syllable follows the pre-reading by about 1.5 s. The listener hears the reading as is; on the viewer's screen the first letter appears at the chosen speed, offset by $\Delta$ from the first syllable, and the remaining letters appear when read.}
 \label{fig:timeline}
@@ -666,7 +668,7 @@ $R = 5.2$ に対して表\ref{tab:RK}から $K = 5$ で差の最大が 0.048 以
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig6_1_curves44_synthetic.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig6_1_curves44_synthetic.png}
 \fdcaption{F6-1}{planned}{claude}{通し読みの測定結果から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{上毛かるた 44 札の通し読みの曲線のレベル $x_0$ と傾き $\beta_1$．点線はフェードの 5 段階（6.3 節）の $\beta_1$ の設計値である．}
 \ecaption{Level $x_0$ and slope $\beta_1$ of the read-through speech curves of the 44 Jomo Karuta cards. Dotted lines are the design values of $\beta_1$ for the five fade speeds.}
 \label{fig:curves44}
@@ -732,7 +734,7 @@ $D$ (ms) & 設計 $\beta_1$ (1/ms) & 実測 $\beta_1$ (1/ms) & 実測 $x_0$ (ms)
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig6_2_fade5_synthetic.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig6_2_fade5_synthetic.png}
 \fdcaption{F6-2}{planned}{claude}{文字の測定結果から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{「あ」と「つ」について，フェードの 5 段階の曲線（青，$D = 25$〜$400$ ms）と通し読みの音声の曲線（赤）．横軸は文字では現れ始めから，音声では第一音からの時間．}
 \ecaption{Curves of the five fade speeds (blue) and the speech curve (red) for a and tsu.}
 \label{fig:fade5}
@@ -779,7 +781,7 @@ $D$ (ms) & 設計 $\beta_1$ (1/ms) & 実測 $\beta_1$ (1/ms) & 実測 $x_0$ (ms)
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig6_3_iteration_synthetic.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig6_3_iteration_synthetic.png}
 \fdcaption{F6-3}{planned}{claude}{反復の測定結果から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{候補版，精密版 1 回目，精密版 2 回目の，札ごとの残差（音声との認識率の差の最大）．残差の小さい順に並べた．破線は収束の基準 0.05 である．}
 \ecaption{Per-card residual (maximum gap to the speech curve) for the candidate version and the two iterations of the refined version, sorted ascending. The dashed line is the convergence criterion 0.05.}
 \label{fig:iteration}
@@ -799,7 +801,7 @@ $\log \beta_1$ の相関は $r = 0.71$（40 札）であった（図\ref{fig:pre
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=0.85\columnwidth]{figs/fig6_4_prediction_synthetic.png}
+\includegraphics[width=0.85\columnwidth]{\figsdir/fig6_4_prediction_synthetic.png}
 \fdcaption{F6-4}{planned}{claude}{予測と実測の比較結果から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{1 音の単独提示から予測した $\beta_1$ と，通し読みで実測した $\beta_1$．赤は単独提示で $\lambda$ が 0.25 未満だった 4 札．}
 \ecaption{$\beta_1$ predicted from single-syllable curves versus $\beta_1$ measured with read-through speech. Red marks the four cards whose single-syllable $\lambda$ was below 0.25.}
 \label{fig:prediction}
@@ -883,7 +885,7 @@ $\log \beta_1$ の相関は $r = 0.71$（40 札）であった（図\ref{fig:pre
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig7_1_match_synthetic.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig7_1_match_synthetic.png}
 \fdcaption{F7-1}{planned}{kurihara}{対戦実験の集計から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{条件ごとの取り札数の差（聞く役 $-$ 見る役）．灰色の点は 1 試合，赤は平均と 95\% 信頼区間，帯は同等とみなす範囲 $\pm 4$ 枚．}
 \ecaption{Difference in cards taken (listener minus viewer) per condition. Gray dots are games; red is the mean with 95\% CI; the band is the equivalence margin of $\pm 4$ cards.}
 \label{fig:match}
@@ -903,7 +905,7 @@ $\log \beta_1$ の相関は $r = 0.71$（40 札）であった（図\ref{fig:pre
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\columnwidth]{figs/fig7_2_hayaoshi_synthetic.png}
+\includegraphics[width=\columnwidth]{\figsdir/fig7_2_hayaoshi_synthetic.png}
 \fdcaption{F7-2}{planned}{kurihara}{アプリの記録から図を作り直し，仮想データの描き込みを消し，ファイル名から _synthetic を外す}{アプリ条件で正解札を取った押しの早押し度の分布．聞く役は $f_{\mathrm{audio}}$，見る役は $f_{\mathrm{visual}}$ で計算した．}
 \ecaption{Distribution of the earliness score for correct touches in the application condition, computed with $f_{\mathrm{audio}}$ for listeners and $f_{\mathrm{visual}}$ for viewers.}
 \label{fig:hayaoshi}
