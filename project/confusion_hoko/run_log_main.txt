@@ -1,0 +1,14 @@
+入力: {"n_rows_file": 29526, "n_participants_audio": 90, "excluded_participants": ["4r2xz4", "e3kzzw"], "n_participants_used": 88, "n_main_trials": 5280, "n_by_bin": {"short": 2518, "long": 2104, "full": 658}, "n_targets": 67, "targets_missing": ["ん"], "short_max_ms": 40}
+[全体] ほ→こ 5/66 = 0.076 [0.033, 0.165]  こ→ほ 0/57 = 0.000 [0.000, 0.063]  Fisher p=0.061
+   順位(68音の全組) ほ→こ (130, 808), こ→ほ (None, 808); 一覧内 ほ→こ (62, 67), こ→ほ (67, 67)
+   ほ の最多誤答 {'top_wrong': 'は', 'k_top': 23, 'n': 66, 'rate_top': 0.3484848484848485, 'n_correct': 14}  こ の最多誤答 {'top_wrong': 'か/く', 'k_top': 2, 'n': 57, 'rate_top': 0.03508771929824561, 'n_correct': 48}
+[短い打ち切り(10〜40 ms)] ほ→こ 3/28 = 0.107 [0.037, 0.272]  こ→ほ 0/31 = 0.000 [0.000, 0.110]  Fisher p=0.101
+   順位(68音の全組) ほ→こ (129, 672), こ→ほ (None, 672); 一覧内 ほ→こ (61, 67), こ→ほ (67, 67)
+   ほ の最多誤答 {'top_wrong': 'は', 'k_top': 10, 'n': 28, 'rate_top': 0.35714285714285715, 'n_correct': 1}  こ の最多誤答 {'top_wrong': 'く', 'k_top': 2, 'n': 31, 'rate_top': 0.06451612903225806, 'n_correct': 25}
+[長い打ち切り(45〜150 ms)] ほ→こ 1/30 = 0.033 [0.006, 0.167]  こ→ほ 0/21 = 0.000 [0.000, 0.155]  Fisher p=1.000
+   順位(68音の全組) ほ→こ (210, 281), こ→ほ (None, 281); 一覧内 ほ→こ (64, 67), こ→ほ (66, 67)
+   ほ の最多誤答 {'top_wrong': 'は', 'k_top': 10, 'n': 30, 'rate_top': 0.3333333333333333, 'n_correct': 11}  こ の最多誤答 {'top_wrong': 'か/た/ぱ', 'k_top': 1, 'n': 21, 'rate_top': 0.047619047619047616, 'n_correct': 18}
+[打ち切りなし(全長)] ほ→こ 1/8 = 0.125 [0.022, 0.471]  こ→ほ 0/5 = 0.000 [0.000, 0.434]  Fisher p=1.000
+   順位(68音の全組) ほ→こ (77, 121), こ→ほ (None, 121); 一覧内 ほ→こ (47, 67), こ→ほ (56, 67)
+   ほ の最多誤答 {'top_wrong': 'は', 'k_top': 3, 'n': 8, 'rate_top': 0.375, 'n_correct': 2}  こ の最多誤答 {'top_wrong': '', 'k_top': 0, 'n': 5, 'rate_top': 0.0, 'n_correct': 5}
+出力先: /Users/kurihara/Library/CloudStorage/GoogleDrive-qurihara@gmail.com/マイドライブ/share/google_desktop_share/iFont/project/confusion_hoko
