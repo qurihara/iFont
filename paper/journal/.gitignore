@@ -1,0 +1,8 @@
+*.aux
+*.log
+*.dvi
+*.toc
+*.out
+fdmode.tex
+timefont_journal.pdf
+build_platex*.log
