@@ -1,0 +1,76 @@
+読み込み: {"n_rows_file": 29526, "n_participants_audio": 90, "excluded_participants": ["4r2xz4", "e3kzzw"], "n_participants_used": 88, "n_main_trials": 4622, "n_full_trials": 658, "with_full": false, "n_chars": 67}
+λ自由: 当てはめ完了
+λ固定: 当てはめ完了
+階層モデル: μ=-1.494 (β1 の幾何平均 0.2244/ms), τ=0.786, 反復 24 回
+{
+ "R_a_focus8": 16.807557041259543,
+ "R_a_focus8_chars": [
+  "あ",
+  "か"
+ ],
+ "R_a_focus_in44": 16.807557041259543,
+ "R_a_focus_in44_chars": [
+  "あ",
+  "か"
+ ],
+ "R_a_focus_in44_shrunk": 9.821038106680216,
+ "R_b_point44": 32.876036734710105,
+ "R_b_point44_chars": [
+  "あ",
+  "り"
+ ],
+ "n44_at_cap": 18,
+ "chars44_at_cap": [
+  "あ",
+  "え",
+  "お",
+  "さ",
+  "す",
+  "せ",
+  "に",
+  "ね",
+  "ひ",
+  "ふ",
+  "へ",
+  "ほ",
+  "み",
+  "め",
+  "も",
+  "ゆ",
+  "る",
+  "わ"
+ ],
+ "n44_curve_weak": 2,
+ "chars44_curve_weak": [
+  "ひ",
+  "へ"
+ ],
+ "R_b_point44_excl_weak": 32.876036734710105,
+ "R_c_ci_conservative": 5.135378091016966,
+ "R_c_ci_conservative_chars": [
+  "あ",
+  "か"
+ ],
+ "R_c_ci_pessimistic": 999.9999999999998,
+ "R_c_shrunk44": 10.55946903536382,
+ "R_c_shrunk44_chars": [
+  "あ",
+  "り"
+ ],
+ "R_c_shrunk44_excl_weak": 10.55946903536382,
+ "R_c_ci_conservative_excl_weak": 5.135378091016966,
+ "R_b_p90_p10": 16.756876791557726,
+ "R_c_shrunk_p90_p10": 5.353090495594912,
+ "b1_44_min": 0.030417291721304487,
+ "b1_44_max": 1.0,
+ "b1_44_median": 0.35638224574781824,
+ "b1_44_q25": 0.16275547092098697,
+ "b1_44_q75": 1.0,
+ "b1_shrunk_44_min": 0.05795441354248695,
+ "b1_shrunk_44_max": 0.6119678352645606,
+ "b1_shrunk_44_median": 0.23785003964696408,
+ "b1_shrunk_44_q25": 0.17646533999864433,
+ "b1_shrunk_44_q75": 0.3084361892706082
+}
+安定さ: {"lam_free": {"n_at_cap": 18, "n_x0_at_bound": 0, "n_not_converged": 0, "median_ci_ratio": 14.308215953010713, "n_ci_ratio_over_10": 32, "total_nll": 1141.5564819015678}, "lam_fixed": {"n_at_cap": 3, "n_x0_at_bound": 1, "n_not_converged": 0, "median_ci_ratio": 4.786811941430939, "n_ci_ratio_over_10": 13, "total_nll": 1261.6696732270796}}
+書き出し先: sensitivity_no_full

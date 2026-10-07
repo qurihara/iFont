@@ -1,0 +1,80 @@
+読み込み: {"n_rows_file": 29526, "n_participants_audio": 90, "excluded_participants": ["4r2xz4", "e3kzzw"], "n_participants_used": 88, "n_main_trials": 5280, "n_full_trials": 658, "with_full": true, "n_chars": 67}
+λ自由: 当てはめ完了
+λ固定: 当てはめ完了
+階層モデル: μ=-1.598 (β1 の幾何平均 0.2022/ms), τ=0.848, 反復 27 回
+{
+ "R_a_focus8": 51.305286574753254,
+ "R_a_focus8_chars": [
+  "あ",
+  "つ"
+ ],
+ "R_a_focus_in44": 51.305286574753254,
+ "R_a_focus_in44_chars": [
+  "あ",
+  "つ"
+ ],
+ "R_a_focus_in44_shrunk": 22.74472643304066,
+ "R_b_point44": 57.983672435415485,
+ "R_b_point44_chars": [
+  "あ",
+  "こ"
+ ],
+ "n44_at_cap": 20,
+ "chars44_at_cap": [
+  "あ",
+  "え",
+  "お",
+  "さ",
+  "す",
+  "せ",
+  "そ",
+  "に",
+  "ね",
+  "ひ",
+  "ふ",
+  "へ",
+  "ほ",
+  "み",
+  "め",
+  "も",
+  "ゆ",
+  "る",
+  "ろ",
+  "わ"
+ ],
+ "n44_curve_weak": 4,
+ "chars44_curve_weak": [
+  "ひ",
+  "ふ",
+  "へ",
+  "ろ"
+ ],
+ "R_b_point44_excl_weak": 57.983672435415485,
+ "R_c_ci_conservative": 6.747027860459588,
+ "R_c_ci_conservative_chars": [
+  "あ",
+  "つ"
+ ],
+ "R_c_ci_pessimistic": 999.9999999999998,
+ "R_c_shrunk44": 22.74472643304066,
+ "R_c_shrunk44_chars": [
+  "あ",
+  "つ"
+ ],
+ "R_c_shrunk44_excl_weak": 22.74472643304066,
+ "R_c_ci_conservative_excl_weak": 6.747027860459588,
+ "R_b_p90_p10": 15.53714938919399,
+ "R_c_shrunk_p90_p10": 5.577048244892155,
+ "b1_44_min": 0.017246234293176923,
+ "b1_44_max": 1.0,
+ "b1_44_median": 0.33415081681061526,
+ "b1_44_q25": 0.1337420863863355,
+ "b1_44_q75": 1.0,
+ "b1_shrunk_44_min": 0.027169662233633957,
+ "b1_shrunk_44_max": 0.6179665347821208,
+ "b1_shrunk_44_median": 0.21985657672703535,
+ "b1_shrunk_44_q25": 0.14650960384384612,
+ "b1_shrunk_44_q75": 0.29596287070417415
+}
+安定さ: {"lam_free": {"n_at_cap": 20, "n_x0_at_bound": 1, "n_not_converged": 0, "median_ci_ratio": 14.28530319023167, "n_ci_ratio_over_10": 30, "total_nll": 1343.4061117346953}, "lam_fixed": {"n_at_cap": 3, "n_x0_at_bound": 12, "n_not_converged": 0, "median_ci_ratio": 4.635299985874319, "n_ci_ratio_over_10": 3, "total_nll": 1712.4901954761262}}
+書き出し先: /Users/kurihara/Library/CloudStorage/GoogleDrive-qurihara@gmail.com/マイドライブ/share/google_desktop_share/iFont/project/beta1_range
