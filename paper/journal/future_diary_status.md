@@ -43,9 +43,9 @@
 
 ## 仮想データの図
 
-- figs/fig6_1_curves44_synthetic.png
-- figs/fig6_2_fade5_synthetic.png
-- figs/fig6_3_iteration_synthetic.png
-- figs/fig6_4_prediction_synthetic.png
-- figs/fig7_1_match_synthetic.png
-- figs/fig7_2_hayaoshi_synthetic.png
+- \figsdir/fig6_1_curves44_synthetic.png
+- \figsdir/fig6_2_fade5_synthetic.png
+- \figsdir/fig6_3_iteration_synthetic.png
+- \figsdir/fig6_4_prediction_synthetic.png
+- \figsdir/fig7_1_match_synthetic.png
+- \figsdir/fig7_2_hayaoshi_synthetic.png
